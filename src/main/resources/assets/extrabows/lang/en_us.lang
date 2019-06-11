@@ -54,3 +54,5 @@ explosive_upgrade.description.text=Creates an explosion on the hit block or enti
 double_upgrade.description.text=Shoots two arrows
 
 triple_upgrade.description.text=Shoots three arrows
+
+key.extrabows.category=Extra Bows Controlls

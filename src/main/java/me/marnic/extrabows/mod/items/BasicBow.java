@@ -137,6 +137,7 @@ public class BasicBow extends ItemBow implements BasicItem{
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
+        tooltip.add("Press B to open the Upgrade inventory");
         if(!list.hasMul() && !list.hasMods()) {
             tooltip.add(new TextComponentTranslation("message.no_upgrades.text").getUnformattedText());
         }else {
