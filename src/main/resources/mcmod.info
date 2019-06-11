@@ -1,0 +1,16 @@
+[
+{
+  "modid": "extrabows",
+  "name": "Extra Bows",
+  "description": "Adds new variants of bows, bow upgrades and other archery stuff to the game",
+  "version": "v1.12.2 b1",
+  "mcversion": "1.12.2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["MrMarnic"],
+  "credits": "MrMarnic",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

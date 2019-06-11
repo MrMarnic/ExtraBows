@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "extrabows:strong_gold"
+    }
+  ],
+  "result": {
+    "item": "minecraft:gold_ingot"
+  }
+}

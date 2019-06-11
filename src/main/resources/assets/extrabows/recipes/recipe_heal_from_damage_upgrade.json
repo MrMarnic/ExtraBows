@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " H ",
+    "AUA",
+    " S "
+  ],
+  "key": {
+    "H": {
+      "type": "minecraft:item_nbt",
+      "item": "minecraft:potion",
+      "nbt": {
+        "Potion": "minecraft:healing"
+      }
+    },
+    "U": {
+      "item": "extrabows:upgrade_plate"
+    },
+    "A": {
+      "item": "minecraft:arrow"
+    },
+    "S": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "result": {
+    "item": "extrabows:heal_from_damage_upgrade"
+  }
+}

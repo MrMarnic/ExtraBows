@@ -1,0 +1,56 @@
+tile.bridge_block.name=Brücken Block
+tile.strong_stone.name=Starker Stein
+
+item.arrow_cost_upgrade.name=Pfeilkosten Upgrade
+item.heal_from_damage_upgrade.name=Heilungs Upgrade
+item.fire_upgrade.name=Feuer Upgrade
+item.freeze_upgrade.name=Frost Upgrade
+item.lightning_upgrade.name=Blitz Upgrade
+item.explosive_upgrade.name=Explosions Upgrade
+item.double_upgrade.name=Doppel Pfeil Upgrade
+item.triple_upgrade.name=Dreifach Pfeil Upgrade
+item.water_upgrade.name=Wasser Upgrade
+item.ender_upgrade.name=Ender Upgrade
+item.bridge_upgrade.name=Brücken Upgrade
+
+item.stone_bow.name=Stein Bogen
+item.golden_bow.name=Gold Bogen
+item.iron_bow.name=Eisen Bogen
+item.diamond_bow.name=Diamant Bogen
+item.emerald_bow.name=Smaragd Bogen
+
+itemGroup.extrabows_items=Extrabows Items
+
+item.strong_gold.name=Starkes Gold
+item.strong_iron.name=Starkes Eisen
+item.strong_diamond.name=Starker Diamant
+item.strong_emerald.name=Starker Smaragd
+
+item.upgrade_plate.name=Upgrade Platte
+
+message.no_upgrades.text=Upgrades: Keine
+
+lightning_upgrade.description.text=Spawnt einen Blitz an der Stelle, in der der Pfeil einschlägt
+
+fire_upgrade.description.text1=Platziert ein Feuer auf dem Block, auf den der Pfeil trifft
+fire_upgrade.description.text2=Lebewesen werden auch in Brand gesetzt
+
+water_upgrade.description.text1=Löscht Feuer im Umkreis von 2 Blöcken
+water_upgrade.description.text2=Kann zufällig an der Einschlagsstelle ein Wasser platzieren(verschwindet in ~ 5 Sekunden)
+
+ender_upgrade.description.text=Teleportiert den Spieler zum Einschlagsblock
+
+bridge_upgrade.description.text1=Baut eine Brücke entlang der Fluglinie des Pfeils auf
+bridge_upgrade.description.text2=Die Brücke verschwindet in ~ 20 Sekunden
+
+arrow_cost_upgrade.description.text=Eine zufällige Chance dem Spieler einen Pfeil zu geben
+
+heal_from_damage_upgrade.description.text=Eine zufällige Chance um ein halbes Herz zu erhalten, wenn der Spieler einem Gegner Schaden zufügt
+
+freeze_upgrade.description.text=Es schneit auf den Einschlagsblock, gefriert Wasser und kann zufällig einen Schneemann spawnen
+
+explosive_upgrade.description.text=Spawnt eine Explosion am Einschlagsort
+
+double_upgrade.description.text=Schießt zwei Pfeile
+
+triple_upgrade.description.text=Schießt drei Pfeile
