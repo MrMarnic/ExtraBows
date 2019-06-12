@@ -1,19 +1,13 @@
 package me.marnic.extrabows.api.upgrade;
 
-import me.marnic.extrabows.api.util.UpgradeUtil;
-import me.marnic.extrabows.mod.packet.ExtraBowsPacketHandler;
-import me.marnic.extrabows.mod.packet.PacketSendDestroyMessage;
+import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
+import me.marnic.extrabows.common.packet.PacketSendDestroyMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 

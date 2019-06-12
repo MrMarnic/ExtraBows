@@ -4,13 +4,11 @@ import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.ArrowMultiplierUpgrade;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
-import me.marnic.extrabows.mod.items.upgrades.BasicUpgradeItem;
-import net.minecraft.entity.player.EntityPlayer;
+import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;

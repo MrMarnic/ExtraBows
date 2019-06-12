@@ -2,8 +2,8 @@ package me.marnic.extrabows.api.util;
 
 import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
-import me.marnic.extrabows.mod.items.BasicBow;
-import me.marnic.extrabows.mod.items.CustomBowSettings;
+import me.marnic.extrabows.common.items.BasicBow;
+import me.marnic.extrabows.common.items.CustomBowSettings;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,7 +13,6 @@ import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;

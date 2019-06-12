@@ -1,20 +1,14 @@
 package me.marnic.extrabows.api.block;
 
 import me.marnic.extrabows.api.item.IModelRegistry;
-import me.marnic.extrabows.mod.events.ExtraBowsEventHandler;
-import me.marnic.extrabows.mod.main.Identification;
+import me.marnic.extrabows.common.events.ExtraBowsEventHandler;
+import me.marnic.extrabows.common.main.Identification;
+import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 
 /**
@@ -27,10 +21,7 @@ public class BasicBlock extends Block implements IModelRegistry {
         super(materialIn);
         setUnlocalizedName(name);
         setRegistryName(name);
-        setResistance(10000000);
-        ExtraBowsEventHandler.BLOCKS_TO_REGISTER.add(this);
-        ExtraBowsEventHandler.MODELS_TO_REGISTER.add(this);
-        ExtraBowsEventHandler.ITEMS_TO_REGISTER.add(new ItemBlock(this).setUnlocalizedName(name).setRegistryName(name));
+        ExtraBowsRegistry.register(this);
     }
 
     @Override

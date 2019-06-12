@@ -1,9 +1,9 @@
 package me.marnic.extrabows.api.upgrade;
 
 import me.marnic.extrabows.api.util.*;
-import me.marnic.extrabows.mod.config.ExtraBowsConfig;
-import me.marnic.extrabows.mod.items.BasicBow;
-import me.marnic.extrabows.mod.upgrades.BridgeUpgrade;
+import me.marnic.extrabows.common.config.ExtraBowsConfig;
+import me.marnic.extrabows.common.items.BasicBow;
+import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;

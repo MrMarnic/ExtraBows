@@ -1,13 +1,12 @@
 package me.marnic.extrabows.api.upgrade;
 
-import me.marnic.extrabows.mod.items.BasicBow;
-import me.marnic.extrabows.mod.items.upgrades.BasicUpgradeItem;
+import me.marnic.extrabows.common.items.BasicBow;
+import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
