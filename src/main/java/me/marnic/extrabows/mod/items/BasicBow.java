@@ -67,7 +67,7 @@ public class BasicBow extends ItemBow implements BasicItem{
         });
     }
 
-    private ItemStack findAmmo(EntityPlayer player)
+    private ItemStack findAmmoNEW(EntityPlayer player)
     {
         if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND)))
         {
@@ -99,7 +99,7 @@ public class BasicBow extends ItemBow implements BasicItem{
         {
             EntityPlayer entityplayer = (EntityPlayer)entityLiving;
             boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemstack = this.findAmmo(entityplayer);
+            ItemStack itemstack = this.findAmmoNEW(entityplayer);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
