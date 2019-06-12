@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 public class ArrowUtil {
     public static EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter, BasicBow basicBow,EntityPlayer player)
     {
-        EntityTippedArrow entitytippedarrow = new EntityTippedArrow(worldIn, shooter) {
+        EntityTippedArrow entitytippedarrow = new EntityTippedArrow(worldIn,shooter) {
 
             private UpgradeList list;
             private boolean alreadyHit = false;
@@ -98,7 +98,6 @@ public class ArrowUtil {
     public static EntityArrow createArrowComplete(World worldIn, ItemStack itemstack, EntityPlayer entityplayer, BasicBow basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
         CustomBowSettings settings = basicBow.getSettings();
         EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, stack, entityplayer,basicBow,entityplayer);
-        entityarrow = basicBow.customizeArrow(entityarrow);
         UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE,entityarrow,entityplayer,stack);
         /*
         In this line handleArrowCreate of the upgrades should be handled

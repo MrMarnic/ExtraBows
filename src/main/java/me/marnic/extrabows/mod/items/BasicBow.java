@@ -67,6 +67,32 @@ public class BasicBow extends ItemBow implements BasicItem{
         });
     }
 
+    private ItemStack findAmmo(EntityPlayer player)
+    {
+        if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND)))
+        {
+            return player.getHeldItem(EnumHand.OFF_HAND);
+        }
+        else if (this.isArrow(player.getHeldItem(EnumHand.MAIN_HAND)))
+        {
+            return player.getHeldItem(EnumHand.MAIN_HAND);
+        }
+        else
+        {
+            for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
+            {
+                ItemStack itemstack = player.inventory.getStackInSlot(i);
+
+                if (this.isArrow(itemstack))
+                {
+                    return itemstack;
+                }
+            }
+
+            return ItemStack.EMPTY;
+        }
+    }
+
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer)
