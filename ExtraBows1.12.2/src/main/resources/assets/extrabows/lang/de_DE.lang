@@ -47,7 +47,7 @@ arrow_cost_upgrade.description.text=Eine zufällige Chance dem Spieler einen Pfe
 
 heal_from_damage_upgrade.description.text=Eine zufällige Chance um ein halbes Herz zu erhalten, wenn der Spieler einem Gegner Schaden zufügt
 
-freeze_upgrade.description.text=Es schneit auf den Einschlagsblock, gefriert Wasser und kann zufällig einen Schneemann spawnen
+freeze_upgrade.description.text=Es schneit auf den Einschlagsblock, gefriert Wasser, gibt den Slowness Effekt und kann zufällig einen Schneemann spawnen
 
 explosive_upgrade.description.text=Spawnt eine Explosion am Einschlagsort
 
