@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SBS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:tnt"
+    },
+    "B": {
+      "item": "extrabows:upgrade_plate"
+    }
+  },
+  "result": {
+    "item": "extrabows:explosive_upgrade"
+  }
+}
