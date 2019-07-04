@@ -183,6 +183,7 @@ public class Upgrades {
             @Override
             public void handleBlockHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
                 pos = pos.add(0,1,0);
+
                 if(world.isAirBlock(pos) && world.isBlockFullCube(pos.add(0,-1,0))) {
                     world.setBlockState(pos,Blocks.SNOW_LAYER.getDefaultState());
                     if(RandomUtil.isChance(8,1)) {
@@ -204,6 +205,21 @@ public class Upgrades {
             public void handleWaterHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
                 if(world.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
                     world.setBlockState(pos,Blocks.PACKED_ICE.getDefaultState());
+                }
+
+                for(BlockPos pos1:UpgradeUtil.getBlocksInRadius(pos,2)) {
+                    if(world.getBlockState(pos1).getBlock().equals(Blocks.WATER) || world.getBlockState(pos1).getBlock().equals(Blocks.FLOWING_WATER) ) {
+                        if(world.isAirBlock(pos1.up())) {
+                            if(RandomUtil.isChance(2,1)) {
+                                world.setBlockState(pos1,Blocks.PACKED_ICE.getDefaultState());
+                            }
+                            if(RandomUtil.isChance(2,1)) {
+                                if(world.isAirBlock(pos1.up().up())) {
+                                    world.setBlockState(pos1.up(),Blocks.SNOW_LAYER.getDefaultState());
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
