@@ -1,0 +1,53 @@
+package me.marnic.extrabows.common.blocks.tileentities;
+
+import me.marnic.extrabows.common.main.ExtraBows;
+import me.marnic.extrabows.common.main.ExtraBowsObjects;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
+
+/**
+ * Copyright (c) 06.06.2019
+ * Developed by MrMarnic
+ * GitHub: https://github.com/MrMarnic
+ */
+public class TileEntityBridgeBlock extends TileEntity implements ITickableTileEntity {
+
+    private int ticksToLive;
+
+    public TileEntityBridgeBlock() {
+        super(ExtraBowsObjects.BRIDGE_BLOCK_TILE_ENTITY);
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+    }
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.putInt("ticksToLive",ticksToLive);
+        return super.write(compound);
+    }
+
+    @Override
+    public void read(CompoundNBT compound) {
+        ticksToLive = compound.getInt("ticksToLive");
+        super.read(compound);
+    }
+
+    public TileEntityBridgeBlock setTicksToLive(int ticksToLive) {
+        this.ticksToLive = ticksToLive;
+        return this;
+    }
+
+    @Override
+    public void tick() {
+        if(ticksToLive<=0) {
+            world.removeBlock(pos,false);
+        }else {
+            ticksToLive--;
+        }
+    }
+}

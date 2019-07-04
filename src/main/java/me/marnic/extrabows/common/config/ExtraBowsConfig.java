@@ -1,0 +1,61 @@
+package me.marnic.extrabows.common.config;
+
+import me.marnic.extrabows.common.items.CustomBowSettings;
+import net.minecraftforge.common.ForgeConfigSpec;
+
+/**
+ * Copyright (c) 11.06.2019
+ * Developed by MrMarnic
+ * GitHub: https://github.com/MrMarnic
+ */
+public class ExtraBowsConfig {
+
+    public static ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+
+
+    public static BowConfig STONE_BOW = new BowConfig(434,3f,1f, CustomBowSettings.NORMAL_INACCURACY,18f,BUILDER);
+    public static BowConfig IRON_BOW = new BowConfig(534,3.5f,2f, CustomBowSettings.NORMAL_INACCURACY,16f,BUILDER);
+    public static BowConfig GOLD_BOW = new BowConfig(300,4.25f,0, 0.5f,10f,BUILDER);
+    public static BowConfig DIAMOND_BOW = new BowConfig(750,3.75f,5f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
+    public static BowConfig EMERALD_BOW = new BowConfig(1500,4f,8f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
+
+    public static ForgeConfigSpec SPEC = BUILDER.build();
+
+    public static int DURABILITY_DOUBLE_UPGRADE = 400;
+    public static int DURABILITY_TRIPLE_UPGRADE = 400;
+    public static int DURABILITY_ARROW_COST_UPGRADE = 400;
+    public static int DURABILITY_HEAL_FROM_DAMAGE_UPGRADE = 400;
+    public static int DURABILITY_FIRE_UPGRADE = 400;
+    public static int DURABILITY_FREEZE_UPGRADE = 400;
+    public static int DURABILITY_WATER_UPGRADE = 400;
+    public static int DURABILITY_BRIDGE_UPGRADE = 400;
+    public static int DURABILITY_ENDER_UPGRADE = 400;
+    public static int DURABILITY_LIGHTNING_UPGRADE = 400;
+    public static int DURABILITY_EXPLOSIVE_UPGRADE = 400;
+        
+    
+    public static class BowConfig {
+
+        public ForgeConfigSpec.ConfigValue<Integer> durability;
+        public ForgeConfigSpec.ConfigValue<Float> velocityMultiplier;
+        public ForgeConfigSpec.ConfigValue<Float> inaccuracy;
+        public ForgeConfigSpec.ConfigValue<Float> time;
+        public ForgeConfigSpec.ConfigValue<Float> damage;
+
+        private ForgeConfigSpec.Builder builder;
+
+        public BowConfig(int durability,float velocityMultiplier,float damage,float inaccuracy,float time,ForgeConfigSpec.Builder builder) {
+
+            builder.push(getClass().getName());
+
+            this.durability = builder.define("durability",durability);
+            this.velocityMultiplier = builder.define("velocityMultiplier",velocityMultiplier);
+            this.inaccuracy = builder.define("inaccuracy",inaccuracy);
+            this.time = builder.define("time",time);
+            this.damage = builder.define("damage",damage);
+
+            this.builder = builder;
+            builder.pop();
+        }
+    }
+}

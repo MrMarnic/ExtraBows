@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "OPO",
+    "DUD",
+    "OPO"
+  ],
+  "key": {
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "U": {
+      "item": "extrabows:upgrade_plate"
+    },
+    "P": {
+      "item": "minecraft:planks",
+      "data": 32767
+    },
+    "D": {
+      "item": "extrabows:strong_diamond"
+    }
+  },
+  "result": {
+    "item": "extrabows:bridge_upgrade"
+  }
+}
