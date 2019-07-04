@@ -1,6 +1,7 @@
 package me.marnic.extrabows.common.items.upgrades;
 
 import me.marnic.extrabows.api.item.BasicItem;
+import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import net.minecraft.item.Item;
 
 /**
@@ -11,7 +12,7 @@ import net.minecraft.item.Item;
 public class ItemUpgradePlate extends Item implements BasicItem {
 
     public ItemUpgradePlate() {
-        super(new Properties());
+        super(new Properties().group(ExtraBowsObjects.CREATIVE_TAB));
         createItem("upgrade_plate");
     }
 
