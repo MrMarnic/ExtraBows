@@ -75,18 +75,11 @@ public class BasicBow extends BowItem implements BasicItem{
                 return !(p_210310_2_.getActiveItemStack().getItem() instanceof BowItem) ? 0.0F : (float)(p_210310_0_.getUseDuration() - p_210310_2_.getItemInUseCount()) / settings.getTime();
             }
         });
+    }
 
-        try {
-            Field field = Item.class.getDeclaredField("maxDamage");
-            field.setAccessible(true);
-
-            field.set(this,getSettings().getMaxUses());
-            field.setAccessible(false);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return getSettings().getMaxUses();
     }
 
     private ItemStack findAmmoNEW(PlayerEntity player)
