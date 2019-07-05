@@ -13,8 +13,7 @@
       "item": "extrabows:upgrade_plate"
     },
     "P": {
-      "item": "minecraft:planks",
-      "data": 32767
+      "item": "minecraft:oak_planks"
     },
     "D": {
       "item": "extrabows:strong_diamond"

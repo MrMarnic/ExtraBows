@@ -7,8 +7,7 @@
   ],
   "key": {
     "S": {
-      "item": "minecraft:planks",
-      "data": 32767
+      "item": "minecraft:oak_planks"
     },
     "B": {
       "item": "minecraft:cobblestone"
