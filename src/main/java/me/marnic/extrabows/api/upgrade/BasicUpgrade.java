@@ -2,6 +2,7 @@ package me.marnic.extrabows.api.upgrade;
 
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
+import me.marnic.extrabows.common.main.Identification;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ public class BasicUpgrade {
         UPGRADES.put(name,this);
         this.item = new BasicUpgradeItem(name,new Item.Properties().maxDamage(durability),this);
         this.durability = durability;
-        this.translation = new TranslationTextComponent("item."+name+".name");
+        this.translation = new TranslationTextComponent("item."+ Identification.MODID +"." + name);
     }
 
     public BasicUpgrade(String name) {
@@ -36,7 +37,7 @@ public class BasicUpgrade {
         UPGRADES.put(name,this);
         this.item = new BasicUpgradeItem(name,new Item.Properties().maxDamage(400),this);
         this.durability = 400;
-        this.translation = new TranslationTextComponent("item."+name+".name");
+        this.translation = new TranslationTextComponent("item."+ Identification.MODID +"." + name);
     }
 
     public String getName() {
