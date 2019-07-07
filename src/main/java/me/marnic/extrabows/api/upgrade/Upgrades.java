@@ -130,7 +130,7 @@ public class Upgrades {
 
             @Override
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, ArrowEntity arrow, UpgradeList upgradeList) {
-                world.addEntity(new LightningBoltEntity(world,entity.posX,entity.posY,entity.posZ,false));
+                ((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world,entity.posX,entity.posY,entity.posZ,false));
                 arrow.remove();
             }
 
