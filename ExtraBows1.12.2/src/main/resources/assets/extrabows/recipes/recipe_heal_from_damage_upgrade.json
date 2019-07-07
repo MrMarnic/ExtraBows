@@ -7,11 +7,7 @@
   ],
   "key": {
     "H": {
-      "type": "minecraft:item_nbt",
-      "item": "minecraft:potion",
-      "nbt": {
-        "Potion": "minecraft:healing"
-      }
+      "item": "minecraft:golden_apple"
     },
     "U": {
       "item": "extrabows:upgrade_plate"
