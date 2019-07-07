@@ -13,11 +13,11 @@ public class ExtraBowsConfig {
     public static ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
 
-    public static BowConfig STONE_BOW = new BowConfig(434,3f,1f, CustomBowSettings.NORMAL_INACCURACY,18f,BUILDER);
-    public static BowConfig IRON_BOW = new BowConfig(534,3.5f,2f, CustomBowSettings.NORMAL_INACCURACY,16f,BUILDER);
-    public static BowConfig GOLD_BOW = new BowConfig(300,4.25f,0, 0.5f,10f,BUILDER);
-    public static BowConfig DIAMOND_BOW = new BowConfig(750,3.75f,5f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
-    public static BowConfig EMERALD_BOW = new BowConfig(1500,4f,8f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
+    public static BowConfig STONE_BOW = new BowConfig("STONE_BOW",434,3f,1f, CustomBowSettings.NORMAL_INACCURACY,18f,BUILDER);
+    public static BowConfig IRON_BOW = new BowConfig("IRON_BOW",534,3.5f,2f, CustomBowSettings.NORMAL_INACCURACY,16f,BUILDER);
+    public static BowConfig GOLD_BOW = new BowConfig("GOLD_BOW",300,4.25f,0, 0.5f,10f,BUILDER);
+    public static BowConfig DIAMOND_BOW = new BowConfig("DIAMOND_BOW",750,3.75f,5f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
+    public static BowConfig EMERALD_BOW = new BowConfig("EMERALD_BOW",1500,4f,8f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
 
     public static ForgeConfigSpec SPEC = BUILDER.build();
 
@@ -44,9 +44,9 @@ public class ExtraBowsConfig {
 
         private ForgeConfigSpec.Builder builder;
 
-        public BowConfig(int durability,float velocityMultiplier,float damage,float inaccuracy,float time,ForgeConfigSpec.Builder builder) {
+        public BowConfig(String name,int durability,float velocityMultiplier,float damage,float inaccuracy,float time,ForgeConfigSpec.Builder builder) {
 
-            builder.push(getClass().getName());
+            builder.push(name);
 
             this.durability = builder.define("durability",durability);
             this.velocityMultiplier = builder.define("velocityMultiplier",velocityMultiplier);
