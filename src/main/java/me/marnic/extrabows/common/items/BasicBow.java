@@ -4,7 +4,6 @@ import me.marnic.extrabows.api.item.BasicItem;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.api.util.ArrowUtil;
-import me.marnic.extrabows.api.util.ExtraBowsUtil;
 import me.marnic.extrabows.api.util.RandomUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
@@ -13,7 +12,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
@@ -30,12 +28,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.logging.log4j.core.util.ReflectionUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -114,7 +109,6 @@ public class BasicBow extends BowItem implements BasicItem{
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-        stack.damageItem(1,entityLiving,(p) -> p.sendBreakAnimation(p.getActiveHand()));
         if (entityLiving instanceof PlayerEntity)
         {
             PlayerEntity playerEntity = (PlayerEntity)entityLiving;
@@ -169,7 +163,7 @@ public class BasicBow extends BowItem implements BasicItem{
                         if(!worldIn.isRemote) {
                             if(stack.getDamage()==stack.getMaxDamage()) {
                                 list.dropItems(playerEntity);
-                                ExtraBowsUtil.damageItemStack(stack,playerEntity);
+                                stack.damageItem(1,playerEntity,(p) -> p.sendBreakAnimation(p.getActiveHand()));
                             }
                         }
                     }

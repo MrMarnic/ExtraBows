@@ -123,7 +123,7 @@ public class ArrowUtil {
             arrowEntity.setFire(100);
         }
 
-        ExtraBowsUtil.damageItemStack(stack,playerEntity);
+        stack.damageItem(1,playerEntity,(p) -> p.sendBreakAnimation(p.getActiveHand()));
 
         if (flag1 || playerEntity.abilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW))
         {
