@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.fabricmc.fabric.api.network.PacketConsumer;
 import net.fabricmc.fabric.api.network.PacketContext;
+import net.minecraft.item.BowItem;
 import net.minecraft.util.PacketByteBuf;
 
 /**
@@ -21,7 +22,9 @@ public class PacketOpenUpgradeGUIConsumer implements PacketConsumer {
     @Override
     public void accept(PacketContext context, PacketByteBuf buffer) {
         if(context.getPacketEnvironment()== EnvType.SERVER) {
-            ContainerProviderRegistry.INSTANCE.openContainer(ExtraBowsObjects.BOW_UPGRADE_CONTAINER_IDEN,context.getPlayer(),(p) -> new PacketByteBuf(Unpooled.buffer()));
+            if(context.getPlayer().getMainHandStack().getItem() instanceof BowItem) {
+                ContainerProviderRegistry.INSTANCE.openContainer(ExtraBowsObjects.BOW_UPGRADE_CONTAINER_IDEN,context.getPlayer(),(p) -> new PacketByteBuf(Unpooled.buffer()));
+            }
         }
     }
 }

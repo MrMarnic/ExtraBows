@@ -171,12 +171,12 @@ public class Upgrades {
         ENDER_UPGRADE = new ArrowModifierUpgrade("ender_upgrade",DURABILITY_UPGRADE) {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, ArrowEntity arrow, UpgradeList upgradeList) {
-                player.setPosition(pos.getX(),pos.getY()+1,pos.getZ());
+                player.teleport(pos.getX(),pos.getY()+1,pos.getZ());
             }
 
             @Override
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, ArrowEntity arrow, UpgradeList upgradeList) {
-                player.setPosition(entity.x,entity.y,entity.z);
+                player.teleport(entity.x,entity.y,entity.z);
             }
 
             @Override
