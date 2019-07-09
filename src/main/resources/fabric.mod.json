@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "extrabows",
-  "version": "${version}",
+  "version": "v1.14.3 Fabric b1",
 
   "name": "Extra Bows",
   "description": "Adds new variants of bows, bow upgrades and other archery stuff to the game",
