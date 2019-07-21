@@ -1,5 +1,6 @@
 package me.marnic.extrabows.api.util;
 
+import com.google.gson.Gson;
 import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.common.items.BasicBow;
@@ -7,15 +8,24 @@ import me.marnic.extrabows.common.items.bows.BowSettings;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.SpectralArrowEntity;
+import net.minecraft.item.*;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Copyright (c) 26.05.2019
@@ -23,10 +33,12 @@ import net.minecraft.world.World;
  * GitHub: https://github.com/MrMarnic
  */
 public class ArrowUtil {
-    public static ArrowEntity createArrow(World worldIn, ItemStack stack, LivingEntity shooter, BasicBow basicBow, PlayerEntity player)
+    public static ProjectileEntity createArrow(World worldIn, ItemStack stack,ItemStack arrow, LivingEntity shooter, BasicBow basicBow, PlayerEntity player)
     {
-        ArrowEntity entitytippedarrow = new ArrowEntity(worldIn,shooter) {
 
+        ProjectileEntity entity = ((ArrowItem)arrow.getItem()).createArrow(worldIn,arrow,shooter);
+
+        /*CustomDataArrow arrow1 = new CustomDataArrow((EntityType<? extends ProjectileEntity>)entity.getType(),worldIn,entity) {
             private UpgradeList list;
             private boolean alreadyHit = false;
 
@@ -72,12 +84,13 @@ public class ArrowUtil {
             }
         };
 
-        entitytippedarrow.initFromStack(stack);
-        UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.SET_EFFECT,entitytippedarrow,player,stack);
-        return entitytippedarrow;
+        arrow1.copyFrom(entity);*/
+
+        UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.SET_EFFECT,entity,player,stack);
+        return entity;
     }
 
-    private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy, ArrowEntity arrow, float yawplus) {
+    private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy, ProjectileEntity arrow, float yawplus) {
         yaw=yaw+yawplus;
         float f = -MathHelper.sin(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
         float f1 = -MathHelper.sin(pitch * ((float)Math.PI / 180F));
@@ -86,9 +99,9 @@ public class ArrowUtil {
         arrow.setVelocity(arrow.getVelocity().add(shooter.getVelocity().x, shooter.onGround ? 0.0D : shooter.getVelocity().y, shooter.getVelocity().z));
     }
 
-    public static ArrowEntity createArrowComplete(World worldIn, ItemStack itemstack, PlayerEntity playerEntity, BasicBow basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
+    public static ProjectileEntity createArrowComplete(World worldIn, ItemStack itemstack, PlayerEntity playerEntity, BasicBow basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
         BowSettings settings = basicBow.getSettings();
-        ArrowEntity arrowEntity = ArrowUtil.createArrow(worldIn, stack, playerEntity,basicBow,playerEntity);
+        ProjectileEntity arrowEntity = ArrowUtil.createArrow(worldIn, stack,itemstack, playerEntity,basicBow,playerEntity);
         UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE,arrowEntity,playerEntity,stack);
         /*
         In this line handleArrowCreate of the upgrades should be handled
@@ -144,5 +157,39 @@ public class ArrowUtil {
         }
 
         return f;
+    }
+}
+
+class CustomDataArrow extends ProjectileEntity {
+
+    private ProjectileEntity origin;
+    private ItemStack drop;
+
+    private static Method itemStack;
+
+    static {
+        for(Method m:ProjectileEntity.class.getMethods()) {
+            if(m.getParameterCount() == 0 && m.getReturnType().equals(ItemStack.class)) {
+                itemStack = m;
+                break;
+            }
+        }
+    }
+
+    public CustomDataArrow(EntityType<? extends ProjectileEntity> entityType_1, World world_1,ProjectileEntity origin) {
+        super(entityType_1, world_1);
+        this.origin = origin;
+        try {
+            this.drop = (ItemStack) itemStack.invoke(origin);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected ItemStack asItemStack() {
+        return drop;
     }
 }

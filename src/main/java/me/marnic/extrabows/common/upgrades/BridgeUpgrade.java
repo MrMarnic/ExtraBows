@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -40,14 +41,15 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     }
 
     @Override
-    public void handleEntityInit(ArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
-        BuildingUpgradeData data = new BuildingUpgradeData();
-        data.facing = player.getHorizontalFacing();
-        upgradeList.getDataMap().put(this, data);
+    public void handleEntityInit(ProjectileEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+            BuildingUpgradeData data = new BuildingUpgradeData();
+
+            data.facing = player.getHorizontalFacing();
+            upgradeList.getDataMap().put(this, data);
     }
 
     @Override
-    public void handleFlyingEvent(ArrowEntity arrow, World world, UpgradeList upgradeList) {
+    public void handleFlyingEvent(ProjectileEntity arrow, World world, UpgradeList upgradeList) {
 
         BuildingUpgradeData data = (BuildingUpgradeData) upgradeList.getDataMap().get(this);
 

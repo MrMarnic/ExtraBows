@@ -15,6 +15,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -93,7 +94,6 @@ public class BasicBow extends BowItem {
             PlayerEntity playerEntity = (PlayerEntity)entityLiving;
             boolean flag = playerEntity.abilities.creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemstack = this.findAmmoNEW(playerEntity);
-
             int i = this.getMaxUseTime(stack) - timeLeft;
             if (i < 0) return;
 
@@ -117,7 +117,7 @@ public class BasicBow extends BowItem {
                         if(list.hasMul()) {
                             list.getArrowMultiplier().handleAction(this,worldIn,itemstack,playerEntity,f,stack,flag1,list);
                         }else {
-                            ArrowEntity entityarrow = ArrowUtil.createArrowComplete(worldIn,itemstack,playerEntity,this,f,stack,flag1,0,0,list);
+                            ProjectileEntity entityarrow = ArrowUtil.createArrowComplete(worldIn,itemstack,playerEntity,this,f,stack,flag1,0,0,list);
 
                             worldIn.spawnEntity(entityarrow);
                         }
@@ -131,11 +131,6 @@ public class BasicBow extends BowItem {
                             list.getArrowMultiplier().shrinkStack(itemstack);
                         }else {
                             ExtraBowsUtil.shrinkStack(itemstack,1);
-
-                            if (itemstack.isEmpty())
-                            {
-                                playerEntity.inventory.removeInvStack(playerEntity.inventory.getSlotWithStack(itemstack));
-                            }
                         }
 
                         if(!worldIn.isClient) {

@@ -3,6 +3,7 @@ package me.marnic.extrabows.api.upgrade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
@@ -53,57 +54,63 @@ public class UpgradeList {
         return (arrowMultiplier.equals(upgrade)| arrowModifiers.contains(upgrade));
     }
 
-    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, PlayerEntity player, ArrowEntity arrow) {
-        if(hasMods()) {
-            switch (eventType) {
-                case ENTITY_HIT:
-                    if(entity != null) {
-                        for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                            up.handleEntityHit(entity,world,player,arrow,this);
-                        }
+    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, PlayerEntity player, ProjectileEntity arrow) {
+            if(!world.isClient) {
+                if(hasMods()) {
+                    switch (eventType) {
+                        case ENTITY_HIT:
+                            if(entity != null) {
+                                for(ArrowModifierUpgrade up:getArrowModifiers()) {
+                                    up.handleEntityHit(entity,world,player,arrow,this);
+                                }
+                            }
+                        case BLOCK_HIT:
+                            if(pos != null) {
+                                for(ArrowModifierUpgrade up:getArrowModifiers()) {
+                                    up.handleBlockHit(pos,world,player,arrow,this);
+                                }
+                            }
+                        case WATER_HIT:
+                            if(pos != null) {
+                                for(ArrowModifierUpgrade up:getArrowModifiers()) {
+                                    up.handleWaterHit(pos,world,player,arrow,this);
+                                }
+                            }
                     }
-                case BLOCK_HIT:
-                    if(pos != null) {
-                        for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                            up.handleBlockHit(pos,world,player,arrow,this);
-                        }
-                    }
-                case WATER_HIT:
-                    if(pos != null) {
-                        for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                            up.handleWaterHit(pos,world,player,arrow,this);
-                        }
-                    }
+                }
             }
-        }
     }
 
-    public void handleOnUpdatedEvent(ArrowEntity arrow, World world) {
-        if(hasMods()) {
-            for(ArrowModifierUpgrade upgrade:getArrowModifiers()) {
-                upgrade.handleFlyingEvent(arrow,world,this);
+    public void handleOnUpdatedEvent(ProjectileEntity arrow, World world) {
+            if(!world.isClient) {
+                if(hasMods()) {
+                    for(ArrowModifierUpgrade upgrade:getArrowModifiers()) {
+                        upgrade.handleFlyingEvent(arrow,world,this);
+                    }
+                }
             }
-        }
     }
 
-    public void handleModifierEvent(ArrowModifierUpgrade.EventType eventType, ArrowEntity arrow, PlayerEntity player, ItemStack bowStack) {
-        if(hasMods()) {
-            switch (eventType) {
-                case ARROW_CREATE:
-                    for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                        up.handleArrowCreate(arrow,player,this);
-                    }
+    public void handleModifierEvent(ArrowModifierUpgrade.EventType eventType, ProjectileEntity arrow, PlayerEntity player, ItemStack bowStack) {
+            if(!player.world.isClient) {
+                if(hasMods()) {
+                    switch (eventType) {
+                        case ARROW_CREATE:
+                            for(ArrowModifierUpgrade up:getArrowModifiers()) {
+                                up.handleArrowCreate(arrow,player,this);
+                            }
 
-                case SET_EFFECT:
-                    for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                        up.handleSetEffect(arrow,this);
+                        case SET_EFFECT:
+                            for(ArrowModifierUpgrade up:getArrowModifiers()) {
+                                up.handleSetEffect(arrow,this);
+                            }
+                        case ENTITY_INIT:
+                            for(ArrowModifierUpgrade up:getArrowModifiers()) {
+                                up.handleEntityInit(arrow,this,player);
+                            }
                     }
-                case ENTITY_INIT:
-                    for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                        up.handleEntityInit(arrow,this,player);
-                    }
+                }
             }
-        }
     }
 
     public void applyDamage(PlayerEntity player) {

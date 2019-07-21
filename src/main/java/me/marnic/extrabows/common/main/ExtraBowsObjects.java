@@ -12,6 +12,7 @@ import me.marnic.extrabows.common.items.upgrades.ItemUpgradePlate;
 import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.container.ContainerFactory;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.BrewingStandBlock;
@@ -20,12 +21,14 @@ import net.minecraft.container.Container;
 import net.minecraft.container.ContainerType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.core.util.ReflectionUtil;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * Copyright (c) 07.07.2019
@@ -58,13 +61,7 @@ public class ExtraBowsObjects {
     public static Identifier BOW_UPGRADE_CONTAINER_IDEN;
 
     public static void init() {
-        CREATIVE_TAB = new ItemGroup(0,"extrabows_items") {
-            @Environment(EnvType.CLIENT)
-            @Override
-            public ItemStack createIcon() {
-                return new ItemStack(DIAMOND_BOW);
-            }
-        };
+        CREATIVE_TAB = FabricItemGroupBuilder.create(IdentificationUtil.fromString("extrabows_items")).icon(()->new ItemStack(DIAMOND_BOW)).build();
 
         AllBowSettings.init();
 
@@ -92,9 +89,38 @@ public class ExtraBowsObjects {
 
         Upgrades.init();
 
-        Registry.ITEM.set(Registry.ITEM.getRawId(Items.BOW),new Identifier("minecraft","bow"),new BasicBow(new BowSettings("bow").setRegister(false)));
+        replaceBow();
 
         BridgeUpgrade.BUILDING_BLOCK = ExtraBowsObjects.BRIDGE_BLOCK;
+    }
+
+    private static void replaceBow() {
+
+        Item itemBow = Registry.ITEM.set(Registry.ITEM.getRawId(Items.BOW),new Identifier("minecraft","bow"),(Item)new BasicBow(new BowSettings("bow").setRegister(false)));
+
+        for(Field field:Items.class.getFields()) {
+
+            try {
+                if(field.get(null) instanceof BowItem) {
+                    try {
+                        field.setAccessible(true);
+
+                        Field mods = Field.class.getDeclaredField("modifiers");
+                        mods.setAccessible(true);
+                        mods.setInt(field,field.getModifiers() & ~Modifier.FINAL);
+
+                        field.set(null,itemBow);
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static class AllBowSettings {

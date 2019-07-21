@@ -1,8 +1,9 @@
 {
   "required": true,
-  "package": "net.fabricmc.example.mixin",
+  "package": "me.marnic.extrabows.common.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinProjectile"
   ],
   "client": [
   ],
