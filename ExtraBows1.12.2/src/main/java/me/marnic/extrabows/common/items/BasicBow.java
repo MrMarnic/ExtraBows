@@ -94,33 +94,33 @@ public class BasicBow extends ItemBow implements BasicItem{
         {
             EntityPlayer entityplayer = (EntityPlayer)entityLiving;
             boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemstack = this.findAmmoNEW(entityplayer);
+            ItemStack arrowStack = this.findAmmoNEW(entityplayer);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
+            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !arrowStack.isEmpty() || flag);
             if (i < 0) return;
 
             UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
-            if (!itemstack.isEmpty() || flag)
+            if (!arrowStack.isEmpty() || flag)
             {
-                if (itemstack.isEmpty())
+                if (arrowStack.isEmpty())
                 {
-                    itemstack = new ItemStack(Items.ARROW);
+                    arrowStack = new ItemStack(Items.ARROW);
                 }
 
                 float f = ArrowUtil.getArrowVelocity(i,this);
 
                 if ((double)f >= 0.1D)
                 {
-                    boolean flag1 = entityplayer.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow && ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
+                    boolean flag1 = entityplayer.capabilities.isCreativeMode || (arrowStack.getItem() instanceof ItemArrow && ((ItemArrow) arrowStack.getItem()).isInfinite(arrowStack, stack, entityplayer));
 
                     if (!worldIn.isRemote)
                     {
                         list.applyDamage(entityplayer);
                         if(list.hasMul()) {
-                            list.getArrowMultiplier().handleAction(this,worldIn,itemstack,entityplayer,f,stack,flag1,list);
+                            list.getArrowMultiplier().handleAction(this,worldIn,stack,entityplayer,f,arrowStack,flag1,list);
                         }else {
-                            EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn,itemstack,entityplayer,this,f,stack,flag1,0,0,list);
+                            EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn,stack,arrowStack,entityplayer,this,f,stack,flag1,0,0,list);
 
                             worldIn.spawnEntity(entityarrow);
                         }
@@ -131,13 +131,13 @@ public class BasicBow extends ItemBow implements BasicItem{
                     if (!flag1 && !entityplayer.capabilities.isCreativeMode)
                     {
                         if(list.hasMul()) {
-                            list.getArrowMultiplier().shrinkStack(itemstack);
+                            list.getArrowMultiplier().shrinkStack(arrowStack);
                         }else {
-                            itemstack.shrink(1);
+                            arrowStack.shrink(1);
 
-                            if (itemstack.isEmpty())
+                            if (arrowStack.isEmpty())
                             {
-                                entityplayer.inventory.deleteStack(itemstack);
+                                entityplayer.inventory.deleteStack(arrowStack);
                             }
                         }
 

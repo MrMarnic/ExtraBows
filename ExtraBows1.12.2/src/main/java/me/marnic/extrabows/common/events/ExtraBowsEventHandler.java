@@ -1,23 +1,29 @@
 package me.marnic.extrabows.common.events;
 
 import me.marnic.extrabows.api.item.IModelRegistry;
+import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
+import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.TimeCommand;
 import me.marnic.extrabows.api.util.TimerUtil;
+import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,8 +33,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import me.marnic.extrabows.common.items.*;
-
-import java.util.ArrayList;
 
 /**
  * Copyright (c) 24.05.2019
@@ -97,6 +101,59 @@ public class ExtraBowsEventHandler {
     public static void projectileHit(ProjectileImpactEvent e) {
         if(e.getEntity() instanceof EntityArrow) {
             EntityArrow arrow = (EntityArrow) e.getEntity();
+            if(arrow.shootingEntity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer)arrow.shootingEntity;
+                if(!arrow.getEntityData().getBoolean("alreadyHit")) {
+                    arrow.getEntityData().setBoolean("alreadyHit",true);
+                    UpgradeList list = ArrowUtil.ARROWS_TO_UPGRADES.get(arrow.getUniqueID());
+                    if(list != null) {
+                        if(e.getRayTraceResult().typeOfHit== RayTraceResult.Type.BLOCK) {
+                            list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.BLOCK_HIT,e.getRayTraceResult().getBlockPos(),null,e.getEntity().world,player,arrow);
+                        }else if(e.getRayTraceResult().typeOfHit== RayTraceResult.Type.ENTITY) {
+                            list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.ENTITY_HIT,null,e.getRayTraceResult().entityHit,e.getEntity().world,player,arrow);
+                        }
+                        ArrowUtil.ARROWS_TO_UPGRADES.remove(arrow.getUniqueID());
+                        ((TimeCommand.EndableTimeCommand)TimerUtil.forId(arrow.getEntityId())).setEnd(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void arrowConstructing(EntityJoinWorldEvent e) {
+        if(!e.getWorld().isRemote) {
+            if(e.getEntity() instanceof EntityArrow) {
+                EntityArrow arrow = (EntityArrow) e.getEntity();
+                if(arrow.shootingEntity instanceof EntityPlayerMP) {
+                    ItemStack bow = ((EntityPlayer)arrow.shootingEntity).getHeldItemMainhand();
+
+                    UpgradeList list =  UpgradeUtil.getUpgradesFromStackNEW(bow);
+
+                    ArrowUtil.ARROWS_TO_UPGRADES.put(arrow.getUniqueID(), list);
+
+                    TimerUtil.addTimeCommand(new TimeCommand.EndableTimeCommand(0, new Runnable() {
+
+                        boolean prevWater = false;
+
+                        @Override
+                        public void run() {
+                            if(arrow.isInWater()) {
+                                if(!prevWater) {
+                                    list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.WATER_HIT,arrow.getPosition(),null,e.getWorld(),(EntityPlayer)arrow.shootingEntity,arrow);
+                                }
+                            }
+
+                            if(!arrow.getEntityData().getBoolean("alreadyHit")) {
+                                list.handleOnUpdatedEvent(arrow,arrow.world);
+                            }
+                            prevWater = arrow.isInWater();
+                        }
+                    }, arrow.getEntityId()));
+
+                    list.handleModifierEvent(ArrowModifierUpgrade.EventType.ENTITY_INIT,arrow,(EntityPlayer)arrow.shootingEntity,bow);
+                }
+            }
         }
     }
 }

@@ -49,7 +49,6 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
 
     @Override
     public void handleFlyingEvent(EntityArrow arrow, World world, UpgradeList upgradeList) {
-
         BuildingUpgradeData data = (BuildingUpgradeData) upgradeList.getDataMap().get(this);
 
         BlockPos pos = arrow.getPosition().add(0, -3, 0);

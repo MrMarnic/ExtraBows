@@ -33,61 +33,11 @@ public class ArrowUtil {
 
     public static HashMap<UUID,UpgradeList> ARROWS_TO_UPGRADES = new HashMap<>();
 
-    public static EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter, BasicBow basicBow,EntityPlayer player)
+    public static EntityArrow createArrow(World worldIn, ItemStack stack,ItemStack arrowStack, EntityLivingBase shooter, BasicBow basicBow,EntityPlayer player)
     {
 
-        EntityTippedArrow entitytippedarrow = new EntityTippedArrow(worldIn,shooter) {
-
-            private UpgradeList list;
-            private boolean alreadyHit = false;
-
-            @Override
-            protected void onHit(RayTraceResult raytraceResultIn) {
-                super.onHit(raytraceResultIn);
-                if(raytraceResultIn.getBlockPos() != null) {
-                    if(!alreadyHit) {
-                        alreadyHit = true;
-                        list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.BLOCK_HIT,raytraceResultIn.getBlockPos(),null,world,player,this);
-                    }
-                }else if(raytraceResultIn.entityHit != null){
-                    if(!alreadyHit) {
-                        alreadyHit = true;
-                        list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.ENTITY_HIT,null,raytraceResultIn.entityHit,world,player,this);
-                    }
-                }
-            }
-
-            boolean prevWater;
-
-            @Override
-            protected void entityInit() {
-                super.entityInit();
-                list = UpgradeUtil.getUpgradesFromStackNEW(stack);
-                list.handleModifierEvent(ArrowModifierUpgrade.EventType.ENTITY_INIT,this,player,stack);
-            }
-
-            @Override
-            public void onEntityUpdate() {
-                super.onEntityUpdate();
-                if(inWater) {
-                    if(!prevWater) {
-                        list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.WATER_HIT,getPosition(),null,world,player,this);
-                    }
-                }
-
-                if(!alreadyHit) {
-                    list.handleOnUpdatedEvent(this,world);
-                }
-                prevWater = inWater;
-            }
-        };
-
-        entitytippedarrow.setPotionEffect(stack);
-        if(basicBow.getSettings().hasEffect()) {
-            entitytippedarrow.addEffect(basicBow.getSettings().getEffect());
-        }
-        UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.SET_EFFECT,entitytippedarrow,player,stack);
-        return entitytippedarrow;
+        EntityArrow arrow = ((ItemArrow)arrowStack.getItem()).createArrow(worldIn, arrowStack, shooter);
+        return arrow;
     }
 
     private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy,EntityArrow arrow,float yawplus) {
@@ -105,9 +55,9 @@ public class ArrowUtil {
         }
     }
 
-    public static EntityArrow createArrowComplete(World worldIn, ItemStack itemstack, EntityPlayer entityplayer, BasicBow basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
+    public static EntityArrow createArrowComplete(World worldIn, ItemStack itemstack,ItemStack arrow, EntityPlayer entityplayer, BasicBow basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
         CustomBowSettings settings = basicBow.getSettings();
-        EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, stack, entityplayer,basicBow,entityplayer);
+        EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, stack, arrow,entityplayer,basicBow,entityplayer);
         UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE,entityarrow,entityplayer,stack);
         /*
         In this line handleArrowCreate of the upgrades should be handled
