@@ -21,22 +21,17 @@ public class BowSettings {
         this.damage = damage;
         this.inaccuracy = inaccuracy;
         this.time = time;
-        onInit();
     }
 
-    public BowSettings(String name) {
-        this.name = name;
+    public BowSettings() {
         this.maxUses = 384;
         this.velocityMul = 3;
         this.damage = NORMAL_DAMAGE;
         this.inaccuracy = NORMAL_INACCURACY;
         this.time = NORMAL_TIME;
-        onInit();
     }
 
-    public void onInit() {
-
-    }
+    public static BowSettings DEFAULT = new BowSettings();
 
     public String getName() {
         return name;

@@ -16,6 +16,7 @@ import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
@@ -51,7 +52,7 @@ public class Upgrades {
     public static void init() {
         DOUBLE_UPGRADE = new ArrowMultiplierUpgrade("double_upgrade", DURABILITY_UPGRADE){
             @Override
-            public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, PlayerEntity entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
+            public void handleAction(BowItem basicBow, World worldIn, ItemStack itemstack, PlayerEntity entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
 
                 if(itemstack.getCount()>=2 || flag1) {
                     ProjectileEntity entityarrow2 = ArrowUtil.createArrowComplete(worldIn,itemstack,entityplayer,basicBow,f,stack,flag1,0,2.5f,list);
@@ -83,7 +84,7 @@ public class Upgrades {
         };
         TRIPLE_UPGRADE = new ArrowMultiplierUpgrade("triple_upgrade",DURABILITY_UPGRADE){
             @Override
-            public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, PlayerEntity entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
+            public void handleAction(BowItem basicBow, World worldIn, ItemStack itemstack, PlayerEntity entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
 
                 if(itemstack.getCount()>=3 ||flag1) {
                     ProjectileEntity entityarrow1 = ArrowUtil.createArrowComplete(worldIn,itemstack,entityplayer,basicBow,f,stack,flag1,0,2.5f,list);

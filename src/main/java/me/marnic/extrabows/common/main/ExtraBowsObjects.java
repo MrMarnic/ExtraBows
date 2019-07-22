@@ -89,38 +89,7 @@ public class ExtraBowsObjects {
 
         Upgrades.init();
 
-        replaceBow();
-
         BridgeUpgrade.BUILDING_BLOCK = ExtraBowsObjects.BRIDGE_BLOCK;
-    }
-
-    private static void replaceBow() {
-
-        Item itemBow = Registry.ITEM.set(Registry.ITEM.getRawId(Items.BOW),new Identifier("minecraft","bow"),(Item)new BasicBow(new BowSettings("bow").setRegister(false)));
-
-        for(Field field:Items.class.getFields()) {
-
-            try {
-                if(field.get(null) instanceof BowItem) {
-                    try {
-                        field.setAccessible(true);
-
-                        Field mods = Field.class.getDeclaredField("modifiers");
-                        mods.setAccessible(true);
-                        mods.setInt(field,field.getModifiers() & ~Modifier.FINAL);
-
-                        field.set(null,itemBow);
-                    } catch (NoSuchFieldException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static class AllBowSettings {

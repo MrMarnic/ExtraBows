@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
  * GitHub: https://github.com/MrMarnic
  */
 public class ArrowUtil {
-    public static ProjectileEntity createArrow(World worldIn, ItemStack stack,ItemStack arrow, LivingEntity shooter, BasicBow basicBow, PlayerEntity player)
+    public static ProjectileEntity createArrow(World worldIn, ItemStack stack,ItemStack arrow, LivingEntity shooter, BowItem basicBow, PlayerEntity player)
     {
 
         ProjectileEntity entity = ((ArrowItem)arrow.getItem()).createArrow(worldIn,arrow,shooter);
@@ -99,8 +99,15 @@ public class ArrowUtil {
         arrow.setVelocity(arrow.getVelocity().add(shooter.getVelocity().x, shooter.onGround ? 0.0D : shooter.getVelocity().y, shooter.getVelocity().z));
     }
 
-    public static ProjectileEntity createArrowComplete(World worldIn, ItemStack itemstack, PlayerEntity playerEntity, BasicBow basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
-        BowSettings settings = basicBow.getSettings();
+    public static ProjectileEntity createArrowComplete(World worldIn, ItemStack itemstack, PlayerEntity playerEntity, BowItem basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
+        BowSettings settings = null;
+
+        if(basicBow instanceof BasicBow) {
+            settings = ((BasicBow)basicBow).getSettings();
+        }else {
+            settings = BowSettings.DEFAULT;
+        }
+
         ProjectileEntity arrowEntity = ArrowUtil.createArrow(worldIn, stack,itemstack, playerEntity,basicBow,playerEntity);
         UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE,arrowEntity,playerEntity,stack);
         /*

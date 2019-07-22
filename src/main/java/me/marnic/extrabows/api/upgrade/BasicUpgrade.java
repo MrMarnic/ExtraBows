@@ -4,6 +4,7 @@ import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import me.marnic.extrabows.common.main.Identification;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -48,7 +49,7 @@ public class BasicUpgrade {
         return name;
     }
 
-    public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, PlayerEntity entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
+    public void handleAction(BowItem basicBow, World worldIn, ItemStack itemstack, PlayerEntity entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
     }
 
     public BasicUpgradeItem getItem() {

@@ -3,7 +3,8 @@
   "package": "me.marnic.extrabows.common.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinProjectile"
+    "MixinProjectile",
+    "MixinBowItem"
   ],
   "client": [
   ],
