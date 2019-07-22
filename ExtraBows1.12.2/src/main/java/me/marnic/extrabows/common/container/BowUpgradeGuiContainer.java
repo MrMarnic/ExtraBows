@@ -1,12 +1,13 @@
 package me.marnic.extrabows.common.container;
 
 import me.marnic.extrabows.api.util.UpgradeUtil;
+import me.marnic.extrabows.client.gui.slot.UpgradeSlot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import me.marnic.extrabows.client.gui.slot.*;
 
 /**
  * Copyright (c) 30.05.2019
@@ -23,22 +24,19 @@ public class BowUpgradeGuiContainer extends Container {
         ItemStack stack = player.getHeldItemMainhand();
 
         handler = UpgradeUtil.getHandlerForItemStackNEW(stack);
-        this.addSlotToContainer(new UpgradeSlot(handler, 0, 51, 37,false));
+        this.addSlotToContainer(new UpgradeSlot(handler, 0, 51, 37, false));
 
-        this.addSlotToContainer(new UpgradeSlot(handler,1,73,37,true));
-        this.addSlotToContainer(new UpgradeSlot(handler,2,91,37,true));
-        this.addSlotToContainer(new UpgradeSlot(handler,3,109,37,true));
+        this.addSlotToContainer(new UpgradeSlot(handler, 1, 73, 37, true));
+        this.addSlotToContainer(new UpgradeSlot(handler, 2, 91, 37, true));
+        this.addSlotToContainer(new UpgradeSlot(handler, 3, 109, 37, true));
 
-        for (int i = 0; i < 3; ++i)
-        {
-            for (int j = 0; j < 9; ++j)
-            {
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 9; ++j) {
                 this.addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
 
-        for (int k = 0; k < 9; ++k)
-        {
+        for (int k = 0; k < 9; ++k) {
             this.addSlotToContainer(new Slot(player.inventory, k, 8 + k * 18, 142));
         }
     }
@@ -46,7 +44,7 @@ public class BowUpgradeGuiContainer extends Container {
     @Override
     public void onContainerClosed(EntityPlayer playerIn) {
         super.onContainerClosed(playerIn);
-        UpgradeUtil.saveUpgradesToStackNEW(playerIn.getHeldItemMainhand(),(ItemStackHandler)handler);
+        UpgradeUtil.saveUpgradesToStackNEW(playerIn.getHeldItemMainhand(), (ItemStackHandler) handler);
     }
 
     @Override

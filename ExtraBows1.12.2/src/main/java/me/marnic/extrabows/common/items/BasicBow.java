@@ -5,7 +5,6 @@ import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
-import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +16,10 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -37,7 +39,7 @@ import java.util.List;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class BasicBow extends ItemBow implements BasicItem{
+public class BasicBow extends ItemBow implements BasicItem {
 
     private CustomBowSettings settings;
 
@@ -45,41 +47,28 @@ public class BasicBow extends ItemBow implements BasicItem{
         this.settings = settings;
         createItem(settings.getName());
         setMaxDamage(settings.getMaxUses());
-        this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter()
-        {
+        this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
             @SideOnly(Side.CLIENT)
-            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-            {
-                if (entityIn == null)
-                {
+            public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+                if (entityIn == null) {
                     return 0.0F;
-                }
-                else
-                {
-                    return !(entityIn.getActiveItemStack().getItem() instanceof ItemBow) ? 0.0F : (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / settings.getTime();
+                } else {
+                    return !(entityIn.getActiveItemStack().getItem() instanceof ItemBow) ? 0.0F : (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / settings.getTime();
                 }
             }
         });
     }
 
-    private ItemStack findAmmoNEW(EntityPlayer player)
-    {
-        if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND)))
-        {
+    private ItemStack findAmmoNEW(EntityPlayer player) {
+        if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) {
             return player.getHeldItem(EnumHand.OFF_HAND);
-        }
-        else if (this.isArrow(player.getHeldItem(EnumHand.MAIN_HAND)))
-        {
+        } else if (this.isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) {
             return player.getHeldItem(EnumHand.MAIN_HAND);
-        }
-        else
-        {
-            for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
-            {
+        } else {
+            for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
                 ItemStack itemstack = player.inventory.getStackInSlot(i);
 
-                if (this.isArrow(itemstack))
-                {
+                if (this.isArrow(itemstack)) {
                     return itemstack;
                 }
             }
@@ -90,9 +79,8 @@ public class BasicBow extends ItemBow implements BasicItem{
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-        if (entityLiving instanceof EntityPlayer)
-        {
-            EntityPlayer entityplayer = (EntityPlayer)entityLiving;
+        if (entityLiving instanceof EntityPlayer) {
+            EntityPlayer entityplayer = (EntityPlayer) entityLiving;
             boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack arrowStack = this.findAmmoNEW(entityplayer);
 
@@ -101,50 +89,44 @@ public class BasicBow extends ItemBow implements BasicItem{
             if (i < 0) return;
 
             UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
-            if (!arrowStack.isEmpty() || flag)
-            {
-                if (arrowStack.isEmpty())
-                {
+            if (!arrowStack.isEmpty() || flag) {
+                if (arrowStack.isEmpty()) {
                     arrowStack = new ItemStack(Items.ARROW);
                 }
 
-                float f = ArrowUtil.getArrowVelocity(i,this);
+                float f = ArrowUtil.getArrowVelocity(i, this);
 
-                if ((double)f >= 0.1D)
-                {
+                if ((double) f >= 0.1D) {
                     boolean flag1 = entityplayer.capabilities.isCreativeMode || (arrowStack.getItem() instanceof ItemArrow && ((ItemArrow) arrowStack.getItem()).isInfinite(arrowStack, stack, entityplayer));
 
-                    if (!worldIn.isRemote)
-                    {
+                    if (!worldIn.isRemote) {
                         list.applyDamage(entityplayer);
-                        if(list.hasMul()) {
-                            list.getArrowMultiplier().handleAction(this,worldIn,stack,entityplayer,f,arrowStack,flag1,list);
-                        }else {
-                            EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn,stack,arrowStack,entityplayer,this,f,stack,flag1,0,0,list);
+                        if (list.hasMul()) {
+                            list.getArrowMultiplier().handleAction(this, worldIn, stack, entityplayer, f, arrowStack, flag1, list);
+                        } else {
+                            EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, stack, arrowStack, entityplayer, this, f, flag1, 0, 0, list);
 
                             worldIn.spawnEntity(entityarrow);
                         }
                     }
 
-                    worldIn.playSound((EntityPlayer)null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                    worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-                    if (!flag1 && !entityplayer.capabilities.isCreativeMode)
-                    {
-                        if(list.hasMul()) {
+                    if (!flag1 && !entityplayer.capabilities.isCreativeMode) {
+                        if (list.hasMul()) {
                             list.getArrowMultiplier().shrinkStack(arrowStack);
-                        }else {
+                        } else {
                             arrowStack.shrink(1);
 
-                            if (arrowStack.isEmpty())
-                            {
+                            if (arrowStack.isEmpty()) {
                                 entityplayer.inventory.deleteStack(arrowStack);
                             }
                         }
 
-                        if(!worldIn.isRemote) {
-                            if(stack.getItemDamage()==stack.getMaxDamage()) {
+                        if (!worldIn.isRemote) {
+                            if (stack.getItemDamage() == stack.getMaxDamage()) {
                                 list.dropItems(entityplayer);
-                                stack.damageItem(1,entityplayer);
+                                stack.damageItem(1, entityplayer);
                             }
                         }
                     }
@@ -159,18 +141,18 @@ public class BasicBow extends ItemBow implements BasicItem{
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
         tooltip.add("Press B to open the Upgrade inventory");
-        if(!list.hasMul() && !list.hasMods()) {
+        if (!list.hasMul() && !list.hasMods()) {
             tooltip.add(new TextComponentTranslation("message.no_upgrades.text").getUnformattedText());
-        }else {
+        } else {
             tooltip.add("Upgrades:");
         }
-        if(list.hasMul()) {
+        if (list.hasMul()) {
             tooltip.add("Arrow Multiplier:");
             tooltip.add("- " + list.getArrowMultiplier().getName());
         }
-        if(list.hasMods()) {
+        if (list.hasMods()) {
             tooltip.add("Arrow Modifiers:");
-            for(BasicUpgrade upgrade:list.getArrowModifiers()) {
+            for (BasicUpgrade upgrade : list.getArrowModifiers()) {
                 tooltip.add("- " + upgrade.getName());
             }
         }
@@ -187,28 +169,25 @@ public class BasicBow extends ItemBow implements BasicItem{
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt){
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
 
         return new StorageProvider();
     }
 }
 
-class StorageProvider implements ICapabilitySerializable<NBTTagCompound>,ICapabilityProvider{
+class StorageProvider implements ICapabilitySerializable<NBTTagCompound>, ICapabilityProvider {
 
     public ItemStackHandler handler = new ItemStackHandler(4);
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        if(capability== CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return true;
-        }
-        return false;
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     }
 
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability== CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) handler;
         }
         return null;

@@ -18,7 +18,7 @@ public class CustomBowSettings {
 
     private PotionEffect effect;
 
-    public CustomBowSettings(String name, int maxUses, float velocityMul,float damage,float inaccuracy,float time) {
+    public CustomBowSettings(String name, int maxUses, float velocityMul, float damage, float inaccuracy, float time) {
         this.name = name;
         this.maxUses = maxUses;
         this.velocityMul = velocityMul;
@@ -43,7 +43,7 @@ public class CustomBowSettings {
     }
 
     public CustomBowSettings(String name, ExtraBowsConfig.BowConfig config) {
-        this(name,config.durability,config.velocityMultiplier,config.damage,config.inaccuracy,config.time);
+        this(name, config.durability, config.velocityMultiplier, config.damage, config.inaccuracy, config.time);
     }
 
     public void onInit() {
@@ -79,7 +79,7 @@ public class CustomBowSettings {
     }
 
     public boolean hasEffect() {
-        return effect!=null;
+        return effect != null;
     }
 
     public static final float NORMAL_DAMAGE = 0;

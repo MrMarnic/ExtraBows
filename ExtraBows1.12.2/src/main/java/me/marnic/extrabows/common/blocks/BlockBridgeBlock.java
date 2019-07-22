@@ -41,8 +41,8 @@ public class BlockBridgeBlock extends BasicBlock implements ITileEntityProvider 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
         worldIn.setBlockToAir(pos);
-        if(placer instanceof EntityPlayer) {
-            AlertUtil.alert((EntityPlayer)placer,"This block can not be placed manually!", TextFormatting.RED);
+        if (placer instanceof EntityPlayer) {
+            AlertUtil.alert((EntityPlayer) placer, "This block can not be placed manually!", TextFormatting.RED);
         }
     }
 

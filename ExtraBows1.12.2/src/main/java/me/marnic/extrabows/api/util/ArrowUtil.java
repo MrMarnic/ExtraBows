@@ -9,17 +9,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -31,69 +26,62 @@ import java.util.UUID;
  */
 public class ArrowUtil {
 
-    public static HashMap<UUID,UpgradeList> ARROWS_TO_UPGRADES = new HashMap<>();
+    public static HashMap<UUID, UpgradeList> ARROWS_TO_UPGRADES = new HashMap<>();
 
-    public static EntityArrow createArrow(World worldIn, ItemStack stack,ItemStack arrowStack, EntityLivingBase shooter, BasicBow basicBow,EntityPlayer player)
-    {
+    public static EntityArrow createArrow(World worldIn, ItemStack stack, ItemStack arrowStack, EntityLivingBase shooter, BasicBow basicBow, EntityPlayer player) {
 
-        EntityArrow arrow = ((ItemArrow)arrowStack.getItem()).createArrow(worldIn, arrowStack, shooter);
+        EntityArrow arrow = ((ItemArrow) arrowStack.getItem()).createArrow(worldIn, arrowStack, shooter);
         return arrow;
     }
 
-    private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy,EntityArrow arrow,float yawplus) {
-        yaw=yaw+yawplus;
+    private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy, EntityArrow arrow, float yawplus) {
+        yaw = yaw + yawplus;
         float f = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
         float f1 = -MathHelper.sin(pitch * 0.017453292F);
         float f2 = MathHelper.cos(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
-        arrow.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
+        arrow.shoot((double) f, (double) f1, (double) f2, velocity, inaccuracy);
         arrow.motionX += shooter.motionX;
         arrow.motionZ += shooter.motionZ;
 
-        if (!shooter.onGround)
-        {
+        if (!shooter.onGround) {
             arrow.motionY += shooter.motionY;
         }
     }
 
-    public static EntityArrow createArrowComplete(World worldIn, ItemStack itemstack,ItemStack arrow, EntityPlayer entityplayer, BasicBow basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
+    public static EntityArrow createArrowComplete(World worldIn, ItemStack bow, ItemStack arrow, EntityPlayer entityplayer, BasicBow basicBow, float f, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
         CustomBowSettings settings = basicBow.getSettings();
-        EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, stack, arrow,entityplayer,basicBow,entityplayer);
-        UpgradeUtil.getUpgradesFromStackNEW(stack).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE,entityarrow,entityplayer,stack);
+        EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, bow, arrow, entityplayer, basicBow, entityplayer);
+        UpgradeUtil.getUpgradesFromStackNEW(bow).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE, entityarrow, entityplayer, bow);
         /*
         In this line handleArrowCreate of the upgrades should be handled
          */
 
-        shootArrow(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus,entityarrow,yawplus);
-        if (f == 1.0F)
-        {
+        shootArrow(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus, entityarrow, yawplus);
+        if (f == 1.0F) {
             entityarrow.setIsCritical(true);
         }
 
-        int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
+        int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, bow);
 
         entityarrow.setDamage(entityarrow.getDamage() + settings.getDamage());
 
-        if (j > 0)
-        {
-            entityarrow.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+        if (j > 0) {
+            entityarrow.setDamage(entityarrow.getDamage() + (double) j * 0.5D + 0.5D);
         }
 
-        int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
+        int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, bow);
 
-        if (k > 0)
-        {
+        if (k > 0) {
             entityarrow.setKnockbackStrength(k);
         }
 
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0)
-        {
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, bow) > 0) {
             entityarrow.setFire(100);
         }
 
-        stack.damageItem(1, entityplayer);
+        bow.damageItem(1, entityplayer);
 
-        if (flag1 || entityplayer.capabilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW))
-        {
+        if (flag1 || entityplayer.capabilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
             entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
 
@@ -101,14 +89,11 @@ public class ArrowUtil {
     }
 
 
-
-    public static float getArrowVelocity(int charge,BasicBow basicBow)
-    {
-        float f = (float)charge / basicBow.getSettings().getTime();
+    public static float getArrowVelocity(int charge, BasicBow basicBow) {
+        float f = (float) charge / basicBow.getSettings().getTime();
         f = (f * f + f * 2.0F) / 3.0F;
 
-        if (f > 1.0F)
-        {
+        if (f > 1.0F) {
             f = 1.0F;
         }
 

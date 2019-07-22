@@ -20,7 +20,7 @@ public class TileEntityBridgeBlock extends TileEntity implements ITickable {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("ticksToLive",ticksToLive);
+        compound.setInteger("ticksToLive", ticksToLive);
         return super.writeToNBT(compound);
     }
 
@@ -37,9 +37,9 @@ public class TileEntityBridgeBlock extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        if(ticksToLive<=0) {
+        if (ticksToLive <= 0) {
             world.setBlockToAir(pos);
-        }else {
+        } else {
             ticksToLive--;
         }
     }

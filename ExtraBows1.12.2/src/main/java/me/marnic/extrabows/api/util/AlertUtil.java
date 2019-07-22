@@ -11,7 +11,7 @@ import net.minecraft.util.text.TextFormatting;
  * GitHub: https://github.com/MrMarnic
  */
 public class AlertUtil {
-    public static void alert(EntityPlayer player, String msg,TextFormatting formatting) {
-        player.sendStatusMessage(new TextComponentString(msg).setStyle(new Style().setColor(formatting)),true);
+    public static void alert(EntityPlayer player, String msg, TextFormatting formatting) {
+        player.sendStatusMessage(new TextComponentString(msg).setStyle(new Style().setColor(formatting)), true);
     }
 }

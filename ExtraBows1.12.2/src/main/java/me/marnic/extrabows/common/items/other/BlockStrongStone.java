@@ -16,7 +16,7 @@ public class BlockStrongStone extends BasicBlock {
         super("strong_stone", Material.ROCK);
         setCreativeTab(ExtraBowsObjects.CREATIVE_TAB);
         setSoundType(SoundType.STONE);
-        setHarvestLevel("pickaxe",0);
+        setHarvestLevel("pickaxe", 0);
         setHardness(2);
     }
 }

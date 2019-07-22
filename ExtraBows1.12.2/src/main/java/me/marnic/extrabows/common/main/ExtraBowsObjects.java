@@ -57,7 +57,7 @@ public class ExtraBowsObjects {
         BRIDGE_BLOCK = new BlockBridgeBlock();
         BRIDGE_BLOCK.setCreativeTab(CREATIVE_TAB);
 
-        GameRegistry.registerTileEntity(TileEntityBridgeBlock.class,new ResourceLocation(Identification.MODID,"tile_entity_bridge_block"));
+        GameRegistry.registerTileEntity(TileEntityBridgeBlock.class, new ResourceLocation(Identification.MODID, "tile_entity_bridge_block"));
 
         BridgeUpgrade.BUILDING_BLOCK = BRIDGE_BLOCK;
 

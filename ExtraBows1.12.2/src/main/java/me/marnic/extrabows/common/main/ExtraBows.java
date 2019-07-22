@@ -2,7 +2,6 @@ package me.marnic.extrabows.common.main;
 
 import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.client.gui.ExtraBowsGUIHandler;
-import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
 import me.marnic.extrabows.common.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -17,7 +16,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-@Mod(modid = Identification.MODID,name = Identification.NAME,version = Identification.VERSION)
+@Mod(modid = Identification.MODID, name = Identification.NAME, version = Identification.VERSION)
 public class ExtraBows {
 
 
@@ -36,11 +35,11 @@ public class ExtraBows {
 
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent e) {
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance,new ExtraBowsGUIHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ExtraBowsGUIHandler());
         proxy.handlePostInit();
     }
 
-    @SidedProxy(clientSide = Identification.CLIENT_PROXY_PATH,serverSide = Identification.SERVER_PROXY_PATH)
+    @SidedProxy(clientSide = Identification.CLIENT_PROXY_PATH, serverSide = Identification.SERVER_PROXY_PATH)
     public static CommonProxy proxy;
 
     @Mod.Instance

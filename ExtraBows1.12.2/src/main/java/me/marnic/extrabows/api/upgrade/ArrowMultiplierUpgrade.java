@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class ArrowMultiplierUpgrade extends BasicUpgrade{
+public class ArrowMultiplierUpgrade extends BasicUpgrade {
     public ArrowMultiplierUpgrade(String name) {
         super(name);
     }

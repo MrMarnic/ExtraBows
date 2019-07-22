@@ -9,7 +9,6 @@ package me.marnic.extrabows.api.util;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -27,19 +26,19 @@ public class TimerUtil {
 
     public static void handleTickEvent(TickEvent.ServerTickEvent e) {
 
-        if(!toAdd.isEmpty()) {
+        if (!toAdd.isEmpty()) {
             commands.addAll(toAdd);
             toAdd.clear();
         }
 
-        if(!toRemove.isEmpty()) {
+        if (!toRemove.isEmpty()) {
             commands.removeAll(toRemove);
             toRemove.clear();
         }
 
-        if(!commands.isEmpty()) {
-            for(TimeCommand t:commands) {
-                if(t.handle(currentTicks)) {
+        if (!commands.isEmpty()) {
+            for (TimeCommand t : commands) {
+                if (t.handle(currentTicks)) {
                     toRemove.add(t);
                 }
             }
@@ -49,8 +48,8 @@ public class TimerUtil {
     }
 
     public static TimeCommand forId(int id) {
-        for(TimeCommand command:commands) {
-            if(command.getId() == id) {
+        for (TimeCommand command : commands) {
+            if (command.getId() == id) {
                 return command;
             }
         }

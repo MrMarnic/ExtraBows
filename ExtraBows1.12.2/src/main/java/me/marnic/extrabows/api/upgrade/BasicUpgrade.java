@@ -21,22 +21,22 @@ public class BasicUpgrade {
     private int durability;
     private TextComponentTranslation translation;
 
-    public BasicUpgrade(String name,int durability) {
+    public BasicUpgrade(String name, int durability) {
         this.name = name;
-        UPGRADES.put(name,this);
-        this.item = new BasicUpgradeItem(name,this);
+        UPGRADES.put(name, this);
+        this.item = new BasicUpgradeItem(name, this);
         this.item.setMaxDamage(durability);
         this.durability = durability;
-        this.translation = new TextComponentTranslation("item."+name+".name");
+        this.translation = new TextComponentTranslation("item." + name + ".name");
     }
 
     public BasicUpgrade(String name) {
         this.name = name;
-        UPGRADES.put(name,this);
-        this.item = new BasicUpgradeItem(name,this);
+        UPGRADES.put(name, this);
+        this.item = new BasicUpgradeItem(name, this);
         this.item.setMaxDamage(400);
         this.durability = 400;
-        this.translation = new TextComponentTranslation("item."+name+".name");
+        this.translation = new TextComponentTranslation("item." + name + ".name");
     }
 
     public String getName() {
@@ -47,14 +47,14 @@ public class BasicUpgrade {
         return name;
     }
 
-    public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, EntityPlayer entityplayer,float f,ItemStack stack,boolean flag1,UpgradeList list) {
+    public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, EntityPlayer entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
     }
 
     public BasicUpgradeItem getItem() {
         return item;
     }
 
-    public static final HashMap<String,BasicUpgrade> UPGRADES = new HashMap<>();
+    public static final HashMap<String, BasicUpgrade> UPGRADES = new HashMap<>();
 
     public static BasicUpgrade getById(String id) {
         return UPGRADES.get(id);

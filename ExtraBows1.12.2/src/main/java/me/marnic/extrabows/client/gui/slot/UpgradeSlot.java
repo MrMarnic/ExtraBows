@@ -18,28 +18,28 @@ public class UpgradeSlot extends SlotItemHandler {
 
     private boolean modifierSlot;
 
-    public UpgradeSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition,boolean modifierSlot) {
+    public UpgradeSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean modifierSlot) {
         super(itemHandler, index, xPosition, yPosition);
         this.modifierSlot = modifierSlot;
     }
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack) {
-        if(modifierSlot) {
-            if(!doesContainSameUpgrade(UpgradeUtil.getUpgradeFromStack(stack))) {
+        if (modifierSlot) {
+            if (!doesContainSameUpgrade(UpgradeUtil.getUpgradeFromStack(stack))) {
                 return UpgradeUtil.isModifierUpgrade(stack);
             }
             return false;
-        }else {
+        } else {
             return UpgradeUtil.isMultiplierUpgrade(stack);
         }
     }
 
     private boolean doesContainSameUpgrade(BasicUpgrade upgrade) {
-        for(int i = 0;i<getItemHandler().getSlots();i++) {
-            if(getItemHandler().getStackInSlot(i).getItem() instanceof BasicUpgradeItem) {
+        for (int i = 0; i < getItemHandler().getSlots(); i++) {
+            if (getItemHandler().getStackInSlot(i).getItem() instanceof BasicUpgradeItem) {
                 BasicUpgrade up = UpgradeUtil.getUpgradeFromStack(getItemHandler().getStackInSlot(i));
-                if(up.equals(upgrade)) {
+                if (up.equals(upgrade)) {
                     return true;
                 }
             }

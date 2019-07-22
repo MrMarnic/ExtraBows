@@ -14,7 +14,7 @@ public class ExtraBowsPacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Identification.MODID);
 
     public static void init() {
-        INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketOpenGUI.class,PacketOpenUpgradeGUI.class,0, Side.SERVER);
-        INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketSendDestroyMessage.class,PacketSendDestroyMessage.class,1,Side.CLIENT);
+        INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketOpenGUI.class, PacketOpenUpgradeGUI.class, 0, Side.SERVER);
+        INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketSendDestroyMessage.class, PacketSendDestroyMessage.class, 1, Side.CLIENT);
     }
 }

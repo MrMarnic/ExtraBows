@@ -20,12 +20,12 @@ public class ExtraBowsInputHandler {
     public static KeyBinding OPEN_UPGRADE_INV;
 
     public static void registerKeys() {
-        OPEN_UPGRADE_INV = new KeyBinding("Key to open upgrade inventory", Keyboard.KEY_B,"key."+ Identification.MODID+".category");
+        OPEN_UPGRADE_INV = new KeyBinding("Key to open upgrade inventory", Keyboard.KEY_B, "key." + Identification.MODID + ".category");
         ClientRegistry.registerKeyBinding(OPEN_UPGRADE_INV);
     }
 
     public static void handleKeyPressedEvent(InputEvent.KeyInputEvent e) {
-        if(OPEN_UPGRADE_INV.isKeyDown()) {
+        if (OPEN_UPGRADE_INV.isKeyDown()) {
             handleUpgradeInvKeyPressed();
         }
     }
@@ -35,6 +35,6 @@ public class ExtraBowsInputHandler {
     }
 
     public static void handleUpgradeInvKeyPressedServer(EntityPlayerMP playerMP) {
-        playerMP.openGui(ExtraBows.instance,0,playerMP.world,0,0,0);
+        playerMP.openGui(ExtraBows.instance, 0, playerMP.world, 0, 0, 0);
     }
 }

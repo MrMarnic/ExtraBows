@@ -3,7 +3,6 @@ package me.marnic.extrabows.api.upgrade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -12,7 +11,7 @@ import net.minecraft.world.World;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class ArrowModifierUpgrade extends BasicUpgrade{
+public class ArrowModifierUpgrade extends BasicUpgrade {
     public ArrowModifierUpgrade(String name) {
         super(name);
     }
@@ -48,6 +47,6 @@ public class ArrowModifierUpgrade extends BasicUpgrade{
     }
 
     public enum EventType {
-        BLOCK_HIT,ENTITY_HIT,ARROW_CREATE,SET_EFFECT,WATER_HIT,ENTITY_INIT
+        BLOCK_HIT, ENTITY_HIT, ARROW_CREATE, SET_EFFECT, WATER_HIT, ENTITY_INIT
     }
 }

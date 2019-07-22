@@ -17,9 +17,9 @@ public class BowUpgradeGui extends GuiContainer {
     private String name;
     private EntityPlayer player;
 
-    public BowUpgradeGui(Container inventorySlotsIn,EntityPlayer player) {
+    public BowUpgradeGui(Container inventorySlotsIn, EntityPlayer player) {
         super(inventorySlotsIn);
-        TEXTURE = new ResourceLocation(Identification.MODID,"textures/gui/bow_upgrade_gui.png");
+        TEXTURE = new ResourceLocation(Identification.MODID, "textures/gui/bow_upgrade_gui.png");
         name = "Bow Upgrade Inventory";
         this.player = player;
     }
@@ -27,7 +27,7 @@ public class BowUpgradeGui extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         mc.getTextureManager().bindTexture(TEXTURE);
-        drawTexturedModalRect(guiLeft,guiTop,0,0,xSize,ySize);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
     @Override

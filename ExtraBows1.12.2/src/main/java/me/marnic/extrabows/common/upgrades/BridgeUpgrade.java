@@ -7,8 +7,6 @@ import me.marnic.extrabows.api.util.TimerUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.blocks.tileentities.TileEntityBridgeBlock;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
-import me.marnic.extrabows.common.main.ExtraBows;
-import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +35,7 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
 
     @Override
     public List<String> getDescription() {
-        return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this,1),UpgradeUtil.getTranslatedDescriptionForUpgrade(this,2));
+        return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 1), UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 2));
     }
 
     @Override
@@ -53,7 +51,7 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
 
         BlockPos pos = arrow.getPosition().add(0, -3, 0);
 
-        data.builder.needsFix(pos, data.blockPos.size()>=1?data.blockPos.get(data.blockPos.size()-1):null,data.blockPos, data.blockPos.size(), world,data.facing);
+        data.builder.needsFix(pos, data.blockPos.size() >= 1 ? data.blockPos.get(data.blockPos.size() - 1) : null, data.blockPos, data.blockPos.size(), world, data.facing);
         data.blockPos.add(new BlockSave(pos, data.blockPos.size()).setRemovable(world.isAirBlock(pos)));
 
         TimerUtil.addTimeCommand(new TimeCommand(data.blockPos.size() * 2, new Runnable() {
@@ -62,16 +60,16 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
 
             @Override
             public void run() {
-                if(placeBlock(pos1,BUILDING_BLOCK.getDefaultState(),world)) {
-                    ((TileEntityBridgeBlock)world.getTileEntity(pos1)).setTicksToLive(size + ACTIVE_TIME * 20);
+                if (placeBlock(pos1, BUILDING_BLOCK.getDefaultState(), world)) {
+                    ((TileEntityBridgeBlock) world.getTileEntity(pos1)).setTicksToLive(size + ACTIVE_TIME * 20);
                 }
             }
         }));
     }
 
-    public static boolean placeBlock(BlockPos pos, IBlockState state,World world) {
-        if(world.isAirBlock(pos)) {
-            world.setBlockState(pos,state);
+    public static boolean placeBlock(BlockPos pos, IBlockState state, World world) {
+        if (world.isAirBlock(pos)) {
+            world.setBlockState(pos, state);
             return true;
         }
         return false;
@@ -105,45 +103,45 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     }
 
     class BridgeBuilder {
-        public void needsFix(BlockPos pos,BlockSave last, ArrayList<BlockSave> blocks, int id, World world,EnumFacing facing) {
+        public void needsFix(BlockPos pos, BlockSave last, ArrayList<BlockSave> blocks, int id, World world, EnumFacing facing) {
             if (blocks.size() >= 1) {
                 BlockPos next = last.pos.subtract(pos);
                 BlockPos nextAbs = new BlockPos(Math.abs(next.getX()), Math.abs(next.getY()), Math.abs(next.getZ()));
 
                 if (fix(next)) {
-                        int y_needed = nextAbs.getY();
-                        int x_needed = nextAbs.getX();
-                        int z_needed = nextAbs.getZ();
-                        int neg_x = next.getX()<0?-1:1;
-                        int neg_y = next.getY()<0?-1:1;
-                        int neg_z = next.getZ()<0?-1:1;
+                    int y_needed = nextAbs.getY();
+                    int x_needed = nextAbs.getX();
+                    int z_needed = nextAbs.getZ();
+                    int neg_x = next.getX() < 0 ? -1 : 1;
+                    int neg_y = next.getY() < 0 ? -1 : 1;
+                    int neg_z = next.getZ() < 0 ? -1 : 1;
 
-                        BlockPos begin = pos.add(0,0,0);
+                    BlockPos begin = pos.add(0, 0, 0);
 
-                        int all = x_needed + y_needed + z_needed;
+                    int all = x_needed + y_needed + z_needed;
 
-                        for(int i = 0;i<all;i++) {
-                            if(y_needed>0) {
-                                begin=begin.add(0,neg_y*1,0);
-                            }
+                    for (int i = 0; i < all; i++) {
+                        if (y_needed > 0) {
+                            begin = begin.add(0, neg_y * 1, 0);
+                        }
 
-                            if(x_needed>0) {
-                                begin=begin.add(1*neg_x,0,0);
-                            }
+                        if (x_needed > 0) {
+                            begin = begin.add(1 * neg_x, 0, 0);
+                        }
 
-                            if(z_needed>0) {
-                                begin=begin.add(0,0,1*neg_z);
-                            }
-                            BlockPos finalBegin = begin;
-                            TimerUtil.addTimeCommand(new TimeCommand((id)*2, new Runnable() {
-                                @Override
-                                public void run() {
-                                    if(placeBlock(finalBegin,BUILDING_BLOCK.getDefaultState(),world)) {
-                                        //blocks.add(new BlockSave(begin,id+i));
-                                        ((TileEntityBridgeBlock)world.getTileEntity(finalBegin)).setTicksToLive((id) + ACTIVE_TIME * 20);
-                                    }
+                        if (z_needed > 0) {
+                            begin = begin.add(0, 0, 1 * neg_z);
+                        }
+                        BlockPos finalBegin = begin;
+                        TimerUtil.addTimeCommand(new TimeCommand((id) * 2, new Runnable() {
+                            @Override
+                            public void run() {
+                                if (placeBlock(finalBegin, BUILDING_BLOCK.getDefaultState(), world)) {
+                                    //blocks.add(new BlockSave(begin,id+i));
+                                    ((TileEntityBridgeBlock) world.getTileEntity(finalBegin)).setTicksToLive((id) + ACTIVE_TIME * 20);
                                 }
-                            }));
+                            }
+                        }));
 
                             /*if(x_needed <=0 && z_needed <=0 && y_needed>0) {
                                 BlockPos ladder = begin.add(0,0,0);
@@ -157,10 +155,10 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
                                 }
                             }*/
 
-                            x_needed--;
-                            y_needed--;
-                            z_needed--;
-                        }
+                        x_needed--;
+                        y_needed--;
+                        z_needed--;
+                    }
                 }
             }
         }

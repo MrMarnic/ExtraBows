@@ -28,7 +28,7 @@ public class PacketSendDestroyMessage implements IMessage {
 
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf,text);
+        ByteBufUtils.writeUTF8String(buf, text);
     }
 
     public String getText() {

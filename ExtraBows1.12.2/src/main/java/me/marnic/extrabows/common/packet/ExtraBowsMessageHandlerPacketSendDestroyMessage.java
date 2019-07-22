@@ -1,6 +1,5 @@
 package me.marnic.extrabows.common.packet;
 
-import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -19,7 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class ExtraBowsMessageHandlerPacketSendDestroyMessage implements IMessageHandler<PacketSendDestroyMessage, IMessage> {
     @Override
     public IMessage onMessage(PacketSendDestroyMessage message, MessageContext ctx) {
-        if(ctx.side== Side.CLIENT) {
+        if (ctx.side == Side.CLIENT) {
             Minecraft.getMinecraft().player.sendMessage(new TextComponentString("The upgrade " + new TextComponentTranslation(message.getText()).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText() + " was §cdestroyed§r while using!"));
         }
         return null;

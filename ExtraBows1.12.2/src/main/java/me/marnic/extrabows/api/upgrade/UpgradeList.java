@@ -22,10 +22,10 @@ import java.util.HashMap;
 public class UpgradeList {
     private ArrowMultiplierUpgrade arrowMultiplier;
     private ArrayList<ArrowModifierUpgrade> arrowModifiers;
-    private HashMap<BasicUpgrade,Object> dataMap;
+    private HashMap<BasicUpgrade, Object> dataMap;
     private ItemStackHandler handler;
 
-    public UpgradeList(ArrowMultiplierUpgrade arrowMultiplier, ArrayList<ArrowModifierUpgrade> arrowModifiers,ItemStackHandler handler) {
+    public UpgradeList(ArrowMultiplierUpgrade arrowMultiplier, ArrayList<ArrowModifierUpgrade> arrowModifiers, ItemStackHandler handler) {
         this.arrowMultiplier = arrowMultiplier;
         this.arrowModifiers = arrowModifiers;
         this.dataMap = new HashMap<>();
@@ -49,70 +49,70 @@ public class UpgradeList {
     }
 
     public boolean contains(BasicUpgrade upgrade) {
-        return (arrowMultiplier.equals(upgrade)| arrowModifiers.contains(upgrade));
+        return (arrowMultiplier.equals(upgrade) | arrowModifiers.contains(upgrade));
     }
 
-    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, EntityPlayer player,EntityArrow arrow) {
-        if(hasMods()) {
+    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, EntityPlayer player, EntityArrow arrow) {
+        if (hasMods()) {
             switch (eventType) {
                 case ENTITY_HIT:
-                    if(entity != null) {
-                        for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                            up.handleEntityHit(entity,world,player,arrow,this);
+                    if (entity != null) {
+                        for (ArrowModifierUpgrade up : getArrowModifiers()) {
+                            up.handleEntityHit(entity, world, player, arrow, this);
                         }
                     }
                 case BLOCK_HIT:
-                    if(pos != null) {
-                        for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                            up.handleBlockHit(pos,world,player,arrow,this);
+                    if (pos != null) {
+                        for (ArrowModifierUpgrade up : getArrowModifiers()) {
+                            up.handleBlockHit(pos, world, player, arrow, this);
                         }
                     }
                 case WATER_HIT:
-                    if(pos != null) {
-                        for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                            up.handleWaterHit(pos,world,player,arrow,this);
+                    if (pos != null) {
+                        for (ArrowModifierUpgrade up : getArrowModifiers()) {
+                            up.handleWaterHit(pos, world, player, arrow, this);
                         }
                     }
             }
         }
     }
 
-    public void handleOnUpdatedEvent(EntityArrow arrow,World world) {
-        if(hasMods()) {
-            for(ArrowModifierUpgrade upgrade:getArrowModifiers()) {
-                upgrade.handleFlyingEvent(arrow,world,this);
+    public void handleOnUpdatedEvent(EntityArrow arrow, World world) {
+        if (hasMods()) {
+            for (ArrowModifierUpgrade upgrade : getArrowModifiers()) {
+                upgrade.handleFlyingEvent(arrow, world, this);
             }
         }
     }
 
     public void handleModifierEvent(ArrowModifierUpgrade.EventType eventType, EntityArrow arrow, EntityPlayer player, ItemStack bowStack) {
-        if(hasMods()) {
+        if (hasMods()) {
             switch (eventType) {
                 case ARROW_CREATE:
-                    for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                        up.handleArrowCreate(arrow,player,this);
+                    for (ArrowModifierUpgrade up : getArrowModifiers()) {
+                        up.handleArrowCreate(arrow, player, this);
                     }
 
                 case SET_EFFECT:
-                    for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                        up.handleSetEffect(arrow,this);
+                    for (ArrowModifierUpgrade up : getArrowModifiers()) {
+                        up.handleSetEffect(arrow, this);
                     }
                 case ENTITY_INIT:
-                    for(ArrowModifierUpgrade up:getArrowModifiers()) {
-                        up.handleEntityInit(arrow,this,player);
+                    for (ArrowModifierUpgrade up : getArrowModifiers()) {
+                        up.handleEntityInit(arrow, this, player);
                     }
             }
         }
     }
 
     public void applyDamage(EntityPlayer player) {
-        for(int i = 0;i<handler.getSlots();i++) {
+        for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack stack = handler.getStackInSlot(i);
-            if(!stack.isEmpty()) {
+            if (!stack.isEmpty()) {
                 ItemStack old = stack.copy();
-                stack.damageItem(1,player);
-                if(stack.isEmpty()) {
-                    ExtraBowsPacketHandler.INSTANCE.sendTo(new PacketSendDestroyMessage().setText(old.getDisplayName()),(EntityPlayerMP)player);
+                stack.damageItem(1, player);
+                if (stack.isEmpty()) {
+                    ExtraBowsPacketHandler.INSTANCE.sendTo(new PacketSendDestroyMessage().setText(old.getDisplayName()), (EntityPlayerMP) player);
                 }
             }
         }
@@ -123,8 +123,8 @@ public class UpgradeList {
     }
 
     public void dropItems(EntityPlayer player) {
-        for(int i = 0;i<handler.getSlots();i++) {
-            player.dropItem(handler.getStackInSlot(i),false);
+        for (int i = 0; i < handler.getSlots(); i++) {
+            player.dropItem(handler.getStackInSlot(i), false);
         }
     }
 }

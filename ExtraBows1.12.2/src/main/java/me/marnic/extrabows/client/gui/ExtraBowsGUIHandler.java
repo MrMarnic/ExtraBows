@@ -1,9 +1,9 @@
 package me.marnic.extrabows.client.gui;
 
+import me.marnic.extrabows.common.container.BowUpgradeGuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import me.marnic.extrabows.common.container.*;
 
 import javax.annotation.Nullable;
 
@@ -18,7 +18,7 @@ public class ExtraBowsGUIHandler implements IGuiHandler {
     @Nullable
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if(ID == 0) {
+        if (ID == 0) {
             return new BowUpgradeGuiContainer(player);
         }
         return null;
@@ -27,8 +27,8 @@ public class ExtraBowsGUIHandler implements IGuiHandler {
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if(ID == 0) {
-            return new BowUpgradeGui(new BowUpgradeGuiContainer(player),player);
+        if (ID == 0) {
+            return new BowUpgradeGui(new BowUpgradeGuiContainer(player), player);
         }
         return null;
     }

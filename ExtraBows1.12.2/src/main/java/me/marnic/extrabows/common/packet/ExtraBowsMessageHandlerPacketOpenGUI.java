@@ -17,7 +17,7 @@ public class ExtraBowsMessageHandlerPacketOpenGUI implements IMessageHandler<Pac
     public IMessage onMessage(PacketOpenUpgradeGUI message, MessageContext ctx) {
         EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
 
-        if(serverPlayer.getHeldItemMainhand().getItem() instanceof ItemBow) {
+        if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemBow) {
             serverPlayer.getServerWorld().addScheduledTask(() -> {
                 ExtraBowsInputHandler.handleUpgradeInvKeyPressedServer(serverPlayer);
             });

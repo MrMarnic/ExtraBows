@@ -7,7 +7,7 @@ import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class ClientProxy extends CommonProxy{
+public class ClientProxy extends CommonProxy {
     @Override
     public void handleInit() {
         ExtraBowsInputHandler.registerKeys();

@@ -10,7 +10,7 @@ import java.util.Random;
 public class RandomUtil {
     public static final Random RANDOM = new Random();
 
-    public static boolean isChance(int max,int number) {
-        return RANDOM.nextInt(max)==number;
+    public static boolean isChance(int max, int number) {
+        return RANDOM.nextInt(max) == number;
     }
 }

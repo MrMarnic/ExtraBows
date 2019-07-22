@@ -6,10 +6,16 @@ public class TimeCommand {
     protected Runnable execute;
     private int id;
 
-    public TimeCommand(int time,Runnable execute,int id) {
+    public TimeCommand(int time, Runnable execute, int id) {
         this.startTick = TimerUtil.currentTicks;
         this.endTick = startTick + time;
         this.execute = execute;
+        this.id = id;
+    }
+
+    public TimeCommand(int time, int id) {
+        this.startTick = TimerUtil.currentTicks;
+        this.endTick = startTick + time;
         this.id = id;
     }
 
@@ -21,7 +27,7 @@ public class TimeCommand {
     }
 
     public boolean handle(int current) {
-        if(current>=endTick) {
+        if (current >= endTick) {
             execute.run();
             return true;
         }
@@ -36,12 +42,20 @@ public class TimeCommand {
         return id;
     }
 
-    public static class EndableTimeCommand extends TimeCommand{
+    public void setExecute(Runnable execute) {
+        this.execute = execute;
+    }
+
+    public static class EndableTimeCommand extends TimeCommand {
 
         public boolean end = false;
 
-        public EndableTimeCommand(int time, Runnable execute,int id) {
-            super(time, execute,id);
+        public EndableTimeCommand(int time, Runnable execute, int id) {
+            super(time, execute, id);
+        }
+
+        public EndableTimeCommand(int time, int id) {
+            super(time, id);
         }
 
         @Override

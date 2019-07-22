@@ -1,8 +1,8 @@
 package me.marnic.extrabows.common.config;
 
 import me.marnic.extrabows.common.items.CustomBowSettings;
+import me.marnic.extrabows.common.main.Identification;
 import net.minecraftforge.common.config.Config;
-import me.marnic.extrabows.common.main.*;
 
 /**
  * Copyright (c) 11.06.2019
@@ -12,11 +12,11 @@ import me.marnic.extrabows.common.main.*;
 
 @Config(modid = Identification.MODID)
 public class ExtraBowsConfig {
-    public static BowConfig STONE_BOW = new BowConfig(434,3f,1f, CustomBowSettings.NORMAL_INACCURACY,18f);
-    public static BowConfig IRON_BOW = new BowConfig(534,3.5f,2f, CustomBowSettings.NORMAL_INACCURACY,16f);
-    public static BowConfig GOLD_BOW = new BowConfig(300,4.25f,0, 0.5f,10f);
-    public static BowConfig DIAMOND_BOW = new BowConfig(750,3.75f,5f, CustomBowSettings.NORMAL_INACCURACY,15f);
-    public static BowConfig EMERALD_BOW = new BowConfig(1500,4f,8f, CustomBowSettings.NORMAL_INACCURACY,15f);
+    public static BowConfig STONE_BOW = new BowConfig(434, 3f, 1f, CustomBowSettings.NORMAL_INACCURACY, 18f);
+    public static BowConfig IRON_BOW = new BowConfig(534, 3.5f, 2f, CustomBowSettings.NORMAL_INACCURACY, 16f);
+    public static BowConfig GOLD_BOW = new BowConfig(300, 4.25f, 0, 0.5f, 10f);
+    public static BowConfig DIAMOND_BOW = new BowConfig(750, 3.75f, 5f, CustomBowSettings.NORMAL_INACCURACY, 15f);
+    public static BowConfig EMERALD_BOW = new BowConfig(1500, 4f, 8f, CustomBowSettings.NORMAL_INACCURACY, 15f);
 
     public static int DURABILITY_DOUBLE_UPGRADE = 400;
     public static int DURABILITY_TRIPLE_UPGRADE = 400;
@@ -29,8 +29,8 @@ public class ExtraBowsConfig {
     public static int DURABILITY_ENDER_UPGRADE = 400;
     public static int DURABILITY_LIGHTNING_UPGRADE = 400;
     public static int DURABILITY_EXPLOSIVE_UPGRADE = 400;
-        
-    
+
+
     public static class BowConfig {
 
         public int durability;
@@ -39,7 +39,7 @@ public class ExtraBowsConfig {
         public float time;
         public float damage;
 
-        public BowConfig(int durability,float velocityMultiplier,float damage,float inaccuracy,float time) {
+        public BowConfig(int durability, float velocityMultiplier, float damage, float inaccuracy, float time) {
             this.durability = durability;
             this.velocityMultiplier = velocityMultiplier;
             this.inaccuracy = inaccuracy;

@@ -36,7 +36,7 @@ public class BasicUpgradeItem extends Item implements BasicItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(upgrade.hasDescription()) {
+        if (upgrade.hasDescription()) {
             tooltip.addAll(upgrade.getDescription());
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);

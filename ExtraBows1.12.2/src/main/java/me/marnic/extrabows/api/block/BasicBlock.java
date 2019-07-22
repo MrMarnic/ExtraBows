@@ -1,14 +1,11 @@
 package me.marnic.extrabows.api.block;
 
 import me.marnic.extrabows.api.item.IModelRegistry;
-import me.marnic.extrabows.common.events.ExtraBowsEventHandler;
-import me.marnic.extrabows.common.main.Identification;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.model.ModelLoader;
 
 /**
@@ -17,7 +14,7 @@ import net.minecraftforge.client.model.ModelLoader;
  * GitHub: https://github.com/MrMarnic
  */
 public class BasicBlock extends Block implements IModelRegistry {
-    public BasicBlock(String name,Material materialIn) {
+    public BasicBlock(String name, Material materialIn) {
         super(materialIn);
         setUnlocalizedName(name);
         setRegistryName(name);
@@ -26,6 +23,6 @@ public class BasicBlock extends Block implements IModelRegistry {
 
     @Override
     public void registerModel() {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this),0,new ModelResourceLocation(getRegistryName(),"inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 }
