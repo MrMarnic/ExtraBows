@@ -1,7 +1,7 @@
 tile.bridge_block.name=Bridge Block
 tile.strong_stone.name=String Stone
 
-item.arrow_cost_upgrade.name=Arrowcost Upgrade
+item.arrow_cost_upgrade.name=Arrow cost Upgrade
 item.heal_from_damage_upgrade.name=Healing Upgrade
 item.fire_upgrade.name=Fire Upgrade
 item.freeze_upgrade.name=Freeze Upgrade
