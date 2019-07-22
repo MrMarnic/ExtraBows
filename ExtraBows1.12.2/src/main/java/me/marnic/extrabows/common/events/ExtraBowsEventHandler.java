@@ -2,6 +2,7 @@ package me.marnic.extrabows.common.events;
 
 import me.marnic.extrabows.api.item.IModelRegistry;
 import me.marnic.extrabows.api.upgrade.Upgrades;
+import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.TimeCommand;
 import me.marnic.extrabows.api.util.TimerUtil;
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
@@ -10,9 +11,13 @@ import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -85,6 +90,13 @@ public class ExtraBowsEventHandler {
                     }
                 }));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void projectileHit(ProjectileImpactEvent e) {
+        if(e.getEntity() instanceof EntityArrow) {
+            EntityArrow arrow = (EntityArrow) e.getEntity();
         }
     }
 }

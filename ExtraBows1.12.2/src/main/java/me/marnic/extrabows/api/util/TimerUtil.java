@@ -36,7 +36,22 @@ public class TimerUtil {
         ++currentTicks;
     }
 
+    public static TimeCommand forId(int id) {
+        if(!commands.isEmpty()) {
+            iterator = commands.listIterator();
+            while (iterator.hasNext()) {
+                TimeCommand command = iterator.next();
+                if(command.getId()==id) {
+                    return command;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public static void addTimeCommand(TimeCommand command) {
+        command.setId(commands.size()+1);
         commands.listIterator().add(command);
     }
 }

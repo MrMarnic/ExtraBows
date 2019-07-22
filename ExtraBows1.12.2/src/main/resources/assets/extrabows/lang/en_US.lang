@@ -23,7 +23,7 @@ itemGroup.extrabows_items=Extra Bows Items
 
 item.strong_gold.name=Strong Gold
 item.strong_iron.name=Strong Iron
-item.strong_diamond.name=Stron Diamond
+item.strong_diamond.name=Strong Diamond
 item.strong_emerald.name=Strong Emerald
 
 item.upgrade_plate.name=Upgrade Plate
@@ -47,7 +47,7 @@ arrow_cost_upgrade.description.text=A random chance to give the player an arrow
 
 heal_from_damage_upgrade.description.text=A random chance to give the player a half heart if he deals damage
 
-freeze_upgrade.description.text=It snows on the hit block, freezes water gives the slowness effect und can randomly spawn a snow man
+freeze_upgrade.description.text=It snows on the hit block, freezes water gives the slowness effect and can randomly spawn a snow man
 
 explosive_upgrade.description.text=Creates an explosion on the hit block or entity
 
@@ -55,4 +55,4 @@ double_upgrade.description.text=Shoots two arrows
 
 triple_upgrade.description.text=Shoots three arrows
 
-key.extrabows.category=Extra Bows Controlls
+key.extrabows.category=Extra Bows Controls

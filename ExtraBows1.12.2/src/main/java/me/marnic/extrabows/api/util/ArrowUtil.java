@@ -12,10 +12,17 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Copyright (c) 26.05.2019
@@ -23,8 +30,12 @@ import net.minecraft.world.World;
  * GitHub: https://github.com/MrMarnic
  */
 public class ArrowUtil {
+
+    public static HashMap<UUID,UpgradeList> ARROWS_TO_UPGRADES = new HashMap<>();
+
     public static EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter, BasicBow basicBow,EntityPlayer player)
     {
+
         EntityTippedArrow entitytippedarrow = new EntityTippedArrow(worldIn,shooter) {
 
             private UpgradeList list;
