@@ -10,6 +10,7 @@ import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -40,14 +41,14 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     }
 
     @Override
-    public void handleEntityInit(ArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+    public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
         BuildingUpgradeData data = new BuildingUpgradeData();
         data.facing = player.getHorizontalFacing();
         upgradeList.getDataMap().put(this, data);
     }
 
     @Override
-    public void handleFlyingEvent(ArrowEntity arrow, World world, UpgradeList upgradeList) {
+    public void handleFlyingEvent(AbstractArrowEntity arrow, World world, UpgradeList upgradeList) {
 
         BuildingUpgradeData data = (BuildingUpgradeData) upgradeList.getDataMap().get(this);
 

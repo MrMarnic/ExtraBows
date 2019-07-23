@@ -2,7 +2,7 @@ package me.marnic.extrabows.api.upgrade;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -20,30 +20,30 @@ public class ArrowModifierUpgrade extends BasicUpgrade{
         super(name, durability);
     }
 
-    public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, ArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+        
+    }
+
+    public void handleWaterHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
 
     }
 
-    public void handleWaterHit(BlockPos pos, World world, PlayerEntity player, ArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleEntityHit(Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
 
     }
 
-    public void handleEntityHit(Entity entity, World world, PlayerEntity player, ArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleArrowCreate(AbstractArrowEntity arrow, PlayerEntity player, UpgradeList upgradeList) {
 
     }
 
-    public void handleArrowCreate(ArrowEntity arrow, PlayerEntity player, UpgradeList upgradeList) {
+    public void handleSetEffect(AbstractArrowEntity arrow, UpgradeList upgradeList) {
 
     }
 
-    public void handleSetEffect(ArrowEntity arrow, UpgradeList upgradeList) {
-
+    public void handleFlyingEvent(AbstractArrowEntity arrow, World world, UpgradeList upgradeList) {
     }
 
-    public void handleFlyingEvent(ArrowEntity arrow, World world, UpgradeList upgradeList) {
-    }
-
-    public void handleEntityInit(ArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+    public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
     }
 
     public enum EventType {

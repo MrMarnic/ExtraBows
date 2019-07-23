@@ -12,6 +12,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
@@ -108,38 +109,38 @@ public class BasicBow extends BowItem implements BasicItem{
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+    public void onPlayerStoppedUsing(ItemStack bowStack, World worldIn, LivingEntity entityLiving, int timeLeft) {
         if (entityLiving instanceof PlayerEntity)
         {
             PlayerEntity playerEntity = (PlayerEntity)entityLiving;
-            boolean flag = playerEntity.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemstack = this.findAmmoNEW(playerEntity);
+            boolean flag = playerEntity.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, bowStack) > 0;
+            ItemStack arrowStack = this.findAmmoNEW(playerEntity);
 
-            int i = this.getUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, playerEntity, i, !itemstack.isEmpty() || flag);
+            int i = this.getUseDuration(bowStack) - timeLeft;
+            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(bowStack, worldIn, playerEntity, i, !arrowStack.isEmpty() || flag);
             if (i < 0) return;
-
-            UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
-            if (!itemstack.isEmpty() || flag)
+            System.out.println(worldIn.isRemote);
+            UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(bowStack);
+            if (!arrowStack.isEmpty() || flag)
             {
-                if (itemstack.isEmpty())
+                if (arrowStack.isEmpty())
                 {
-                    itemstack = new ItemStack(Items.ARROW);
+                    arrowStack = new ItemStack(Items.ARROW);
                 }
 
                 float f = ArrowUtil.getArrowVelocity(i,this);
 
                 if ((double)f >= 0.1D)
                 {
-                    boolean flag1 = playerEntity.abilities.isCreativeMode || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem) itemstack.getItem()).isInfinite(itemstack, stack, playerEntity));
+                    boolean flag1 = playerEntity.abilities.isCreativeMode || (arrowStack.getItem() instanceof ArrowItem && ((ArrowItem) arrowStack.getItem()).isInfinite(arrowStack, bowStack, playerEntity));
 
                     if (!worldIn.isRemote)
                     {
                         list.applyDamage(playerEntity);
                         if(list.hasMul()) {
-                            list.getArrowMultiplier().handleAction(this,worldIn,itemstack,playerEntity,f,stack,flag1,list);
+                            list.getArrowMultiplier().handleAction(this,worldIn,bowStack,playerEntity,f,arrowStack,flag1,list);
                         }else {
-                            ArrowEntity entityarrow = ArrowUtil.createArrowComplete(worldIn,itemstack,playerEntity,this,f,stack,flag1,0,0,list);
+                            AbstractArrowEntity entityarrow = ArrowUtil.createArrowComplete(worldIn,bowStack,playerEntity,this,f,arrowStack,flag1,0,0,list);
 
                             worldIn.addEntity(entityarrow);
                         }
@@ -150,20 +151,20 @@ public class BasicBow extends BowItem implements BasicItem{
                     if (!flag1 && !playerEntity.abilities.isCreativeMode)
                     {
                         if(list.hasMul()) {
-                            list.getArrowMultiplier().shrinkStack(itemstack);
+                            list.getArrowMultiplier().shrinkStack(arrowStack);
                         }else {
-                            itemstack.shrink(1);
+                            arrowStack.shrink(1);
 
-                            if (itemstack.isEmpty())
+                            if (arrowStack.isEmpty())
                             {
-                                playerEntity.inventory.deleteStack(itemstack);
+                                playerEntity.inventory.deleteStack(arrowStack);
                             }
                         }
 
                         if(!worldIn.isRemote) {
-                            if(stack.getDamage()==stack.getMaxDamage()) {
+                            if(bowStack.getDamage()==bowStack.getMaxDamage()) {
                                 list.dropItems(playerEntity);
-                                stack.damageItem(1,playerEntity,(p) -> p.sendBreakAnimation(p.getActiveHand()));
+                                bowStack.damageItem(1,playerEntity,(p) -> p.sendBreakAnimation(p.getActiveHand()));
                             }
                         }
                     }

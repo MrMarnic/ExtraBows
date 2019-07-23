@@ -2,7 +2,7 @@ package me.marnic.extrabows.api.upgrade;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
@@ -53,7 +53,7 @@ public class UpgradeList {
         return (arrowMultiplier.equals(upgrade)| arrowModifiers.contains(upgrade));
     }
 
-    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, PlayerEntity player,ArrowEntity arrow) {
+    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, PlayerEntity player,AbstractArrowEntity arrow) {
         if(hasMods()) {
             switch (eventType) {
                 case ENTITY_HIT:
@@ -78,7 +78,7 @@ public class UpgradeList {
         }
     }
 
-    public void handleOnUpdatedEvent(ArrowEntity arrow,World world) {
+    public void handleOnUpdatedEvent(AbstractArrowEntity arrow,World world) {
         if(hasMods()) {
             for(ArrowModifierUpgrade upgrade:getArrowModifiers()) {
                 upgrade.handleFlyingEvent(arrow,world,this);
@@ -86,7 +86,7 @@ public class UpgradeList {
         }
     }
 
-    public void handleModifierEvent(ArrowModifierUpgrade.EventType eventType, ArrowEntity arrow, PlayerEntity player, ItemStack bowStack) {
+    public void handleModifierEvent(ArrowModifierUpgrade.EventType eventType, AbstractArrowEntity arrow, PlayerEntity player, ItemStack bowStack) {
         if(hasMods()) {
             switch (eventType) {
                 case ARROW_CREATE:

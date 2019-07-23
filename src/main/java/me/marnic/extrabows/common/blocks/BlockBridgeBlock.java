@@ -3,26 +3,21 @@ package me.marnic.extrabows.common.blocks;
 import me.marnic.extrabows.api.block.BasicBlock;
 import me.marnic.extrabows.api.util.AlertUtil;
 import me.marnic.extrabows.common.blocks.tileentities.TileEntityBridgeBlock;
-import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Copyright (c) 05.06.2019
