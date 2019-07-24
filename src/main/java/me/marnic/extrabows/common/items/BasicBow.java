@@ -234,7 +234,7 @@ class StorageProvider implements ICapabilitySerializable<CompoundNBT>, ICapabili
                 }
             });
         }
-        return null;
+        return LazyOptional.empty();
     }
 
     @Override
