@@ -22,7 +22,6 @@ public class ItemStoneBow extends BasicBow {
 
     @Override
     public TypedActionResult<ItemStack> use(World world_1, PlayerEntity playerEntity_1, Hand hand_1) {
-        playerEntity_1.setEquippedStack(EquipmentSlot.MAINHAND,new ItemStack(Items.BOW));
         return super.use(world_1, playerEntity_1, hand_1);
     }
 }
