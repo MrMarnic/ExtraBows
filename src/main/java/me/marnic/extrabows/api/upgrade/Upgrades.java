@@ -296,7 +296,7 @@ public class Upgrades {
         WATER_UPGRADE = new ArrowModifierUpgrade("water_upgrade",ExtraBowsConfig.DURABILITY_WATER_UPGRADE) {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
-                Stream<BlockPos> list = UpgradeUtil.getBlocksInRadius(pos,3);
+                Stream<BlockPos> list = UpgradeUtil.getBlocksInRadius(arrow.getPosition(),3);
 
                 list.forEach(pos1 -> {
                     if(world.getBlockState(pos1).getBlock().equals(Blocks.FIRE)) {
@@ -305,11 +305,13 @@ public class Upgrades {
                 });
 
                 if (RandomUtil.isChance(6, 1)) {
-                    world.setBlockState(pos,Blocks.WATER.getDefaultState());
-                    TimerUtil.addTimeCommand(new TimeCommand( 20 * 5, () -> {
-                        world.setBlockState(pos,Blocks.STONE.getDefaultState());
-                        world.removeBlock(pos,false);
-                    }));
+                    if(world.isAirBlock(pos.up())) {
+                        world.setBlockState(pos.up(),Blocks.WATER.getDefaultState());
+                        TimerUtil.addTimeCommand(new TimeCommand( 20 * 5, () -> {
+                            world.setBlockState(pos.up(),Blocks.STONE.getDefaultState());
+                            world.removeBlock(pos.up(),false);
+                        }));
+                    }
                 }
             }
 
