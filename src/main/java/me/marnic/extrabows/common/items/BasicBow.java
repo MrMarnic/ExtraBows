@@ -119,7 +119,7 @@ public class BasicBow extends BowItem implements BasicItem{
             int i = this.getUseDuration(bowStack) - timeLeft;
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(bowStack, worldIn, playerEntity, i, !arrowStack.isEmpty() || flag);
             if (i < 0) return;
-            System.out.println(worldIn.isRemote);
+            
             UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(bowStack);
             if (!arrowStack.isEmpty() || flag)
             {
