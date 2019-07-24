@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "me.marnic.extrabows.common.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinProjectile",
+    "MixinBowItem"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
