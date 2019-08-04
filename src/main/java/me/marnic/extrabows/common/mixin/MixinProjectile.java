@@ -78,16 +78,6 @@ public abstract class MixinProjectile extends Entity {
         }
     }
 
-    /*@Inject(method = "writeCustomDataToTag",at = @At("RETURN"))
-    public void writeCustomDataToTag(CompoundTag tag,CallbackInfo info) {
-        tag.putBoolean("extrabows",extrabows);
-    }
-
-    @Inject(method = "readCustomDataFromTag",at = @At("RETURN"))
-    public void readCustomDataToTag(CompoundTag tag,CallbackInfo info) {
-        this.extrabows = tag.getBoolean("extrabows");
-    }*/
-
     @Inject(method = "tick",at = @At("RETURN"))
     public void tick(CallbackInfo info) {
         if(list != null) {

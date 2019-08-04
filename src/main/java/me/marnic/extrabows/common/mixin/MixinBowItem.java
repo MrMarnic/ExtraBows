@@ -7,6 +7,8 @@ import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.RandomUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.items.BasicBow;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -135,6 +137,7 @@ public abstract class MixinBowItem extends RangedWeaponItem {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World world_1, List<Text> tooltip, TooltipContext tooltipContext_1) {
         if(stack.getItem().getClass().equals(BowItem.class)) {
             UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
