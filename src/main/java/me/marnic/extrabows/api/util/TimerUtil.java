@@ -1,6 +1,6 @@
 package me.marnic.extrabows.api.util;
 
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
