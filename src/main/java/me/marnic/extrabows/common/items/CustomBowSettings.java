@@ -15,13 +15,13 @@ public class CustomBowSettings {
     private float inaccuracy;
     private float time;
 
-    public CustomBowSettings(String name, int maxUses, float velocityMul,float damage,float inaccuracy,float time) {
+    public CustomBowSettings(String name, int maxUses, double velocityMul,double damage,double inaccuracy,double time) {
         this.name = name;
         this.maxUses = maxUses;
-        this.velocityMul = velocityMul;
-        this.damage = damage;
-        this.inaccuracy = inaccuracy;
-        this.time = time;
+        this.velocityMul = (float) velocityMul;
+        this.damage = (float) damage;
+        this.inaccuracy = (float) inaccuracy;
+        this.time = (float)time;
         onInit();
     }
 

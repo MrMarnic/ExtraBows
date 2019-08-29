@@ -34,25 +34,25 @@ public class ExtraBowsConfig {
     public static int DURABILITY_EXPLOSIVE_UPGRADE = 400;
         
     
-    public static class BowConfig {
+    public static class BowConfig{
 
         public ForgeConfigSpec.ConfigValue<Integer> durability;
-        public ForgeConfigSpec.ConfigValue<Float> velocityMultiplier;
-        public ForgeConfigSpec.ConfigValue<Float> inaccuracy;
-        public ForgeConfigSpec.ConfigValue<Float> time;
-        public ForgeConfigSpec.ConfigValue<Float> damage;
+        public ForgeConfigSpec.DoubleValue velocityMultiplier;
+        public ForgeConfigSpec.DoubleValue inaccuracy;
+        public ForgeConfigSpec.DoubleValue time;
+        public ForgeConfigSpec.DoubleValue damage;
 
         private ForgeConfigSpec.Builder builder;
 
-        public BowConfig(String name,int durability,float velocityMultiplier,float damage,float inaccuracy,float time,ForgeConfigSpec.Builder builder) {
+        public BowConfig(String name,int durability,float velocityMultiplier,float damage,float inaccuracy,float time,ForgeConfigSpec.Builder builder){
 
             builder.push(name);
 
             this.durability = builder.define("durability",durability);
-            this.velocityMultiplier = builder.define("velocityMultiplier",velocityMultiplier);
-            this.inaccuracy = builder.define("inaccuracy",inaccuracy);
-            this.time = builder.define("time",time);
-            this.damage = builder.define("damage",damage);
+            this.velocityMultiplier = builder.defineInRange("velocityMultiplier",velocityMultiplier,0,Double.MAX_VALUE);
+            this.inaccuracy = builder.defineInRange("inaccuracy",inaccuracy,0,Double.MAX_VALUE);
+            this.time = builder.defineInRange("time",time,0,Double.MAX_VALUE);
+            this.damage = builder.defineInRange("damage",damage,0,Double.MAX_VALUE);
 
             this.builder = builder;
             builder.pop();
