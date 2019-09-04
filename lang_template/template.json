@@ -1,0 +1,22 @@
+{
+"item.animalnet.mob_net_small":"Small Mob Net",
+"itemGroup.AnimalNet Items":"AnimalNet Items",
+"message.animalnet.formal_animal":"This animal",
+"item.animalnet.animal_net_big":"Big Animal Net",
+"message.animalnet.npc_needed":"You need a npc net to catch npcs!",
+"item.animalnet.animal_net_small":"Small Animal Net",
+"item.animalnet.animal_net_medium":"Medium Animal Net",
+"message.animalnet.can_not_be_caught":"This entity can not be caught!",
+"message.animalnet.net_too_small":"You need a bigger net!",
+"message.animalnet.formal_npc":"This npc",
+"message.animalnet.formal_mob":"This mob",
+"item.animalnet.mob_core":"Mob Core",
+"message.animalnet.villager_needed":"You need a npc net to catch villager!",
+"item.animalnet.npc_net":"NPC Net",
+"message.animalnet.mob_needed":"You need a mob net to catch mobs!",
+"item.animalnet.catched_animal":"Caught Animal/Mob",
+"message.animalnet.animal_needed":"You need an animal net to catch normal animals!",
+"item.animalnet.mob_net_big":"Big Mob Net",
+"message.animalnet.entity_too_big":"%s is too big and can not be caught!",
+"item.animalnet.spawner_fragmental": "Spawner Fragmental"
+}
