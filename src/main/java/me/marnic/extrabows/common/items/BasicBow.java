@@ -141,7 +141,6 @@ public class BasicBow extends BowItem implements BasicItem{
                             list.getArrowMultiplier().handleAction(this,worldIn,bowStack,playerEntity,f,arrowStack,flag1,list);
                         }else {
                             AbstractArrowEntity entityarrow = ArrowUtil.createArrowComplete(worldIn,bowStack,playerEntity,this,f,arrowStack,flag1,0,0,list);
-
                             worldIn.addEntity(entityarrow);
                         }
                     }

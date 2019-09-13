@@ -5,7 +5,10 @@ import me.marnic.extrabows.api.upgrade.ArrowMultiplierUpgrade;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -76,6 +79,13 @@ public class UpgradeUtil {
         return BlockPos.getAllInBox(min,max);
     }
 
+    public static AxisAlignedBB getRadiusBoundingBox(BlockPos center,int radius) {
+        BlockPos min = new BlockPos(center.getX() - radius,center.getY() - radius,center.getZ() - radius);
+        BlockPos max = new BlockPos(center.getX() + radius,center.getY() + radius,center.getZ() + radius);
+
+        return new AxisAlignedBB(min,max);
+    }
+
     public static boolean isMultiplierUpgrade(ItemStack stack) {
         if(stack.getItem() instanceof BasicUpgradeItem) {
             return ((BasicUpgradeItem)stack.getItem()).getUpgrade() instanceof ArrowMultiplierUpgrade;
@@ -100,5 +110,9 @@ public class UpgradeUtil {
 
     public static ITextComponent getTranslatedDescriptionForUpgrade(BasicUpgrade upgrade,int numb) {
         return new TranslationTextComponent(upgrade.getNonFormattedName()+".description.text"+numb);
+    }
+
+    public static boolean isExtraBowsArrow(Entity e) {
+        return e.getTags().contains("extrabows");
     }
 }

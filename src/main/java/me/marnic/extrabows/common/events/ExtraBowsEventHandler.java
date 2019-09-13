@@ -13,6 +13,7 @@ import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.screen.inventory.AnvilScreen;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -30,6 +31,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -69,7 +71,7 @@ public class ExtraBowsEventHandler {
     @SubscribeEvent
     public static void itemCrafted(PlayerEvent.ItemCraftedEvent e) {
         if(e.getCrafting().getItem().equals(Upgrades.LIGHTNING_UPGRADE.getItem())) {
-            for(int i = 1;i<14;i++) {
+            for(int i = 1;i<7;i++) {
                 TimerUtil.addTimeCommand(new TimeCommand(20*i, new Runnable() {
                     @Override
                     public void run() {
@@ -84,7 +86,7 @@ public class ExtraBowsEventHandler {
     public static void projectileHit(ProjectileImpactEvent.Arrow e) {
         if(!e.getArrow().world.isRemote) {
             RayTraceResult result = e.getRayTraceResult();
-            if(e.getArrow().getShooter() instanceof ServerPlayerEntity) {
+            if(e.getArrow().getShooter() instanceof ServerPlayerEntity  && UpgradeUtil.isExtraBowsArrow(e.getArrow())) {
                 ServerPlayerEntity playerEntity = (ServerPlayerEntity) e.getArrow().getShooter();
                 if(!e.getArrow().getPersistantData().getBoolean("alreadyHit") && result.getType() != RayTraceResult.Type.MISS) {
                     UpgradeList list = ArrowUtil.ARROWS_TO_UPGRADES.get(e.getArrow().getUniqueID());
@@ -113,7 +115,7 @@ public class ExtraBowsEventHandler {
     @SubscribeEvent
     public static void arrowConstructing(EntityJoinWorldEvent e) {
         if (!e.getWorld().isRemote) {
-            if (e.getEntity() instanceof AbstractArrowEntity) {
+            if (e.getEntity() instanceof AbstractArrowEntity && UpgradeUtil.isExtraBowsArrow(e.getEntity())) {
                 AbstractArrowEntity arrow = (AbstractArrowEntity) e.getEntity();
                 if (arrow.getShooter() instanceof ServerPlayerEntity) {
                     ItemStack bow = ((PlayerEntity) arrow.getShooter()).getHeldItemMainhand();

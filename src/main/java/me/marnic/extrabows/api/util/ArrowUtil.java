@@ -90,6 +90,8 @@ public class ArrowUtil {
             arrowEntity.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
         }
 
+        arrowEntity.addTag("extrabows");
+
         return arrowEntity;
     }
 

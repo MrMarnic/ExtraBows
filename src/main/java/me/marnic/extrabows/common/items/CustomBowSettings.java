@@ -1,6 +1,7 @@
 package me.marnic.extrabows.common.items;
 
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
+import net.minecraft.item.IItemTier;
 
 /**
  * Copyright (c) 24.05.2019
@@ -15,7 +16,7 @@ public class CustomBowSettings {
     private float inaccuracy;
     private float time;
 
-    public CustomBowSettings(String name, int maxUses, double velocityMul,double damage,double inaccuracy,double time) {
+    public CustomBowSettings(String name, int maxUses, double velocityMul, double damage, double inaccuracy, double time) {
         this.name = name;
         this.maxUses = maxUses;
         this.velocityMul = (float) velocityMul;

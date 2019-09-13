@@ -3,24 +3,23 @@ package me.marnic.extrabows.api.upgrade;
 import me.marnic.extrabows.api.util.*;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.BasicBow;
+import me.marnic.extrabows.common.main.ExtraBows;
 import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FireBlock;
+import net.minecraft.block.*;
 import net.minecraft.command.impl.SummonCommand;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.EnderPearlEntity;
 import net.minecraft.entity.passive.SnowGolemEntity;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.FlintAndSteelItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.Explosion;
@@ -46,6 +45,9 @@ public class Upgrades {
     public static ArrowModifierUpgrade EXPLOSIVE_UPGRADE;
     public static ArrowModifierUpgrade WATER_UPGRADE;
     public static ArrowModifierUpgrade BRIDGE_UPGRADE;
+    public static ArrowModifierUpgrade BONE_MEAL_UPGRADE;
+    public static ArrowModifierUpgrade PUSH_UPGRADE;
+    public static ArrowModifierUpgrade FLYING_UPGRADE;
 
     public static ArrowModifierUpgrade HEAL_FROM_DAMAGE;
     public static ArrowModifierUpgrade ARROW_COST;
@@ -266,7 +268,7 @@ public class Upgrades {
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 if(entity instanceof LivingEntity) {
                     if(RandomUtil.isChance(3,1)) {
-                        player.heal(0.5f);
+                        player.heal(1f);
                     }
                 }
             }
@@ -280,7 +282,7 @@ public class Upgrades {
         ARROW_COST = new ArrowModifierUpgrade("arrow_cost_upgrade",ExtraBowsConfig.DURABILITY_ARROW_COST_UPGRADE) {
             @Override
             public void handleArrowCreate(AbstractArrowEntity arrow, PlayerEntity player, UpgradeList upgradeList) {
-                if(RandomUtil.isChance(8,1)) {
+                if(RandomUtil.isChance(3,1)) {
                     if(!player.addItemStackToInventory(new ItemStack(Items.ARROW,1))) {
                         player.dropItem(new ItemStack(Items.ARROW,1),true);
                     }
@@ -320,6 +322,55 @@ public class Upgrades {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this,1),UpgradeUtil.getTranslatedDescriptionForUpgrade(this,2));
             }
         };
+
+         /*BONE_MEAL_UPGRADE = new ArrowModifierUpgrade("bone_meal_upgrade", ExtraBowsConfig.DURABILITY_BONE_MEAL_UPGRADE) {
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+                Stream<BlockPos> list = UpgradeUtil.getBlocksInRadius(pos,3);
+
+                list.forEach((blockPos -> {
+                    if((world.getBlockState(blockPos).getBlock()) instanceof IGrowable) {
+                        if(RandomUtil.isChance(2,1)) {
+                            BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL),world,blockPos,player);
+                        }
+                    }
+                }));
+            }
+        };
+
+        PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade",ExtraBowsConfig.DURABILITY_PUSH_UPGRADE) {
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+                world.getEntitiesWithinAABB(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(pos,6)).forEach((livingEntity -> {
+
+                    double deltaX = (livingEntity.posX-arrow.posX);
+                    double deltaZ = (livingEntity.posZ-arrow.posZ);
+
+                    double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
+
+                    livingEntity.addVelocity(deltaX/highestValue,0.7f,deltaZ/highestValue);
+                }));
+            }
+
+            @Override
+            public void handleEntityHit(Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+                world.getEntitiesWithinAABB(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(entity.getPosition(),6)).forEach((livingEntity -> {
+                        double deltaX = (livingEntity.posX-arrow.posX);
+                        double deltaZ = (livingEntity.posZ-arrow.posZ);
+
+                        double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
+
+                        livingEntity.addVelocity(deltaX/highestValue,0.7f,deltaZ/highestValue);
+                }));
+            }
+        };
+
+        FLYING_UPGRADE = new ArrowModifierUpgrade("flying_upgrade") {
+            @Override
+            public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+                player.startRiding(arrow);
+            }
+        };*/
 
         BRIDGE_UPGRADE = new BridgeUpgrade();
     }

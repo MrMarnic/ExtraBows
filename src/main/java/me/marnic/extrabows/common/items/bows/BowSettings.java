@@ -2,6 +2,9 @@ package me.marnic.extrabows.common.items.bows;
 
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.CustomBowSettings;
+import net.minecraft.item.IItemTier;
+import net.minecraft.item.ItemTier;
+import net.minecraft.item.crafting.Ingredient;
 
 /**
  * Copyright (c) 03.07.2019
