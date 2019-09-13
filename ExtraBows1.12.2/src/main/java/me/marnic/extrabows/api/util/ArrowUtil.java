@@ -52,9 +52,6 @@ public class ArrowUtil {
         CustomBowSettings settings = basicBow.getSettings();
         EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, bow, arrow, entityplayer, basicBow, entityplayer);
         UpgradeUtil.getUpgradesFromStackNEW(bow).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE, entityarrow, entityplayer, bow);
-        /*
-        In this line handleArrowCreate of the upgrades should be handled
-         */
 
         shootArrow(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus, entityarrow, yawplus);
         if (f == 1.0F) {
@@ -84,6 +81,8 @@ public class ArrowUtil {
         if (flag1 || entityplayer.capabilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
             entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
+
+        entityarrow.addTag("extrabows");
 
         return entityarrow;
     }

@@ -8,7 +8,7 @@ package me.marnic.extrabows.common.main;
 public class Identification {
     public static final String MODID = "extrabows";
     public static final String NAME = "Extra Bows";
-    public static final String VERSION = "v1.12.2 b8";
+    public static final String VERSION = "v1.12.2 b9";
     public static final String CLIENT_PROXY_PATH = "me.marnic." + MODID + ".common.proxy.ClientProxy";
     public static final String SERVER_PROXY_PATH = "me.marnic." + MODID + ".common.proxy.CommonProxy";
 }

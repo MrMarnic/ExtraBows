@@ -19,6 +19,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RayTraceResult;
@@ -102,7 +103,7 @@ public class ExtraBowsEventHandler {
     public static void projectileHit(ProjectileImpactEvent e) {
         if (e.getEntity() instanceof EntityArrow) {
             EntityArrow arrow = (EntityArrow) e.getEntity();
-            if (arrow.shootingEntity instanceof EntityPlayer) {
+            if (arrow.shootingEntity instanceof EntityPlayer && UpgradeUtil.isExtraBowsArrow(arrow)) {
                 EntityPlayer player = (EntityPlayer) arrow.shootingEntity;
                 if (!arrow.getEntityData().getBoolean("alreadyHit")) {
                     arrow.getEntityData().setBoolean("alreadyHit", true);
@@ -128,7 +129,8 @@ public class ExtraBowsEventHandler {
     @SubscribeEvent
     public static void arrowConstructing(EntityJoinWorldEvent e) {
         if (!e.getWorld().isRemote) {
-            if (e.getEntity() instanceof EntityArrow) {
+            if (e.getEntity() instanceof EntityArrow && UpgradeUtil.isExtraBowsArrow(e.getEntity())) {
+
                 EntityArrow arrow = (EntityArrow) e.getEntity();
                 if (arrow.shootingEntity instanceof EntityPlayerMP) {
                     ItemStack bow = ((EntityPlayer) arrow.shootingEntity).getHeldItemMainhand();
