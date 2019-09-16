@@ -19,6 +19,7 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -174,9 +175,11 @@ public class Upgrades {
         };
 
         ENDER_UPGRADE = new ArrowModifierUpgrade("ender_upgrade",ExtraBowsConfig.DURABILITY_ENDER_UPGRADE) {
+
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 player.setPositionAndUpdate(pos.getX(),pos.getY()+1,pos.getZ());
+                player.attackEntityFrom(DamageSource.FALL,2);
             }
 
             @Override
@@ -323,7 +326,7 @@ public class Upgrades {
             }
         };
 
-         /*BONE_MEAL_UPGRADE = new ArrowModifierUpgrade("bone_meal_upgrade", ExtraBowsConfig.DURABILITY_BONE_MEAL_UPGRADE) {
+         BONE_MEAL_UPGRADE = new ArrowModifierUpgrade("bone_meal_upgrade", ExtraBowsConfig.DURABILITY_BONE_MEAL_UPGRADE) {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 Stream<BlockPos> list = UpgradeUtil.getBlocksInRadius(pos,3);
@@ -370,7 +373,7 @@ public class Upgrades {
             public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
                 player.startRiding(arrow);
             }
-        };*/
+        };
 
         BRIDGE_UPGRADE = new BridgeUpgrade();
     }

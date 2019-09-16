@@ -15,6 +15,7 @@ import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.AnvilScreen;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.EnderPearlEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -88,10 +89,10 @@ public class ExtraBowsEventHandler {
             RayTraceResult result = e.getRayTraceResult();
             if(e.getArrow().getShooter() instanceof ServerPlayerEntity  && UpgradeUtil.isExtraBowsArrow(e.getArrow())) {
                 ServerPlayerEntity playerEntity = (ServerPlayerEntity) e.getArrow().getShooter();
-                if(!e.getArrow().getPersistantData().getBoolean("alreadyHit") && result.getType() != RayTraceResult.Type.MISS) {
+                if(!e.getArrow().getTags().contains("alreadyHit") && result.getType() != RayTraceResult.Type.MISS) {
                     UpgradeList list = ArrowUtil.ARROWS_TO_UPGRADES.get(e.getArrow().getUniqueID());
                     if(list != null) {
-                        e.getArrow().getPersistantData().putBoolean("alreadyHit",true);
+                        e.getArrow().getTags().add("alreadyHit");
                         if(result.getType()== RayTraceResult.Type.BLOCK) {
                             BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) result;
                             list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.BLOCK_HIT, blockRayTraceResult.getPos(), null, e.getEntity().world, playerEntity, e.getArrow());
@@ -107,6 +108,17 @@ public class ExtraBowsEventHandler {
                             command.setEnd(true);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void enderPearlHit(ProjectileImpactEvent.Throwable e) {
+        if(!e.getThrowable().world.isRemote) {
+            if(e.getThrowable() instanceof EnderPearlEntity) {
+                if(e.getRayTraceResult().getType()== RayTraceResult.Type.BLOCK) {
+                    System.out.println(e.getEntity().world.getBlockState(((BlockRayTraceResult)e.getRayTraceResult()).getPos()).getBlock().getRegistryName());
                 }
             }
         }
@@ -136,7 +148,7 @@ public class ExtraBowsEventHandler {
                                 }
                             }
 
-                            if (!arrow.getPersistantData().getBoolean("alreadyHit")) {
+                            if (!arrow.getTags().contains("alreadyHit")) {
                                 list.handleOnUpdatedEvent(arrow, arrow.world);
                             } else {
                                 command.setEnd(true);
