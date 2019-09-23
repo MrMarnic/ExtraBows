@@ -209,6 +209,11 @@ public class BasicBow extends BowItem implements BasicItem{
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
         return new StorageProvider();
     }
+
+    @Override
+    public boolean getIsRepairable(ItemStack left, ItemStack right) {
+        return right.getItem().equals(settings.getType());
+    }
 }
 
 class StorageProvider implements ICapabilitySerializable<CompoundNBT>, ICapabilityProvider {

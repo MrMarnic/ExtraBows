@@ -2,6 +2,10 @@ package me.marnic.extrabows.common.items;
 
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import net.minecraft.item.IItemTier;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.tags.ItemTags;
 
 /**
  * Copyright (c) 24.05.2019
@@ -15,6 +19,7 @@ public class CustomBowSettings {
     private float damage;
     private float inaccuracy;
     private float time;
+    private Item type;
 
     public CustomBowSettings(String name, int maxUses, double velocityMul, double damage, double inaccuracy, double time) {
         this.name = name;
@@ -44,6 +49,11 @@ public class CustomBowSettings {
 
     }
 
+    public CustomBowSettings setType(Item type) {
+        this.type = type;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -66,6 +76,10 @@ public class CustomBowSettings {
 
     public float getTime() {
         return time;
+    }
+
+    public Item getType() {
+        return type;
     }
 
     public static final float NORMAL_DAMAGE = 0;

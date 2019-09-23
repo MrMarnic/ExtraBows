@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#i#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "extrabows:strong_bone"
+    },
+    "i": {
+      "item": "extrabows:upgrade_plate"
+    }
+  },
+  "result": {
+    "item": "extrabows:bone_meal_upgrade"
+  }
+}

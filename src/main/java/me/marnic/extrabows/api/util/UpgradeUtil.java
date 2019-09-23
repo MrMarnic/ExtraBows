@@ -72,6 +72,12 @@ public class UpgradeUtil {
         });
     }
 
+    public static void copyUpgradesToStack(ItemStack old,ItemStack newOne) {
+        ItemStackHandler handlerOld = getHandlerForItemStackNEW(old);
+
+        UpgradeUtil.saveUpgradesToStackNEW(newOne,handlerOld);
+    }
+
     public static Stream<BlockPos> getBlocksInRadius(BlockPos center, int radius) {
         BlockPos min = new BlockPos(center.getX() - radius,center.getY() - radius,center.getZ() - radius);
         BlockPos max = new BlockPos(center.getX() + radius,center.getY() + radius,center.getZ() + radius);

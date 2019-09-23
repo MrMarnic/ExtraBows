@@ -9,13 +9,17 @@ import me.marnic.extrabows.common.blocks.tileentities.TileEntityBridgeBlock;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.fluid.WaterFluid;
+import net.minecraft.item.BucketItem;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.IFluidBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +77,14 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     public static boolean placeBlock(BlockPos pos, BlockState state, World world) {
         if(world.isAirBlock(pos)) {
             world.setBlockState(pos,state);
+            return true;
+        }else if(world.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
+            world.setBlockState(pos,state);
+            ((TileEntityBridgeBlock)world.getTileEntity(pos)).setFluid(Blocks.WATER);
+            return true;
+        }else if(world.getBlockState(pos).getBlock().equals(Blocks.LAVA)) {
+            world.setBlockState(pos,state);
+            ((TileEntityBridgeBlock)world.getTileEntity(pos)).setFluid(Blocks.LAVA);
             return true;
         }
         return false;

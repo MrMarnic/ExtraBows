@@ -4,6 +4,7 @@ import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.CustomBowSettings;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemTier;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 
 /**
@@ -20,10 +21,10 @@ public class BowSettings {
     public static CustomBowSettings EMERALD_BOW;
 
     public static void init() {
-        STONE_BOW = new CustomBowSettings("stone_bow", ExtraBowsConfig.STONE_BOW);
-        IRON_BOW = new CustomBowSettings("iron_bow", ExtraBowsConfig.IRON_BOW);
-        GOLDEN_BOW = new CustomBowSettings("golden_bow", ExtraBowsConfig.GOLD_BOW);
-        DIAMOND_BOW = new CustomBowSettings("diamond_bow", ExtraBowsConfig.DIAMOND_BOW);
-        EMERALD_BOW = new CustomBowSettings("emerald_bow", ExtraBowsConfig.EMERALD_BOW);
+        STONE_BOW = new CustomBowSettings("stone_bow", ExtraBowsConfig.STONE_BOW).setType(Items.COBBLESTONE);
+        IRON_BOW = new CustomBowSettings("iron_bow", ExtraBowsConfig.IRON_BOW).setType(Items.IRON_INGOT);
+        GOLDEN_BOW = new CustomBowSettings("golden_bow", ExtraBowsConfig.GOLD_BOW).setType(Items.GOLD_INGOT);
+        DIAMOND_BOW = new CustomBowSettings("diamond_bow", ExtraBowsConfig.DIAMOND_BOW).setType(Items.DIAMOND);
+        EMERALD_BOW = new CustomBowSettings("emerald_bow", ExtraBowsConfig.EMERALD_BOW).setType(Items.EMERALD);
     }
 }

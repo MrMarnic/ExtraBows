@@ -13,6 +13,10 @@
   "item.extrabows.water_upgrade": "Wasser Upgrade",
   "item.extrabows.ender_upgrade": "Ender Upgrade",
   "item.extrabows.bridge_upgrade": "Brücken Upgrade",
+  "item.extrabows.push_upgrade": "Push Upgrade",
+  "item.extrabows.flying_upgrade": "Flug Upgrade",
+  "item.extrabows.bone_meal_upgrade": "Knochenmehl Upgrade",
+  "item.extrabows.meteor_upgrade": "Meteor Upgrade",
 
   "item.extrabows.stone_bow": "Stein Bogen",
   "item.extrabows.golden_bow": "Gold Bogen",
@@ -55,6 +59,14 @@
   "double_upgrade.description.text": "Schießt zwei Pfeile",
 
   "triple_upgrade.description.text": "Schießt drei Pfeile",
+
+  "push_upgrade.description.text":"Schiebt Tiere in einem Radius von 5 Blöcken weg",
+
+  "flying_upgrade.description.text": "Lässt dich auf einem Pfeil fliegen",
+
+  "bone_meal_upgrade.description.text": "Lässt Pflanzen in einem Radius von 3 Blöcken zu einer Chance von 50 Prozent wachsen",
+
+  "meteor_upgrade.description.text": "Spawnt einen Meteor in der Höhe von 30 Blöcken",
 
   "key.extrabows.category": "Extra Bows Controlls"
 }

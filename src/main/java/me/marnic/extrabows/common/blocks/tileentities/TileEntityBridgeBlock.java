@@ -2,6 +2,9 @@ package me.marnic.extrabows.common.blocks.tileentities;
 
 import me.marnic.extrabows.common.main.ExtraBows;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -15,6 +18,7 @@ import net.minecraft.tileentity.TileEntityType;
 public class TileEntityBridgeBlock extends TileEntity implements ITickableTileEntity {
 
     private int ticksToLive;
+    private Block toPlace;
 
     public TileEntityBridgeBlock() {
         super(ExtraBowsObjects.BRIDGE_BLOCK_TILE_ENTITY);
@@ -46,8 +50,15 @@ public class TileEntityBridgeBlock extends TileEntity implements ITickableTileEn
     public void tick() {
         if(ticksToLive<=0) {
             world.removeBlock(pos,false);
+            if(toPlace != null) {
+                world.setBlockState(pos, toPlace.getDefaultState());
+            }
         }else {
             ticksToLive--;
         }
+    }
+
+    public void setFluid(Block state) {
+        this.toPlace = state;
     }
 }
