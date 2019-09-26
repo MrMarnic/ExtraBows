@@ -12,6 +12,10 @@ import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
+import me.marnic.extrabows.common.main.Identification;
+import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
+import me.marnic.extrabows.common.packet.PacketUpdateArrow;
+import me.marnic.extrabows.common.recipes.BasicBowRecipe;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,9 +23,10 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -35,6 +40,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashMap;
 
 /**
  * Copyright (c) 24.05.2019
@@ -65,6 +72,34 @@ public class ExtraBowsEventHandler {
         for (IModelRegistry registry : ExtraBowsRegistry.MODELS_TO_REGISTER) {
             registry.registerModel();
         }
+    }
+
+    @SubscribeEvent
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> e) {
+        HashMap<ResourceLocation,IRecipe> bowRecipes = new HashMap<>();
+
+        e.getRegistry().getValuesCollection().stream().filter( r -> r.getRegistryName().getResourceDomain().equalsIgnoreCase(Identification.MODID) && r.getRegistryName().getResourcePath().contains("bow")).forEach(r -> {
+            bowRecipes.put(r.getRegistryName(),r);
+        });
+
+        bowRecipes.forEach((k,v)-> {
+
+            if(k.getResourcePath().contains("stone_bow")) {
+                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.STONE_BOW)).setRegistryName(k));
+            }
+            if(k.getResourcePath().contains("golden_bow")) {
+                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.GOLD_BOW)).setRegistryName(k));
+            }
+            if(k.getResourcePath().contains("iron_bow")) {
+                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.IRON_BOW)).setRegistryName(k));
+            }
+            if(k.getResourcePath().contains("diamond_bow")) {
+                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.DIAMOND_BOW)).setRegistryName(k));
+            }
+            if(k.getResourcePath().contains("emerald_bow")) {
+                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.EMERALD_BOW)).setRegistryName(k));
+            }
+        });
     }
 
     @SideOnly(Side.CLIENT)
@@ -103,8 +138,17 @@ public class ExtraBowsEventHandler {
     public static void projectileHit(ProjectileImpactEvent e) {
         if (e.getEntity() instanceof EntityArrow) {
             EntityArrow arrow = (EntityArrow) e.getEntity();
+
             if (arrow.shootingEntity instanceof EntityPlayer && UpgradeUtil.isExtraBowsArrow(arrow)) {
                 EntityPlayer player = (EntityPlayer) arrow.shootingEntity;
+                if(e.getRayTraceResult().typeOfHit == RayTraceResult.Type.ENTITY) {
+                    if(arrow.shootingEntity.equals(e.getRayTraceResult().entityHit)) {
+                        if(arrow.getTags().contains("flyingUpgrade")) {
+                            e.setCanceled(true);
+                        }
+                    }
+                }
+
                 if (!arrow.getEntityData().getBoolean("alreadyHit")) {
                     arrow.getEntityData().setBoolean("alreadyHit", true);
                     UpgradeList list = ArrowUtil.ARROWS_TO_UPGRADES.get(arrow.getUniqueID());
@@ -165,6 +209,15 @@ public class ExtraBowsEventHandler {
 
                     list.handleModifierEvent(ArrowModifierUpgrade.EventType.ENTITY_INIT, arrow, (EntityPlayer) arrow.shootingEntity, bow);
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void startTracking(net.minecraftforge.event.entity.player.PlayerEvent.StartTracking e) {
+        if(e.getTarget() instanceof EntityArrow) {
+            if(UpgradeUtil.isExtraBowsArrow(e.getTarget()) && e.getTarget().getTags().contains("flyingUpgrade")) {
+                ExtraBowsPacketHandler.INSTANCE.sendTo(new PacketUpdateArrow(((EntityArrow)e.getTarget())), (EntityPlayerMP) e.getEntityPlayer());
             }
         }
     }

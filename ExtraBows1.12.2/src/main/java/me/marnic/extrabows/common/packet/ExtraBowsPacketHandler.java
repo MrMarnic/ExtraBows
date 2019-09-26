@@ -16,5 +16,6 @@ public class ExtraBowsPacketHandler {
     public static void init() {
         INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketOpenGUI.class, PacketOpenUpgradeGUI.class, 0, Side.SERVER);
         INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketSendDestroyMessage.class, PacketSendDestroyMessage.class, 1, Side.CLIENT);
+        INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketUpdateArrow.class,PacketUpdateArrow.class,2,Side.CLIENT);
     }
 }

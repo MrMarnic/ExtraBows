@@ -1,6 +1,7 @@
 package me.marnic.extrabows.common.items;
 
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
+import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
 
 /**
@@ -15,6 +16,7 @@ public class CustomBowSettings {
     private float damage;
     private float inaccuracy;
     private float time;
+    private Item type;
 
     private PotionEffect effect;
 
@@ -50,6 +52,11 @@ public class CustomBowSettings {
 
     }
 
+    public CustomBowSettings setType(Item type) {
+        this.type = type;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -72,6 +79,10 @@ public class CustomBowSettings {
 
     public float getTime() {
         return time;
+    }
+
+    public Item getType() {
+        return type;
     }
 
     public PotionEffect getEffect() {

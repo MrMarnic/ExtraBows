@@ -49,7 +49,7 @@ public class UpgradeList {
     }
 
     public boolean contains(BasicUpgrade upgrade) {
-        return (arrowMultiplier.equals(upgrade) | arrowModifiers.contains(upgrade));
+        return ((arrowMultiplier!=null && arrowMultiplier.equals(upgrade)) | arrowModifiers.contains(upgrade));
     }
 
     public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, EntityPlayer player, EntityArrow arrow) {

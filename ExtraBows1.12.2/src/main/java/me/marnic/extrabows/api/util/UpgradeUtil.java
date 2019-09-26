@@ -7,6 +7,7 @@ import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -87,11 +88,24 @@ public class UpgradeUtil {
         }
     }
 
+    public static void copyUpgradesToStack(ItemStack old,ItemStack newOne) {
+        ItemStackHandler handlerOld = getHandlerForItemStackNEW(old);
+
+        UpgradeUtil.saveUpgradesToStackNEW(newOne,handlerOld);
+    }
+
     public static Iterable<BlockPos> getBlocksInRadius(BlockPos center, int radius) {
         BlockPos min = new BlockPos(center.getX() - radius, center.getY() - radius, center.getZ() - radius);
         BlockPos max = new BlockPos(center.getX() + radius, center.getY() + radius, center.getZ() + radius);
 
         return BlockPos.getAllInBox(min, max);
+    }
+
+    public static AxisAlignedBB getRadiusBoundingBox(BlockPos center, int radius) {
+        BlockPos min = new BlockPos(center.getX() - radius,center.getY() - radius,center.getZ() - radius);
+        BlockPos max = new BlockPos(center.getX() + radius,center.getY() + radius,center.getZ() + radius);
+
+        return new AxisAlignedBB(min,max);
     }
 
     public static boolean isMultiplierUpgrade(ItemStack stack) {

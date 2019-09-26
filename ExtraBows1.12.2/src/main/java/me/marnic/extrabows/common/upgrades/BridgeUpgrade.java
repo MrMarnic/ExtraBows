@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySpectralArrow;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -69,8 +70,16 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     }
 
     public static boolean placeBlock(BlockPos pos, IBlockState state, World world) {
-        if (world.isAirBlock(pos)) {
-            world.setBlockState(pos, state);
+        if(world.isAirBlock(pos)) {
+            world.setBlockState(pos,state);
+            return true;
+        }else if(world.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
+            world.setBlockState(pos,state);
+            ((TileEntityBridgeBlock)world.getTileEntity(pos)).setFluid(Blocks.WATER);
+            return true;
+        }else if(world.getBlockState(pos).getBlock().equals(Blocks.LAVA)) {
+            world.setBlockState(pos,state);
+            ((TileEntityBridgeBlock)world.getTileEntity(pos)).setFluid(Blocks.LAVA);
             return true;
         }
         return false;

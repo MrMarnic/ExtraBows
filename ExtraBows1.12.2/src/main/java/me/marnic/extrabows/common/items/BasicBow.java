@@ -174,6 +174,11 @@ public class BasicBow extends ItemBow implements BasicItem {
 
         return new StorageProvider();
     }
+
+    @Override
+    public boolean getIsRepairable(ItemStack left, ItemStack right) {
+        return right.getItem().equals(settings.getType());
+    }
 }
 
 class StorageProvider implements ICapabilitySerializable<NBTTagCompound>, ICapabilityProvider {

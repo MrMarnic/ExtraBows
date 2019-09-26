@@ -3,19 +3,30 @@ package me.marnic.extrabows.api.upgrade;
 import me.marnic.extrabows.api.util.*;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.BasicBow;
+import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
+import me.marnic.extrabows.common.packet.PacketUpdateArrow;
 import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -36,6 +47,9 @@ public class Upgrades {
     public static ArrowModifierUpgrade EXPLOSIVE_UPGRADE;
     public static ArrowModifierUpgrade WATER_UPGRADE;
     public static ArrowModifierUpgrade BRIDGE_UPGRADE;
+    public static ArrowModifierUpgrade PUSH_UPGRADE;
+    public static ArrowModifierUpgrade FLYING_UPGRADE;
+    public static ArrowModifierUpgrade METEOR_UPGRADE;
 
     public static ArrowModifierUpgrade HEAL_FROM_DAMAGE;
     public static ArrowModifierUpgrade ARROW_COST;
@@ -292,7 +306,7 @@ public class Upgrades {
                     }
                 }
 
-                if (RandomUtil.isChance(6, 1)) {
+                if (RandomUtil.isChance(6, 1) && world.provider.getDimensionType()!= DimensionType.NETHER) {
                     world.setBlockState(pos.add(0, 1, 0), Blocks.FLOWING_WATER.getDefaultState());
                     TimerUtil.addTimeCommand(new TimeCommand(20 * 5, () -> world.setBlockToAir(pos.add(0, 1, 0))));
                 }
@@ -301,6 +315,103 @@ public class Upgrades {
             @Override
             public List<String> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 1), UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 2));
+            }
+        };
+
+        PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade",ExtraBowsConfig.DURABILITY_PUSH_UPGRADE) {
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
+                world.getEntitiesWithinAABB(EntityLiving.class,UpgradeUtil.getRadiusBoundingBox(pos,6)).forEach((livingEntity -> {
+
+                    double deltaX = (livingEntity.posX-arrow.posX);
+                    double deltaZ = (livingEntity.posZ-arrow.posZ);
+
+                    int posX = deltaX>0 ? 1:-1;
+                    int posZ = deltaZ>0 ? 1:-1;
+
+                    deltaX = Math.abs(deltaX);
+                    deltaZ = Math.abs(deltaZ);
+
+                    double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
+
+                    livingEntity.addVelocity(posX * (deltaX/highestValue),0.7f,posZ * (deltaZ/highestValue));
+                }));
+            }
+
+            @Override
+            public void handleEntityHit(Entity entity, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
+                world.getEntitiesWithinAABB(EntityLiving.class,UpgradeUtil.getRadiusBoundingBox(entity.getPosition(),6)).forEach((livingEntity -> {
+                    double deltaX = (livingEntity.posX-arrow.posX);
+                    double deltaZ = (livingEntity.posZ-arrow.posZ);
+
+                    int posX = deltaX>0 ? 1:-1;
+                    int posZ = deltaZ>0 ? 1:-1;
+
+                    deltaX = Math.abs(deltaX);
+                    deltaZ = Math.abs(deltaZ);
+
+                    double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
+
+                    livingEntity.addVelocity(posX * (deltaX/highestValue),0.7f,posZ * (deltaZ/highestValue));
+                }));
+            }
+
+            @Override
+            public List<String> getDescription() {
+                return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
+            }
+        };
+
+        FLYING_UPGRADE = new ArrowModifierUpgrade("flying_upgrade",ExtraBowsConfig.DURABILITY_FLY_UPGRADE) {
+            @Override
+            public void handleEntityInit(EntityArrow arrow, UpgradeList upgradeList, EntityPlayer player) {
+                arrow.getTags().add("flyingUpgrade");
+                player.startRiding(arrow);
+            }
+
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
+                if(arrow.isBeingRidden()) {
+                    player.attackEntityFrom(DamageSource.FALL,2);
+                }
+            }
+
+            @Override
+            public void handleEntityHit(Entity entity, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
+                if(arrow.isBeingRidden()) {
+                    player.attackEntityFrom(DamageSource.FALL,2);
+                }
+            }
+
+            @Override
+            public List<String> getDescription() {
+                return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
+            }
+        };
+
+        METEOR_UPGRADE = new ArrowModifierUpgrade("meteor_upgrade",ExtraBowsConfig.DURABILITY_METEOR_UPGRADE) {
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
+                spawnMeteor(world,arrow);
+            }
+
+            @Override
+            public void handleEntityHit(Entity entity, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
+                spawnMeteor(world,arrow);
+            }
+
+            private void spawnMeteor(World world,EntityArrow arrow) {
+                if(world.isAirBlock(new BlockPos(arrow.posX,arrow.posY + 20,arrow.posZ))) {
+                    EntityFireball fireballEntity = new EntityLargeFireball(world);
+                    fireballEntity.setPositionAndUpdate(arrow.posX,arrow.posY + 20,arrow.posZ);
+                    fireballEntity.addVelocity(0,-2f,0);
+                    world.spawnEntity(fireballEntity);
+                }
+            }
+
+            @Override
+            public List<String> getDescription() {
+                return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
         };
 

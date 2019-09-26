@@ -12,6 +12,10 @@ item.triple_upgrade.name=Triple Arrow Upgrade
 item.water_upgrade.name=Water Upgrade
 item.ender_upgrade.name=Ender Upgrade
 item.bridge_upgrade.name=Bridge Upgrade
+item.push_upgrade.name=Push Upgrade
+item.flying_upgrade.name=Flying Upgrade
+item.bone_meal_upgrade.name=Bone Meal Upgrade
+item.meteor_upgrade.name=Meteor Upgrade
 
 item.stone_bow.name=Stone Bow
 item.golden_bow.name=Gold Bow
@@ -54,5 +58,13 @@ explosive_upgrade.description.text=Creates an explosion on the hit block or enti
 double_upgrade.description.text=Shoots two arrows
 
 triple_upgrade.description.text=Shoots three arrows
+
+push_upgrade.description.text=Pushes animals away in a radius of 5 blocks
+
+flying_upgrade.description.text=Lets you fly on an arrow
+
+bone_meal_upgrade.description.text=Let's plants grow in a radius of 3 Blocks by a chance of 50 percent
+
+meteor_upgrade.description.text=Spawns a meteor 30 blocks above
 
 key.extrabows.category=Extra Bows Controls
