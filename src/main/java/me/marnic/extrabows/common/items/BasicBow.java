@@ -176,4 +176,9 @@ public class BasicBow extends BowItem {
     public UseAction getUseAction(ItemStack itemStack_1) {
         return UseAction.BOW;
     }
+
+    @Override
+    public boolean canRepair(ItemStack left, ItemStack right) {
+        return right.getItem().equals(settings.getType());
+    }
 }

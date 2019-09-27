@@ -9,6 +9,7 @@ import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.blockentities.BlockEntityBridgeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -74,6 +75,14 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     public static boolean placeBlock(BlockPos pos, BlockState state, World world) {
         if(world.isAir(pos)) {
             world.setBlockState(pos,state);
+            return true;
+        }else if(world.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
+            world.setBlockState(pos,state);
+            ((BlockEntityBridgeBlock)world.getBlockEntity(pos)).setFluid(Blocks.WATER);
+            return true;
+        }else if(world.getBlockState(pos).getBlock().equals(Blocks.LAVA)) {
+            world.setBlockState(pos,state);
+            ((BlockEntityBridgeBlock)world.getBlockEntity(pos)).setFluid(Blocks.LAVA);
             return true;
         }
         return false;

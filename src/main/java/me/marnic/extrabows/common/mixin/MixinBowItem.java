@@ -136,30 +136,6 @@ public abstract class MixinBowItem extends RangedWeaponItem {
         }
     }
 
-    @Override
-    @Environment(EnvType.CLIENT)
-    public void appendTooltip(ItemStack stack, World world_1, List<Text> tooltip, TooltipContext tooltipContext_1) {
-        if(stack.getItem().getClass().equals(BowItem.class)) {
-            UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
-            tooltip.add(new LiteralText("Press B to open the Upgrade inventory"));
-            if(!list.hasMul() && !list.hasMods()) {
-                tooltip.add(new LiteralText(new TranslatableText("message.no_upgrades.text").asString()));
-            }else {
-                tooltip.add(new LiteralText("Upgrades:"));
-            }
-            if(list.hasMul()) {
-                tooltip.add(new LiteralText("Arrow Multiplier:"));
-                tooltip.add(new LiteralText("- " + list.getArrowMultiplier().getName()));
-            }
-            if(list.hasMods()) {
-                tooltip.add(new LiteralText("Arrow Modifiers:"));
-                for(BasicUpgrade upgrade:list.getArrowModifiers()) {
-                    tooltip.add(new LiteralText("- " + upgrade.getName()));
-                }
-            }
-        }
-    }
-
     public BowItem getThis() {
         return (BowItem)(Object)this;
     }

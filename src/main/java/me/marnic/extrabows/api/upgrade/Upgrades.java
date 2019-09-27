@@ -1,7 +1,6 @@
 package me.marnic.extrabows.api.upgrade;
 
 import me.marnic.extrabows.api.util.*;
-import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -10,11 +9,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
@@ -23,6 +23,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.explosion.Explosion;
 
 import java.util.List;
@@ -43,6 +44,10 @@ public class Upgrades {
     public static ArrowModifierUpgrade EXPLOSIVE_UPGRADE;
     public static ArrowModifierUpgrade WATER_UPGRADE;
     public static ArrowModifierUpgrade BRIDGE_UPGRADE;
+
+    public static ArrowModifierUpgrade PUSH_UPGRADE;
+    public static ArrowModifierUpgrade FLYING_UPGRADE;
+    public static ArrowModifierUpgrade METEOR_UPGRADE;
 
     public static ArrowModifierUpgrade HEAL_FROM_DAMAGE;
     public static ArrowModifierUpgrade ARROW_COST;
@@ -303,7 +308,7 @@ public class Upgrades {
                     }
                 });
 
-                if (RandomUtil.isChance(6, 1)) {
+                if (RandomUtil.isChance(6, 1) && world.dimension.getType()!= DimensionType.THE_NETHER) {
                     world.setBlockState(pos, Blocks.WATER.getDefaultState());
                     TimerUtil.addTimeCommand(new TimeCommand( 20 * 5, () -> {
                         world.setBlockState(pos, Blocks.STONE.getDefaultState());
@@ -315,6 +320,103 @@ public class Upgrades {
             @Override
             public List<Text> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this,1), UpgradeUtil.getTranslatedDescriptionForUpgrade(this,2));
+            }
+        };
+
+        FLYING_UPGRADE = new ArrowModifierUpgrade("flying_upgrade",DURABILITY_UPGRADE) {
+            @Override
+            public void handleEntityInit(ProjectileEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+                player.startRiding(arrow);
+            }
+
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
+                if(arrow.hasPlayerRider()) {
+                    player.damage(DamageSource.FALL,2);
+                }
+            }
+
+            @Override
+            public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
+                if(arrow.hasPlayerRider()) {
+                    player.damage(DamageSource.FALL,2);
+                }
+            }
+
+            @Override
+            public List<Text> getDescription() {
+                return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
+            }
+        };
+
+        PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade",DURABILITY_UPGRADE) {
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
+                world.getEntities(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(pos,6)).forEach((livingEntity -> {
+
+                    double deltaX = (livingEntity.x-arrow.x);
+                    double deltaZ = (livingEntity.z-arrow.z);
+
+                    int posX = deltaX>0 ? 1:-1;
+                    int posZ = deltaZ>0 ? 1:-1;
+
+                    deltaX = Math.abs(deltaX);
+                    deltaZ = Math.abs(deltaZ);
+
+                    double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
+
+                    livingEntity.addVelocity(posX * (deltaX/highestValue),0.7f,posZ * (deltaZ/highestValue));
+                }));
+            }
+
+            @Override
+            public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
+                world.getEntities(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(entity.getBlockPos(),6)).forEach((livingEntity -> {
+                    double deltaX = (livingEntity.x-arrow.x);
+                    double deltaZ = (livingEntity.z-arrow.z);
+
+                    int posX = deltaX>0 ? 1:-1;
+                    int posZ = deltaZ>0 ? 1:-1;
+
+                    deltaX = Math.abs(deltaX);
+                    deltaZ = Math.abs(deltaZ);
+
+                    double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
+
+                    livingEntity.addVelocity(posX * (deltaX/highestValue),0.7f,posZ * (deltaZ/highestValue));
+                }));
+            }
+
+            @Override
+            public List<Text> getDescription() {
+                return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
+            }
+        };
+        
+        METEOR_UPGRADE = new ArrowModifierUpgrade("meteor_upgrade",DURABILITY_UPGRADE) {
+            @Override
+            public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
+                spawnMeteor(world,arrow);
+            }
+
+            @Override
+            public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
+                spawnMeteor(world,arrow);
+            }
+
+            private void spawnMeteor(World world,ProjectileEntity arrow) {
+                if(world.isAir(new BlockPos(arrow.x,arrow.y + 20,arrow.z))) {
+                    FireballEntity fireballEntity = new FireballEntity(EntityType.FIREBALL,world);
+                    fireballEntity.explosionPower = 2;
+                    fireballEntity.setPosition(arrow.x,arrow.y + 20,arrow.z);
+                    fireballEntity.addVelocity(0,-2f,0);
+                    world.spawnEntity(fireballEntity);
+                }
+            }
+
+            @Override
+            public List<Text> getDescription() {
+                return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
         };
 

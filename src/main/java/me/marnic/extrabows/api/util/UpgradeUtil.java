@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +55,13 @@ public class UpgradeUtil {
         BlockPos max = new BlockPos(center.getX() + radius,center.getY() + radius,center.getZ() + radius);
 
         return BlockPos.iterate(min,max);
+    }
+
+    public static Box getRadiusBoundingBox(BlockPos center, int radius) {
+        BlockPos min = new BlockPos(center.getX() - radius,center.getY() - radius,center.getZ() - radius);
+        BlockPos max = new BlockPos(center.getX() + radius,center.getY() + radius,center.getZ() + radius);
+
+        return new Box(min,max);
     }
 
     public static boolean isUpgrade(ItemStack stack) {

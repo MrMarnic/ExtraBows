@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#A#",
+    "GIG",
+    "#A#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:feather"
+    },
+    "A": {
+      "item": "minecraft:arrow"
+    },
+    "G": {
+      "item": "minecraft:ghast_tear"
+    },
+    "I": {
+      "item": "extrabows:upgrade_plate"
+    }
+  },
+  "result": {
+    "item": "extrabows:flying_upgrade",
+    "count": 1
+  }
+}

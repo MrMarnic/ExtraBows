@@ -1,6 +1,7 @@
 package me.marnic.extrabows.common.blockentities;
 
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +15,7 @@ import net.minecraft.util.Tickable;
 public class BlockEntityBridgeBlock extends BlockEntity implements Tickable {
 
     private int ticksToLive;
+    private Block toPlace;
 
     public BlockEntityBridgeBlock() {
         super(ExtraBowsObjects.BRIDGE_BLOCK_TYPE);
@@ -42,9 +44,17 @@ public class BlockEntityBridgeBlock extends BlockEntity implements Tickable {
     public void tick() {
         if(ticksToLive<=0) {
             world.clearBlockState(pos,false);
+
+            if(toPlace!=null) {
+                world.setBlockState(pos,toPlace.getDefaultState());
+            }
         }else {
             ticksToLive--;
         }
+    }
+
+    public void setFluid(Block toPlace) {
+        this.toPlace = toPlace;
     }
 
     public int getTicksToLive() {

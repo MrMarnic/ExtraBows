@@ -4,9 +4,12 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinProjectile",
-    "MixinBowItem"
+    "MixinBowItem",
+    "AnimalNetMixinServerStartingIntegrated",
+    "AnimalNetMixinServerStartingDedicated"
   ],
   "client": [
+    "MixinBowItemClient"
   ],
   "injectors": {
     "defaultRequire": 1

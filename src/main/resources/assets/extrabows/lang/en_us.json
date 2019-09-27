@@ -13,6 +13,10 @@
   "item.extrabows.water_upgrade": "Water Upgrade",
   "item.extrabows.ender_upgrade": "Ender Upgrade",
   "item.extrabows.bridge_upgrade": "Bridge Upgrade",
+  "item.extrabows.push_upgrade": "Push Upgrade",
+  "item.extrabows.flying_upgrade": "Flying Upgrade",
+  "item.extrabows.bone_meal_upgrade": "Bone Meal Upgrade",
+  "item.extrabows.meteor_upgrade": "Meteor Upgrade",
 
   "item.extrabows.stone_bow": "Stone Bow",
   "item.extrabows.golden_bow": "Gold Bow",
@@ -55,6 +59,14 @@
   "double_upgrade.description.text": "Shoots two arrows",
 
   "triple_upgrade.description.text": "Shoots three arrows",
+
+  "push_upgrade.description.text":"Pushes animals away in a radius of 5 blocks",
+
+  "flying_upgrade.description.text": "Lets you fly on an arrow",
+
+  "bone_meal_upgrade.description.text": "Let's plants grow in a radius of 3 Blocks by a chance of 50 percent",
+
+  "meteor_upgrade.description.text": "Spawns a meteor 30 blocks above",
 
   "key.extrabows.category": "Open Upgrade Inventory"
 }

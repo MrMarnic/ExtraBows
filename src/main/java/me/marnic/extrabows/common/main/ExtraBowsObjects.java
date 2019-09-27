@@ -100,11 +100,11 @@ public class ExtraBowsObjects {
         public static BowSettings EMERALD_BOW;
 
         public static void init() {
-            STONE_BOW = new BowSettings("stone_bow",434,3f,1f, BowSettings.NORMAL_INACCURACY,18f);
-            IRON_BOW = new BowSettings("iron_bow",534,3.5f,2f, BowSettings.NORMAL_INACCURACY,16f);
-            GOLDEN_BOW = new BowSettings("golden_bow",300,4.25f,0, 0.5f,10f);
-            DIAMOND_BOW = new BowSettings("diamond_bow",750,3.75f,5f, BowSettings.NORMAL_INACCURACY,15f);
-            EMERALD_BOW = new BowSettings("emerald_bow",1500,4f,8f, BowSettings.NORMAL_INACCURACY,15f);
+            STONE_BOW = new BowSettings("stone_bow",434,3f,1f, BowSettings.NORMAL_INACCURACY,18f).setType(Items.COBBLESTONE);
+            IRON_BOW = new BowSettings("iron_bow",534,3.5f,2f, BowSettings.NORMAL_INACCURACY,16f).setType(Items.IRON_INGOT);
+            GOLDEN_BOW = new BowSettings("golden_bow",300,4.25f,0, 0.5f,10f).setType(Items.GOLD_INGOT);
+            DIAMOND_BOW = new BowSettings("diamond_bow",750,3.75f,5f, BowSettings.NORMAL_INACCURACY,15f).setType(Items.DIAMOND);
+            EMERALD_BOW = new BowSettings("emerald_bow",1500,4f,8f, BowSettings.NORMAL_INACCURACY,15f).setType(Items.EMERALD);
         }
     }
 }

@@ -1,5 +1,7 @@
 package me.marnic.extrabows.common.items.bows;
 
+import net.minecraft.item.Item;
+
 /**
  * Copyright (c) 07.07.2019
  * Developed by MrMarnic
@@ -13,6 +15,7 @@ public class BowSettings {
     private float inaccuracy;
     private float time;
     private boolean register = true;
+    private Item type;
 
     public BowSettings(String name, int maxUses, float velocityMul,float damage,float inaccuracy,float time) {
         this.name = name;
@@ -29,6 +32,11 @@ public class BowSettings {
         this.damage = NORMAL_DAMAGE;
         this.inaccuracy = NORMAL_INACCURACY;
         this.time = NORMAL_TIME;
+    }
+
+    public BowSettings setType(Item type) {
+        this.type = type;
+        return this;
     }
 
     public static BowSettings DEFAULT = new BowSettings();
@@ -55,6 +63,10 @@ public class BowSettings {
 
     public float getTime() {
         return time;
+    }
+
+    public Item getType() {
+        return type;
     }
 
     public static final float NORMAL_DAMAGE = 0;
