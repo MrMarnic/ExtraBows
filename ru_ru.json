@@ -1,0 +1,72 @@
+{
+  "block.extrabows.bridge_block": "Мостовой Блок",
+  "block.extrabows.strong_stone": "Крепкий Камень",
+
+  "item.extrabows.arrow_cost_upgrade": "Апгрейд Стоимость стрелы",
+  "item.extrabows.heal_from_damage_upgrade": "Исцеляющий Апгрейд",
+  "item.extrabows.fire_upgrade": "Огненный Апгрейд",
+  "item.extrabows.freeze_upgrade": "Замораживающий Апгрейд",
+  "item.extrabows.lightning_upgrade": "Молниевый Апгрейд",
+  "item.extrabows.explosive_upgrade": "Взрывной Апгрейд",
+  "item.extrabows.double_upgrade": "Апгрейд Двойная Стрела",
+  "item.extrabows.triple_upgrade": "Апгрейд Тройная Стрела",
+  "item.extrabows.water_upgrade": "Водяной Апгрейд",
+  "item.extrabows.ender_upgrade": "Эндер Апгрейд",
+  "item.extrabows.bridge_upgrade": "Апгрейд Моста",
+  "item.extrabows.push_upgrade": "Апгрейд Откидывания",
+  "item.extrabows.flying_upgrade": "Апгрейд Левитации",
+  "item.extrabows.bone_meal_upgrade": "Апгрейд Костной Муки",
+  "item.extrabows.meteor_upgrade": "Апгрейд Метеора",
+
+  "item.extrabows.stone_bow": "Каменный лук",
+  "item.extrabows.golden_bow": "Золотой лук",
+  "item.extrabows.iron_bow": "Железный лук",
+  "item.extrabows.diamond_bow": "Алмазный лук",
+  "item.extrabows.emerald_bow": "Изумрудный лук",
+
+  "itemGroup.extrabows_items": "Элементы дополнительных луков",
+
+  "item.extrabows.strong_gold": "Крепкое Золото",
+  "item.extrabows.strong_iron": "Крепкое Железо",
+  "item.extrabows.strong_diamond": "Крепкий Алмаз",
+  "item.extrabows.strong_emerald": "Крепкий Изумруд",
+
+  "item.extrabows.upgrade_plate": "Пластина Апгрейда",
+
+  "message.no_upgrades.text": "Обновления: нет",
+
+  "lightning_upgrade.description.text": "Порождает молнию на блоке удара",
+
+  "fire_upgrade.description.text1": "Размещает огонь на блоке попадания",
+  "fire_upgrade.description.text2": "Поджигает существ",
+
+  "water_upgrade.description.text1": "Тушит пожар в радиусе двух блоков",
+  "water_upgrade.description.text2": "Случайная вероятность порождения воды (исчезает через ~ 5 секунд)",
+
+  "ender_upgrade.description.text": "Телепортирует игрока к блоку удара",
+
+  "bridge_upgrade.description.text1": "Строит мост вдоль линии полета стрел",
+  "bridge_upgrade.description.text2": "Мост исчезнет через ~ 20 секунд",
+
+  "arrow_cost_upgrade.description.text": "Случайный шанс дать игроку стрелу",
+
+  "heal_from_damage_upgrade.description.text": "Случайный шанс дать игроку половину сердца, если он наносит урон",
+
+  "freeze_upgrade.description.text": "Порождает снег на ударном блоке, замерзание воды дает эффект замедления, и может случайным образом вызвать снежного человека",
+
+  "explosive_upgrade.description.text": "Создает взрыв в блоке или объекте попадания",
+
+  "double_upgrade.description.text": "Стреляет двумя стреламии",
+
+  "triple_upgrade.description.text": "Стреляет тремя стрелами",
+
+  "push_upgrade.description.text":"Отбрасывает животных в радиусе 5 блоков",
+
+  "flying_upgrade.description.text": "Позволяет летать на стреле",
+
+  "bone_meal_upgrade.description.text": "Пусть растения вырастут в радиусе 3 блоков с вероятностью 50 процентов",
+
+  "meteor_upgrade.description.text": "Порождает Метеор 30 блоков и выше",
+
+  "key.extrabows.category": "Дополнительные элементы управления луками"
+}
