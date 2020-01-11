@@ -133,7 +133,7 @@ public class ArrowUtil {
 
         if (k > 0)
         {
-            arrowEntity.method_7449(k);
+            arrowEntity.setPunch(k);
         }
 
         if (EnchantmentHelper.getLevel(Enchantments.FLAME, stack) > 0)
