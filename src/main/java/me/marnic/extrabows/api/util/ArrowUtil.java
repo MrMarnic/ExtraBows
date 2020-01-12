@@ -90,15 +90,6 @@ public class ArrowUtil {
         return entity;
     }
 
-    private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy, ProjectileEntity arrow, float yawplus) {
-        yaw=yaw+yawplus;
-        float f = -MathHelper.sin(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
-        float f1 = -MathHelper.sin(pitch * ((float)Math.PI / 180F));
-        float f2 = MathHelper.cos(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
-        arrow.setVelocity((double)f, (double)f1, (double)f2, velocity, inaccuracy);
-        arrow.setVelocity(arrow.getVelocity().add(shooter.getVelocity().x, shooter.onGround ? 0.0D : shooter.getVelocity().y, shooter.getVelocity().z));
-    }
-
     public static ProjectileEntity createArrowComplete(World worldIn, ItemStack itemstack, PlayerEntity playerEntity, BowItem basicBow, float f, ItemStack stack, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
         BowSettings settings = null;
 
@@ -113,8 +104,7 @@ public class ArrowUtil {
         /*
         In this line handleArrowCreate of the upgrades should be handled
          */
-
-        shootArrow(playerEntity, playerEntity.pitch, playerEntity.yaw, 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus,arrowEntity,yawplus);
+        arrowEntity.setProperties(playerEntity, playerEntity.pitch, playerEntity.yaw + yawplus, 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus);
         if (f == 1.0F)
         {
             arrowEntity.setCritical(true);
