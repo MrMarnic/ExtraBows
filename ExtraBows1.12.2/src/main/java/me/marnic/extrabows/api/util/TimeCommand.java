@@ -1,9 +1,9 @@
 package me.marnic.extrabows.api.util;
 
 public class TimeCommand {
+    protected Runnable execute;
     private int endTick;
     private int startTick;
-    protected Runnable execute;
     private int id;
 
     public TimeCommand(int time, Runnable execute, int id) {
@@ -34,12 +34,12 @@ public class TimeCommand {
         return false;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setExecute(Runnable execute) {

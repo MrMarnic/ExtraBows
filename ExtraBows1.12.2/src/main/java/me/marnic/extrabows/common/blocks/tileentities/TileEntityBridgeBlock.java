@@ -41,7 +41,7 @@ public class TileEntityBridgeBlock extends TileEntity implements ITickable {
     public void update() {
         if (ticksToLive <= 0) {
             world.setBlockToAir(pos);
-            if(toPlace != null) {
+            if (toPlace != null) {
                 world.setBlockState(pos, toPlace.getDefaultState());
             }
         } else {

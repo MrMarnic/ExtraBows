@@ -1,20 +1,18 @@
 package me.marnic.extrabows.api.upgrade;
 
+import me.marnic.extrabows.api.energy.ExtraBowsEnergy;
 import me.marnic.extrabows.api.util.*;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.BasicBow;
-import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
-import me.marnic.extrabows.common.packet.PacketUpdateArrow;
+import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
+import me.marnic.extrabows.common.upgrades.EnergyUpgrade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityLargeFireball;
@@ -25,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 
@@ -54,20 +51,21 @@ public class Upgrades {
     public static ArrowModifierUpgrade HEAL_FROM_DAMAGE;
     public static ArrowModifierUpgrade ARROW_COST;
 
+    public static ArrowModifierUpgrade ENERGY_UPGRADE;
+
     public static void init() {
         DOUBLE_UPGRADE = new ArrowMultiplierUpgrade("double_upgrade", ExtraBowsConfig.DURABILITY_DOUBLE_UPGRADE) {
             @Override
-            public void handleAction(BasicBow basicBow, World worldIn, ItemStack bow, EntityPlayer entityplayer, float f, ItemStack arrow, boolean flag1, UpgradeList list) {
+            public void handleAction(BasicBow basicBow, World worldIn, ItemStack bow, EntityPlayer entityplayer, float f, ItemStack arrow, boolean flag1, UpgradeList list, boolean isLoaded) {
 
-                if (arrow.getCount() >= 2 || flag1) {
-                    EntityArrow entityarrow2 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 2.5f, list);
+                if (arrow.getCount() >= 2 || flag1 || isLoaded) {
+                    EntityArrow entityarrow2 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 2.5f, list, isLoaded);
                     worldIn.spawnEntity(entityarrow2);
 
-                    EntityArrow entityarrow1 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, -2.5f, list);
+                    EntityArrow entityarrow1 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, -2.5f, list, isLoaded);
                     worldIn.spawnEntity(entityarrow1);
                 } else {
-                    EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 0, list);
-
+                    EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 0, list, isLoaded);
                     worldIn.spawnEntity(entityarrow);
                 }
             }
@@ -75,6 +73,11 @@ public class Upgrades {
             @Override
             public void shrinkStack(ItemStack stack) {
                 stack.shrink(stack.getCount() >= 2 ? 2 : 1);
+            }
+
+            @Override
+            public void removeEnergy(ItemStack stack, ExtraBowsEnergy extraBowsEnergy) {
+                extraBowsEnergy.extractEnergy(2 * CustomBowSettings.ENERGY_COST_PER_ARROW, false);
             }
 
             @Override
@@ -89,20 +92,20 @@ public class Upgrades {
         };
         TRIPLE_UPGRADE = new ArrowMultiplierUpgrade("triple_upgrade", ExtraBowsConfig.DURABILITY_TRIPLE_UPGRADE) {
             @Override
-            public void handleAction(BasicBow basicBow, World worldIn, ItemStack bow, EntityPlayer entityplayer, float f, ItemStack arrow, boolean flag1, UpgradeList list) {
-                if (arrow.getCount() >= 3 || flag1) {
-                    EntityArrow entityarrow1 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 2.5f, list);
+            public void handleAction(BasicBow basicBow, World worldIn, ItemStack bow, EntityPlayer entityplayer, float f, ItemStack arrow, boolean flag1, UpgradeList list, boolean isLoaded) {
+                if (arrow.getCount() >= 3 || flag1 || isLoaded) {
+                    EntityArrow entityarrow1 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 2.5f, list, isLoaded);
                     worldIn.spawnEntity(entityarrow1);
 
-                    EntityArrow entityarrow2 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 0, list);
+                    EntityArrow entityarrow2 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 0, list, isLoaded);
                     worldIn.spawnEntity(entityarrow2);
 
-                    EntityArrow entityarrow3 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, -2.5f, list);
+                    EntityArrow entityarrow3 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, -2.5f, list, isLoaded);
                     worldIn.spawnEntity(entityarrow3);
                 } else if (arrow.getCount() == 2) {
-                    Upgrades.DOUBLE_UPGRADE.handleAction(basicBow, worldIn, bow, entityplayer, f, arrow, flag1, list);
+                    Upgrades.DOUBLE_UPGRADE.handleAction(basicBow, worldIn, bow, entityplayer, f, arrow, flag1, list, isLoaded);
                 } else {
-                    EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 0, list);
+                    EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 0, list, isLoaded);
 
                     worldIn.spawnEntity(entityarrow);
                 }
@@ -111,6 +114,11 @@ public class Upgrades {
             @Override
             public void shrinkStack(ItemStack stack) {
                 stack.shrink(stack.getCount() >= 3 ? 3 : stack.getCount() >= 2 ? 2 : 1);
+            }
+
+            @Override
+            public void removeEnergy(ItemStack stack, ExtraBowsEnergy extraBowsEnergy) {
+                extraBowsEnergy.extractEnergy(3 * CustomBowSettings.ENERGY_COST_PER_ARROW, false);
             }
 
             @Override
@@ -306,7 +314,7 @@ public class Upgrades {
                     }
                 }
 
-                if (RandomUtil.isChance(6, 1) && world.provider.getDimensionType()!= DimensionType.NETHER) {
+                if (RandomUtil.isChance(6, 1) && world.provider.getDimensionType() != DimensionType.NETHER) {
                     world.setBlockState(pos.add(0, 1, 0), Blocks.FLOWING_WATER.getDefaultState());
                     TimerUtil.addTimeCommand(new TimeCommand(20 * 5, () -> world.setBlockToAir(pos.add(0, 1, 0))));
                 }
@@ -318,41 +326,41 @@ public class Upgrades {
             }
         };
 
-        PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade",ExtraBowsConfig.DURABILITY_PUSH_UPGRADE) {
+        PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade", ExtraBowsConfig.DURABILITY_PUSH_UPGRADE) {
             @Override
             public void handleBlockHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
-                world.getEntitiesWithinAABB(EntityLiving.class,UpgradeUtil.getRadiusBoundingBox(pos,6)).forEach((livingEntity -> {
+                world.getEntitiesWithinAABB(EntityLiving.class, UpgradeUtil.getRadiusBoundingBox(pos, 6)).forEach((livingEntity -> {
 
-                    double deltaX = (livingEntity.posX-arrow.posX);
-                    double deltaZ = (livingEntity.posZ-arrow.posZ);
+                    double deltaX = (livingEntity.posX - arrow.posX);
+                    double deltaZ = (livingEntity.posZ - arrow.posZ);
 
-                    int posX = deltaX>0 ? 1:-1;
-                    int posZ = deltaZ>0 ? 1:-1;
+                    int posX = deltaX > 0 ? 1 : -1;
+                    int posZ = deltaZ > 0 ? 1 : -1;
 
                     deltaX = Math.abs(deltaX);
                     deltaZ = Math.abs(deltaZ);
 
                     double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
 
-                    livingEntity.addVelocity(posX * (deltaX/highestValue),0.7f,posZ * (deltaZ/highestValue));
+                    livingEntity.addVelocity(posX * (deltaX / highestValue), 0.7f, posZ * (deltaZ / highestValue));
                 }));
             }
 
             @Override
             public void handleEntityHit(Entity entity, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
-                world.getEntitiesWithinAABB(EntityLiving.class,UpgradeUtil.getRadiusBoundingBox(entity.getPosition(),6)).forEach((livingEntity -> {
-                    double deltaX = (livingEntity.posX-arrow.posX);
-                    double deltaZ = (livingEntity.posZ-arrow.posZ);
+                world.getEntitiesWithinAABB(EntityLiving.class, UpgradeUtil.getRadiusBoundingBox(entity.getPosition(), 6)).forEach((livingEntity -> {
+                    double deltaX = (livingEntity.posX - arrow.posX);
+                    double deltaZ = (livingEntity.posZ - arrow.posZ);
 
-                    int posX = deltaX>0 ? 1:-1;
-                    int posZ = deltaZ>0 ? 1:-1;
+                    int posX = deltaX > 0 ? 1 : -1;
+                    int posZ = deltaZ > 0 ? 1 : -1;
 
                     deltaX = Math.abs(deltaX);
                     deltaZ = Math.abs(deltaZ);
 
                     double highestValue = deltaX > deltaZ ? deltaX : deltaZ;
 
-                    livingEntity.addVelocity(posX * (deltaX/highestValue),0.7f,posZ * (deltaZ/highestValue));
+                    livingEntity.addVelocity(posX * (deltaX / highestValue), 0.7f, posZ * (deltaZ / highestValue));
                 }));
             }
 
@@ -362,7 +370,7 @@ public class Upgrades {
             }
         };
 
-        FLYING_UPGRADE = new ArrowModifierUpgrade("flying_upgrade",ExtraBowsConfig.DURABILITY_FLY_UPGRADE) {
+        FLYING_UPGRADE = new ArrowModifierUpgrade("flying_upgrade", ExtraBowsConfig.DURABILITY_FLY_UPGRADE) {
             @Override
             public void handleEntityInit(EntityArrow arrow, UpgradeList upgradeList, EntityPlayer player) {
                 arrow.getTags().add("flyingUpgrade");
@@ -371,15 +379,15 @@ public class Upgrades {
 
             @Override
             public void handleBlockHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
-                if(arrow.isBeingRidden()) {
-                    player.attackEntityFrom(DamageSource.FALL,2);
+                if (arrow.isBeingRidden()) {
+                    player.attackEntityFrom(DamageSource.FALL, 2);
                 }
             }
 
             @Override
             public void handleEntityHit(Entity entity, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
-                if(arrow.isBeingRidden()) {
-                    player.attackEntityFrom(DamageSource.FALL,2);
+                if (arrow.isBeingRidden()) {
+                    player.attackEntityFrom(DamageSource.FALL, 2);
                 }
             }
 
@@ -389,22 +397,22 @@ public class Upgrades {
             }
         };
 
-        METEOR_UPGRADE = new ArrowModifierUpgrade("meteor_upgrade",ExtraBowsConfig.DURABILITY_METEOR_UPGRADE) {
+        METEOR_UPGRADE = new ArrowModifierUpgrade("meteor_upgrade", ExtraBowsConfig.DURABILITY_METEOR_UPGRADE) {
             @Override
             public void handleBlockHit(BlockPos pos, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
-                spawnMeteor(world,arrow);
+                spawnMeteor(world, arrow);
             }
 
             @Override
             public void handleEntityHit(Entity entity, World world, EntityPlayer player, EntityArrow arrow, UpgradeList upgradeList) {
-                spawnMeteor(world,arrow);
+                spawnMeteor(world, arrow);
             }
 
-            private void spawnMeteor(World world,EntityArrow arrow) {
-                if(world.isAirBlock(new BlockPos(arrow.posX,arrow.posY + 20,arrow.posZ))) {
+            private void spawnMeteor(World world, EntityArrow arrow) {
+                if (world.isAirBlock(new BlockPos(arrow.posX, arrow.posY + 20, arrow.posZ))) {
                     EntityFireball fireballEntity = new EntityLargeFireball(world);
-                    fireballEntity.setPositionAndUpdate(arrow.posX,arrow.posY + 20,arrow.posZ);
-                    fireballEntity.addVelocity(0,-2f,0);
+                    fireballEntity.setPositionAndUpdate(arrow.posX, arrow.posY + 20, arrow.posZ);
+                    fireballEntity.addVelocity(0, -2f, 0);
                     world.spawnEntity(fireballEntity);
                 }
             }
@@ -414,6 +422,8 @@ public class Upgrades {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
         };
+
+        ENERGY_UPGRADE = new EnergyUpgrade();
 
         BRIDGE_UPGRADE = new BridgeUpgrade();
     }

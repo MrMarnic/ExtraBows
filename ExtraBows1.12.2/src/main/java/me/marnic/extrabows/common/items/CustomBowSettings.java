@@ -10,6 +10,13 @@ import net.minecraft.potion.PotionEffect;
  * GitHub: https://github.com/MrMarnic
  */
 public class CustomBowSettings {
+    public static final float NORMAL_DAMAGE = 0;
+    public static final float NORMAL_INACCURACY = 1;
+    public static final float NORMAL_TIME = 20f;
+    public static final int ENERGY_COST_PER_ARROW = 100;
+    public static final int ENERGY_BOW = 40000;
+    public static final int ENERGY_BOW_UPGRADE = (int) (ENERGY_BOW * 0.75);
+    public static final int ENERGY_RECEIVE = 50;
     private String name;
     private int maxUses;
     private float velocityMul;
@@ -17,7 +24,7 @@ public class CustomBowSettings {
     private float inaccuracy;
     private float time;
     private Item type;
-
+    private int energy = CustomBowSettings.ENERGY_BOW;
     private PotionEffect effect;
 
     public CustomBowSettings(String name, int maxUses, float velocityMul, float damage, float inaccuracy, float time) {
@@ -28,10 +35,6 @@ public class CustomBowSettings {
         this.inaccuracy = inaccuracy;
         this.time = time;
         onInit();
-    }
-
-    public void setEffect(PotionEffect effect) {
-        this.effect = effect;
     }
 
     public CustomBowSettings(String name) {
@@ -48,13 +51,17 @@ public class CustomBowSettings {
         this(name, config.durability, config.velocityMultiplier, config.damage, config.inaccuracy, config.time);
     }
 
-    public void onInit() {
-
+    public CustomBowSettings copy(CustomBowSettings settings) {
+        this.maxUses = settings.maxUses;
+        this.velocityMul = settings.velocityMul;
+        this.damage = settings.damage;
+        this.inaccuracy = settings.inaccuracy;
+        this.time = settings.time;
+        return this;
     }
 
-    public CustomBowSettings setType(Item type) {
-        this.type = type;
-        return this;
+    public void onInit() {
+
     }
 
     public String getName() {
@@ -85,15 +92,24 @@ public class CustomBowSettings {
         return type;
     }
 
+    public CustomBowSettings setType(Item type) {
+        this.type = type;
+        return this;
+    }
+
     public PotionEffect getEffect() {
         return effect;
+    }
+
+    public void setEffect(PotionEffect effect) {
+        this.effect = effect;
     }
 
     public boolean hasEffect() {
         return effect != null;
     }
 
-    public static final float NORMAL_DAMAGE = 0;
-    public static final float NORMAL_INACCURACY = 1;
-    public static final float NORMAL_TIME = 20f;
+    public int getEnergy() {
+        return energy;
+    }
 }

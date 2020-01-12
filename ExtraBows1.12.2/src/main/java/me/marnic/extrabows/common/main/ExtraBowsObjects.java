@@ -2,8 +2,10 @@ package me.marnic.extrabows.common.main;
 
 import me.marnic.extrabows.common.blocks.BlockBridgeBlock;
 import me.marnic.extrabows.common.blocks.tileentities.TileEntityBridgeBlock;
+import me.marnic.extrabows.common.items.BowSettings;
 import me.marnic.extrabows.common.items.bows.*;
 import me.marnic.extrabows.common.items.other.*;
+import me.marnic.extrabows.common.items.other.bowUpgradeKits.BasicBowUpgradeKitItem;
 import me.marnic.extrabows.common.items.upgrades.ItemUpgradePlate;
 import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,6 +25,7 @@ public class ExtraBowsObjects {
     public static ItemGoldBow GOLD_BOW;
     public static ItemDiamondBow DIAMOND_BOW;
     public static ItemEmeraldBow EMERALD_BOW;
+    public static ItemEnergyBow ENERGY_BOW;
 
     public static ItemUpgradePlate UPGRADE_PLATE;
 
@@ -35,6 +38,12 @@ public class ExtraBowsObjects {
     public static BlockStrongStone STRONG_STONE;
     public static ItemStrongGold STRONG_GOLD;
     public static ItemStrongIron STRONG_IRON;
+
+    public static BasicBowUpgradeKitItem STONE_UPGRADE_KIT;
+    public static BasicBowUpgradeKitItem IRON_UPGRADE_KIT;
+    public static BasicBowUpgradeKitItem GOLD_UPGRADE_KIT;
+    public static BasicBowUpgradeKitItem DIAMOND_UPGRADE_KIT;
+    public static BasicBowUpgradeKitItem EMERALD_UPGRADE_KIT;
 
     public static void initTab() {
         CREATIVE_TAB = new CreativeTabs("extrabows_items") {
@@ -51,6 +60,7 @@ public class ExtraBowsObjects {
         GOLD_BOW = new ItemGoldBow();
         DIAMOND_BOW = new ItemDiamondBow();
         EMERALD_BOW = new ItemEmeraldBow();
+        ENERGY_BOW = new ItemEnergyBow();
 
         UPGRADE_PLATE = new ItemUpgradePlate();
 
@@ -66,5 +76,11 @@ public class ExtraBowsObjects {
         STRONG_GOLD = new ItemStrongGold();
         STRONG_IRON = new ItemStrongIron();
         STRONG_STONE = new BlockStrongStone();
+
+        STONE_UPGRADE_KIT = new BasicBowUpgradeKitItem("stone_upgrade_kit", BowSettings.STONE);
+        IRON_UPGRADE_KIT = new BasicBowUpgradeKitItem("iron_upgrade_kit", BowSettings.IRON);
+        GOLD_UPGRADE_KIT = new BasicBowUpgradeKitItem("golden_upgrade_kit", BowSettings.GOLD);
+        DIAMOND_UPGRADE_KIT = new BasicBowUpgradeKitItem("diamond_upgrade_kit", BowSettings.DIAMOND);
+        EMERALD_UPGRADE_KIT = new BasicBowUpgradeKitItem("emerald_upgrade_kit", BowSettings.EMERALD);
     }
 }

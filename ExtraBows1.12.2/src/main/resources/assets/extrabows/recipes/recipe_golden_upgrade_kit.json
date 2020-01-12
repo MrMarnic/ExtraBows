@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SS",
+    "SBD",
+    " SS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:gold_ingot"
+    },
+    "B": {
+      "item": "extrabows:iron_upgrade_kit"
+    },
+    "D": {
+      "item": "extrabows:strong_gold"
+    }
+  },
+  "result": {
+    "item": "extrabows:golden_upgrade_kit"
+  }
+}

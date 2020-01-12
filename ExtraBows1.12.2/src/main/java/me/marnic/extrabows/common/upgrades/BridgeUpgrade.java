@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntitySpectralArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +32,22 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
 
     public BridgeUpgrade() {
         super("bridge_upgrade", ExtraBowsConfig.DURABILITY_BRIDGE_UPGRADE);
+    }
+
+    public static boolean placeBlock(BlockPos pos, IBlockState state, World world) {
+        if (world.isAirBlock(pos)) {
+            world.setBlockState(pos, state);
+            return true;
+        } else if (world.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
+            world.setBlockState(pos, state);
+            ((TileEntityBridgeBlock) world.getTileEntity(pos)).setFluid(Blocks.WATER);
+            return true;
+        } else if (world.getBlockState(pos).getBlock().equals(Blocks.LAVA)) {
+            world.setBlockState(pos, state);
+            ((TileEntityBridgeBlock) world.getTileEntity(pos)).setFluid(Blocks.LAVA);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -69,20 +84,12 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
         }));
     }
 
-    public static boolean placeBlock(BlockPos pos, IBlockState state, World world) {
-        if(world.isAirBlock(pos)) {
-            world.setBlockState(pos,state);
-            return true;
-        }else if(world.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
-            world.setBlockState(pos,state);
-            ((TileEntityBridgeBlock)world.getTileEntity(pos)).setFluid(Blocks.WATER);
-            return true;
-        }else if(world.getBlockState(pos).getBlock().equals(Blocks.LAVA)) {
-            world.setBlockState(pos,state);
-            ((TileEntityBridgeBlock)world.getTileEntity(pos)).setFluid(Blocks.LAVA);
-            return true;
-        }
-        return false;
+    private boolean fix(BlockPos next) {
+        return isOffset(next.getX(), 1) || isOffset(next.getY(), 1) || isOffset(next.getZ(), 1);
+    }
+
+    private boolean isOffset(int number, int offset) {
+        return number > offset | number < -offset;
     }
 
     class BuildingUpgradeData {
@@ -172,13 +179,5 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
                 }
             }
         }
-    }
-
-    private boolean fix(BlockPos next) {
-        return isOffset(next.getX(), 1) || isOffset(next.getY(), 1) || isOffset(next.getZ(), 1);
-    }
-
-    private boolean isOffset(int number, int offset) {
-        return number > offset | number < -offset;
     }
 }

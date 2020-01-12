@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "normal": { "model": "extrabows:bridge_block" }
+  "variants": {
+    "normal": {
+      "model": "extrabows:bridge_block"
     }
+  }
 }

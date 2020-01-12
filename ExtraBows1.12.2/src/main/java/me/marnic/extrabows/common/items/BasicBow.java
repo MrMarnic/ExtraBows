@@ -1,8 +1,10 @@
 package me.marnic.extrabows.common.items;
 
+import me.marnic.extrabows.api.energy.ExtraBowsEnergy;
 import me.marnic.extrabows.api.item.BasicItem;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
+import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import net.minecraft.client.util.ITooltipFlag;
@@ -16,16 +18,14 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -60,7 +60,10 @@ public class BasicBow extends ItemBow implements BasicItem {
         });
     }
 
-    private ItemStack findAmmoNEW(EntityPlayer player) {
+    private ItemStack findAmmoNEW(EntityPlayer player, boolean electric) {
+        if (electric) {
+            return new ItemStack(Items.ARROW);
+        }
         if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) {
             return player.getHeldItem(EnumHand.OFF_HAND);
         } else if (this.isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) {
@@ -79,17 +82,31 @@ public class BasicBow extends ItemBow implements BasicItem {
     }
 
     @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        if (isLoaded(UpgradeUtil.getUpgradesFromStackNEW(stack), stack)) {
+            playerIn.setActiveHand(handIn);
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        }
+        return super.onItemRightClick(worldIn, playerIn, handIn);
+    }
+
+    @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer entityplayer = (EntityPlayer) entityLiving;
             boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack arrowStack = this.findAmmoNEW(entityplayer);
+
+            UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
+
+            boolean isLoaded = isLoaded(list, stack);
+
+            ItemStack arrowStack = this.findAmmoNEW(entityplayer, isLoaded);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !arrowStack.isEmpty() || flag);
             if (i < 0) return;
 
-            UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
             if (!arrowStack.isEmpty() || flag) {
                 if (arrowStack.isEmpty()) {
                     arrowStack = new ItemStack(Items.ARROW);
@@ -103,9 +120,9 @@ public class BasicBow extends ItemBow implements BasicItem {
                     if (!worldIn.isRemote) {
                         list.applyDamage(entityplayer);
                         if (list.hasMul()) {
-                            list.getArrowMultiplier().handleAction(this, worldIn, stack, entityplayer, f, arrowStack, flag1, list);
+                            list.getArrowMultiplier().handleAction(this, worldIn, stack, entityplayer, f, arrowStack, flag1, list, isLoaded);
                         } else {
-                            EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, stack, arrowStack, entityplayer, this, f, flag1, 0, 0, list);
+                            EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, stack, arrowStack, entityplayer, this, f, flag1, 0, 0, list, isLoaded);
 
                             worldIn.spawnEntity(entityarrow);
                         }
@@ -114,20 +131,44 @@ public class BasicBow extends ItemBow implements BasicItem {
                     worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
                     if (!flag1 && !entityplayer.capabilities.isCreativeMode) {
-                        if (list.hasMul()) {
-                            list.getArrowMultiplier().shrinkStack(arrowStack);
-                        } else {
-                            arrowStack.shrink(1);
 
-                            if (arrowStack.isEmpty()) {
-                                entityplayer.inventory.deleteStack(arrowStack);
+                        boolean useNormal = true;
+
+                        energyTest:
+                        {
+                            if (isLoaded) {
+                                ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null);
+
+                                if (extraBowsEnergy.getEnergyStored() < CustomBowSettings.ENERGY_COST_PER_ARROW) {
+                                    break energyTest;
+                                }
+                                useNormal = false;
+                                if (list.hasMul()) {
+                                    list.getArrowMultiplier().removeEnergy(arrowStack, extraBowsEnergy);
+                                } else {
+                                    if (extraBowsEnergy.getEnergyStored() >= CustomBowSettings.ENERGY_COST_PER_ARROW) {
+                                        extraBowsEnergy.extractEnergy(CustomBowSettings.ENERGY_COST_PER_ARROW, false);
+                                    }
+                                }
                             }
                         }
 
-                        if (!worldIn.isRemote) {
-                            if (stack.getItemDamage() == stack.getMaxDamage()) {
-                                list.dropItems(entityplayer);
-                                stack.damageItem(1, entityplayer);
+                        if (useNormal) {
+                            if (list.hasMul()) {
+                                list.getArrowMultiplier().shrinkStack(arrowStack);
+                            } else {
+                                arrowStack.shrink(1);
+
+                                if (arrowStack.isEmpty()) {
+                                    entityplayer.inventory.deleteStack(arrowStack);
+                                }
+                            }
+
+                            if (!worldIn.isRemote) {
+                                if (stack.getItemDamage() == stack.getMaxDamage()) {
+                                    list.dropItems(entityplayer);
+                                    stack.damageItem(1, entityplayer);
+                                }
                             }
                         }
                     }
@@ -137,6 +178,7 @@ public class BasicBow extends ItemBow implements BasicItem {
             }
         }
     }
+
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
@@ -157,6 +199,29 @@ public class BasicBow extends ItemBow implements BasicItem {
                 tooltip.add("- " + upgrade.getName());
             }
         }
+
+        if (isElectric(list, stack) && stack.getTagCompound() != null) {
+            EnergyStorage storage = (EnergyStorage) stack.getCapability(CapabilityEnergy.ENERGY, null);
+            if (storage != null) {
+                tooltip.add("Energy: " + stack.getTagCompound().getInteger("energyAmount") + "/" + storage.getMaxEnergyStored() + "RF");
+            }
+        }
+    }
+
+    @Override
+    public boolean getShareTag() {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack) {
+        NBTTagCompound tag = new NBTTagCompound();
+        ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null);
+        if (extraBowsEnergy != null) {
+            tag.setInteger("energyAmount", extraBowsEnergy.getEnergyStored());
+        }
+        return tag;
     }
 
     @Override
@@ -171,41 +236,77 @@ public class BasicBow extends ItemBow implements BasicItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-
-        return new StorageProvider();
+        return new BowCapability();
     }
 
     @Override
     public boolean getIsRepairable(ItemStack left, ItemStack right) {
         return right.getItem().equals(settings.getType());
     }
-}
 
-class StorageProvider implements ICapabilitySerializable<NBTTagCompound>, ICapabilityProvider {
-
-    public ItemStackHandler handler = new ItemStackHandler(4);
-
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+    private boolean isElectric(UpgradeList list, ItemStack stack) {
+        return list.contains(Upgrades.ENERGY_UPGRADE) || (stack.getItem().getShareTag() && stack.getItem().getNBTShareTag(stack).hasKey("energy"));
     }
 
-    @Nullable
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) handler;
+    private boolean isLoaded(UpgradeList list, ItemStack stack) {
+        boolean b = list.contains(Upgrades.ENERGY_UPGRADE) || (stack.getItem().getShareTag() && stack.getItem().getNBTShareTag(stack).hasKey("energy"));
+        if (b) {
+            return stack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored() >= CustomBowSettings.ENERGY_COST_PER_ARROW;
         }
-        return null;
+        return false;
     }
 
-    @Override
-    public NBTTagCompound serializeNBT() {
-        return handler.serializeNBT();
+    public void onArrowCreate(EntityArrow arrow) {
+
     }
 
-    @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        handler.deserializeNBT(nbt);
+    public void onArrowHit(EntityArrow arrow) {
+
+    }
+
+    public class BowCapability implements ICapabilitySerializable<NBTTagCompound>, ICapabilityProvider {
+
+        private ItemStackHandler handler = new ItemStackHandler(4);
+        private ExtraBowsEnergy energy = new ExtraBowsEnergy(CustomBowSettings.ENERGY_BOW_UPGRADE, CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3);
+
+        public BowCapability() {
+        }
+
+        public BowCapability(ExtraBowsEnergy energy) {
+            this.energy = energy;
+        }
+
+        @Override
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+            return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY | capability == CapabilityEnergy.ENERGY;
+        }
+
+        @Nullable
+        @Override
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler);
+            }
+            if (capability == CapabilityEnergy.ENERGY) {
+                return CapabilityEnergy.ENERGY.cast(energy);
+            }
+            return null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT() {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setTag("handler", handler.serializeNBT());
+            nbt.setInteger("capacity", energy.getMaxEnergyStored());
+            nbt.setInteger("energy", energy.getEnergyStored());
+            return nbt;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            handler.deserializeNBT((NBTTagCompound) nbt.getTag("handler"));
+            energy.setCapacity(nbt.getInteger("capacity"));
+            energy.setEnergy(nbt.getInteger("energy"));
+        }
     }
 }

@@ -4,7 +4,6 @@ import me.marnic.extrabows.common.main.Identification;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Copyright (c) 31.05.2019
@@ -17,6 +16,6 @@ public class ExtraBowsPacketHandler {
     public static void init() {
         INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketOpenGUI.class, PacketOpenUpgradeGUI.class, 0, Side.SERVER);
         INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketSendDestroyMessage.class, PacketSendDestroyMessage.class, 1, Side.CLIENT);
-        INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketUpdateArrow.class,PacketUpdateArrow.class,2,Side.CLIENT);
+        INSTANCE.registerMessage(ExtraBowsMessageHandlerPacketUpdateArrow.class, PacketUpdateArrow.class, 2, Side.CLIENT);
     }
 }

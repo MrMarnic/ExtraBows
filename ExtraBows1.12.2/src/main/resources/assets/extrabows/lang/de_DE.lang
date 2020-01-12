@@ -16,12 +16,20 @@ item.push_upgrade.name=Push Upgrade
 item.flying_upgrade.name=Flug Upgrade
 item.bone_meal_upgrade.name=Knochenmehl Upgrade
 item.meteor_upgrade.name=Meteor Upgrade
+item.energy_upgrade.name=Energie Upgrade
 
 item.stone_bow.name=Stein Bogen
 item.golden_bow.name=Gold Bogen
 item.iron_bow.name=Eisen Bogen
 item.diamond_bow.name=Diamant Bogen
 item.emerald_bow.name=Smaragd Bogen
+item.energy_bow.name=Energie Bogen
+
+item.stone_upgrade_kit.name=Stein Upgrade Kit
+item.iron_upgrade_kit.name=Eisen Upgrade Kit
+item.golden_upgrade_kit.name=Gold Upgrade Kit
+item.diamond_upgrade_kit.name=Diamant Upgrade Kit
+item.emerald_upgrade_kit.name=Smaragd Upgrade Kit
 
 itemGroup.extrabows_items=Extra Bows Items
 

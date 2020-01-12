@@ -16,11 +16,6 @@ public class PacketSendDestroyMessage implements IMessage {
     public PacketSendDestroyMessage() {
     }
 
-    public PacketSendDestroyMessage setText(String text) {
-        this.text = text;
-        return this;
-    }
-
     @Override
     public void fromBytes(ByteBuf buf) {
         this.text = ByteBufUtils.readUTF8String(buf);
@@ -33,5 +28,10 @@ public class PacketSendDestroyMessage implements IMessage {
 
     public String getText() {
         return text;
+    }
+
+    public PacketSendDestroyMessage setText(String text) {
+        this.text = text;
+        return this;
     }
 }

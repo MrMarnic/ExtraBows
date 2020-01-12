@@ -32,6 +32,7 @@ public class ExtraBowsConfig {
     public static int DURABILITY_PUSH_UPGRADE = 400;
     public static int DURABILITY_FLY_UPGRADE = 400;
     public static int DURABILITY_METEOR_UPGRADE = 400;
+    public static int DURABILITY_ENERGY_UPGRADE = 400;
 
 
     public static class BowConfig {

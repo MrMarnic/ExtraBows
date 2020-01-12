@@ -1,9 +1,7 @@
 package me.marnic.extrabows.common.items.bows;
 
-import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.BasicBow;
-import me.marnic.extrabows.common.items.CustomBowSettings;
-import net.minecraft.init.Items;
+import me.marnic.extrabows.common.items.BowSettings;
 
 /**
  * Copyright (c) 24.05.2019
@@ -12,6 +10,6 @@ import net.minecraft.init.Items;
  */
 public class ItemGoldBow extends BasicBow {
     public ItemGoldBow() {
-        super(new CustomBowSettings("golden_bow", ExtraBowsConfig.GOLD_BOW).setType(Items.GOLD_INGOT));
+        super(BowSettings.GOLD);
     }
 }

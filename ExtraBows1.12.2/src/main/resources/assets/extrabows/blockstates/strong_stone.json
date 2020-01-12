@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "normal": { "model": "extrabows:strong_stone" }
+  "variants": {
+    "normal": {
+      "model": "extrabows:strong_stone"
     }
+  }
 }

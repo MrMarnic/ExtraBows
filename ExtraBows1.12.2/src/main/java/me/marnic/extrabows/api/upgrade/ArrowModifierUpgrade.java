@@ -3,6 +3,7 @@ package me.marnic.extrabows.api.upgrade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -44,6 +45,10 @@ public class ArrowModifierUpgrade extends BasicUpgrade {
     }
 
     public void handleEntityInit(EntityArrow arrow, UpgradeList upgradeList, EntityPlayer player) {
+    }
+
+    public void handleUpgradeInsert(ItemStack bow) {
+
     }
 
     public enum EventType {

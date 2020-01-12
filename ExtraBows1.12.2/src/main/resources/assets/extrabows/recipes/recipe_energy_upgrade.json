@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "OSO",
+    "RBR",
+    "ODO"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:repeater"
+    },
+    "B": {
+      "item": "extrabows:upgrade_plate"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "extrabows:energy_upgrade"
+  }
+}

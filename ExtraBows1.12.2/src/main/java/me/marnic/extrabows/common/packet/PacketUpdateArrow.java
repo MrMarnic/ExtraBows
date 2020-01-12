@@ -1,7 +1,6 @@
 package me.marnic.extrabows.common.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -35,7 +34,7 @@ public class PacketUpdateArrow implements IMessage {
         this.arrowId = buffer.readVarInt();
         int size = buffer.readVarInt();
 
-        for(int i=0;i<size;i++) {
+        for (int i = 0; i < size; i++) {
             tags.add(buffer.readString(256));
         }
     }
@@ -47,7 +46,7 @@ public class PacketUpdateArrow implements IMessage {
 
         buffer.writeVarInt(arrow.getEntityId());
         buffer.writeVarInt(size);
-        for(String tag:arrow.getTags()) {
+        for (String tag : arrow.getTags()) {
             buffer.writeString(tag);
         }
     }

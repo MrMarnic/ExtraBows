@@ -10,12 +10,14 @@ import me.marnic.extrabows.api.util.TimerUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.items.BasicBow;
+import me.marnic.extrabows.common.items.BowSettings;
 import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import me.marnic.extrabows.common.main.Identification;
 import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
 import me.marnic.extrabows.common.packet.PacketUpdateArrow;
 import me.marnic.extrabows.common.recipes.BasicBowRecipe;
+import me.marnic.extrabows.common.recipes.BasicBowShapelessRecipe;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -76,28 +78,37 @@ public class ExtraBowsEventHandler {
 
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> e) {
-        HashMap<ResourceLocation,IRecipe> bowRecipes = new HashMap<>();
+        HashMap<ResourceLocation, IRecipe> bowRecipes = new HashMap<>();
 
-        e.getRegistry().getValuesCollection().stream().filter( r -> r.getRegistryName().getResourceDomain().equalsIgnoreCase(Identification.MODID) && r.getRegistryName().getResourcePath().contains("bow")).forEach(r -> {
-            bowRecipes.put(r.getRegistryName(),r);
+        e.getRegistry().getValuesCollection().stream().filter(r -> r.getRegistryName().getResourceDomain().equalsIgnoreCase(Identification.MODID) && r.getRegistryName().getResourcePath().contains("bow")).forEach(r -> {
+            bowRecipes.put(r.getRegistryName(), r);
         });
 
-        bowRecipes.forEach((k,v)-> {
-
-            if(k.getResourcePath().contains("stone_bow")) {
-                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.STONE_BOW)).setRegistryName(k));
+        bowRecipes.forEach((k, v) -> {
+            if (k.getResourcePath().contains("stone_bow")) {
+                BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getResourcePath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.STONE_BOW), BowSettings.STONE).setRegistryName(k);
+                e.getRegistry().register(basicBowRecipe);
+                e.getRegistry().register(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.STONE_UPGRADE_KIT));
             }
-            if(k.getResourcePath().contains("golden_bow")) {
-                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.GOLD_BOW)).setRegistryName(k));
+            if (k.getResourcePath().contains("golden_bow")) {
+                BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getResourcePath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.GOLD_BOW), BowSettings.GOLD).setRegistryName(k);
+                e.getRegistry().register(basicBowRecipe);
+                e.getRegistry().register(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.GOLD_UPGRADE_KIT));
             }
-            if(k.getResourcePath().contains("iron_bow")) {
-                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.IRON_BOW)).setRegistryName(k));
+            if (k.getResourcePath().contains("iron_bow")) {
+                BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getResourcePath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.IRON_BOW), BowSettings.IRON).setRegistryName(k);
+                e.getRegistry().register(basicBowRecipe);
+                e.getRegistry().register(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.IRON_UPGRADE_KIT));
             }
-            if(k.getResourcePath().contains("diamond_bow")) {
-                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.DIAMOND_BOW)).setRegistryName(k));
+            if (k.getResourcePath().contains("diamond_bow")) {
+                BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getResourcePath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.DIAMOND_BOW), BowSettings.DIAMOND).setRegistryName(k);
+                e.getRegistry().register(basicBowRecipe);
+                e.getRegistry().register(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.DIAMOND_UPGRADE_KIT));
             }
-            if(k.getResourcePath().contains("emerald_bow")) {
-                e.getRegistry().register(new BasicBowRecipe(k.getResourcePath(),v.getIngredients(),new ItemStack(ExtraBowsObjects.EMERALD_BOW)).setRegistryName(k));
+            if (k.getResourcePath().contains("emerald_bow")) {
+                BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getResourcePath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.EMERALD_BOW), BowSettings.EMERALD).setRegistryName(k);
+                e.getRegistry().register(basicBowRecipe);
+                e.getRegistry().register(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.EMERALD_UPGRADE_KIT));
             }
         });
     }
@@ -141,9 +152,9 @@ public class ExtraBowsEventHandler {
 
             if (arrow.shootingEntity instanceof EntityPlayer && UpgradeUtil.isExtraBowsArrow(arrow)) {
                 EntityPlayer player = (EntityPlayer) arrow.shootingEntity;
-                if(e.getRayTraceResult().typeOfHit == RayTraceResult.Type.ENTITY) {
-                    if(arrow.shootingEntity.equals(e.getRayTraceResult().entityHit)) {
-                        if(arrow.getTags().contains("flyingUpgrade")) {
+                if (e.getRayTraceResult().typeOfHit == RayTraceResult.Type.ENTITY) {
+                    if (arrow.shootingEntity.equals(e.getRayTraceResult().entityHit)) {
+                        if (arrow.getTags().contains("flyingUpgrade")) {
                             e.setCanceled(true);
                         }
                     }
@@ -155,8 +166,10 @@ public class ExtraBowsEventHandler {
                     if (list != null) {
                         if (e.getRayTraceResult().typeOfHit == RayTraceResult.Type.BLOCK) {
                             list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.BLOCK_HIT, e.getRayTraceResult().getBlockPos(), null, e.getEntity().world, player, arrow);
+                            list.getBasicBow().onArrowHit(arrow);
                         } else if (e.getRayTraceResult().typeOfHit == RayTraceResult.Type.ENTITY) {
                             list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.ENTITY_HIT, null, e.getRayTraceResult().entityHit, e.getEntity().world, player, arrow);
+                            list.getBasicBow().onArrowHit(arrow);
                         }
                         ArrowUtil.ARROWS_TO_UPGRADES.remove(arrow.getUniqueID());
                         TimeCommand.EndableTimeCommand command = ((TimeCommand.EndableTimeCommand) TimerUtil.forId(arrow.getEntityId()));
@@ -215,9 +228,9 @@ public class ExtraBowsEventHandler {
 
     @SubscribeEvent
     public static void startTracking(net.minecraftforge.event.entity.player.PlayerEvent.StartTracking e) {
-        if(e.getTarget() instanceof EntityArrow) {
-            if(UpgradeUtil.isExtraBowsArrow(e.getTarget()) && e.getTarget().getTags().contains("flyingUpgrade")) {
-                ExtraBowsPacketHandler.INSTANCE.sendTo(new PacketUpdateArrow(((EntityArrow)e.getTarget())), (EntityPlayerMP) e.getEntityPlayer());
+        if (e.getTarget() instanceof EntityArrow) {
+            if (UpgradeUtil.isExtraBowsArrow(e.getTarget()) && e.getTarget().getTags().contains("flyingUpgrade")) {
+                ExtraBowsPacketHandler.INSTANCE.sendTo(new PacketUpdateArrow(((EntityArrow) e.getTarget())), (EntityPlayerMP) e.getEntityPlayer());
             }
         }
     }

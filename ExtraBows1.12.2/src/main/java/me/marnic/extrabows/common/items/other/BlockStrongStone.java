@@ -4,6 +4,10 @@ import me.marnic.extrabows.api.block.BasicBlock;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
+
+import java.util.Random;
 
 /**
  * Copyright (c) 09.06.2019
@@ -18,5 +22,10 @@ public class BlockStrongStone extends BasicBlock {
         setSoundType(SoundType.STONE);
         setHarvestLevel("pickaxe", 0);
         setHardness(2);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return Item.getItemFromBlock(this);
     }
 }

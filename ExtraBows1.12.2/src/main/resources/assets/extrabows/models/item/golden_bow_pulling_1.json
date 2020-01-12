@@ -1,6 +1,6 @@
 {
-    "parent": "item/bow",
-    "textures": {
-        "layer0": "extrabows:items/golden_bow_pulling_1"
-    }
+  "parent": "item/bow",
+  "textures": {
+    "layer0": "extrabows:items/golden_bow_pulling_1"
+  }
 }

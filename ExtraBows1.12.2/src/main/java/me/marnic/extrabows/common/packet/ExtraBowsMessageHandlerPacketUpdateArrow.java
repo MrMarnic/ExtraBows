@@ -15,7 +15,7 @@ public class ExtraBowsMessageHandlerPacketUpdateArrow implements IMessageHandler
 
     @Override
     public IMessage onMessage(PacketUpdateArrow message, MessageContext ctx) {
-        ExtraBows.proxy.handleArrow(message,ctx);
+        ExtraBows.proxy.handleArrow(message, ctx);
         return null;
     }
 }

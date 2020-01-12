@@ -1,5 +1,6 @@
 package me.marnic.extrabows.api.upgrade;
 
+import me.marnic.extrabows.api.energy.ExtraBowsEnergy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -22,6 +23,9 @@ public class ArrowMultiplierUpgrade extends BasicUpgrade {
     }
 
     public void shrinkStack(ItemStack stack) {
+    }
+
+    public void removeEnergy(ItemStack stack, ExtraBowsEnergy extraBowsEnergy) {
 
     }
 }

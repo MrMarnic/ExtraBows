@@ -2,15 +2,14 @@ package me.marnic.extrabows.common.main;
 
 import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.client.gui.ExtraBowsGUIHandler;
+import me.marnic.extrabows.common.items.BowSettings;
 import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
 import me.marnic.extrabows.common.proxy.CommonProxy;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 /**
@@ -22,10 +21,16 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 public class ExtraBows {
 
 
+    @SidedProxy(clientSide = Identification.CLIENT_PROXY_PATH, serverSide = Identification.SERVER_PROXY_PATH)
+    public static CommonProxy proxy;
+    @Mod.Instance
+    public static ExtraBows instance;
+
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent e) {
         ExtraBowsObjects.initTab();
         Upgrades.init();
+        BowSettings.init();
         ExtraBowsObjects.init();
         ExtraBowsPacketHandler.init();
     }
@@ -40,12 +45,4 @@ public class ExtraBows {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ExtraBowsGUIHandler());
         proxy.handlePostInit();
     }
-
-
-
-    @SidedProxy(clientSide = Identification.CLIENT_PROXY_PATH, serverSide = Identification.SERVER_PROXY_PATH)
-    public static CommonProxy proxy;
-
-    @Mod.Instance
-    public static ExtraBows instance;
 }

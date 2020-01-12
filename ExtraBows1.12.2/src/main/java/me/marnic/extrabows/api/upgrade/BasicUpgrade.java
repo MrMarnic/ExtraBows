@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  * GitHub: https://github.com/MrMarnic
  */
 public class BasicUpgrade {
+    public static final HashMap<String, BasicUpgrade> UPGRADES = new HashMap<>();
     private String name;
     private BasicUpgradeItem item;
     private int durability;
@@ -39,6 +41,10 @@ public class BasicUpgrade {
         this.translation = new TextComponentTranslation("item." + name + ".name");
     }
 
+    public static BasicUpgrade getById(String id) {
+        return UPGRADES.get(id);
+    }
+
     public String getName() {
         return translation.getFormattedText();
     }
@@ -47,17 +53,11 @@ public class BasicUpgrade {
         return name;
     }
 
-    public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, EntityPlayer entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list) {
+    public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, EntityPlayer entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list, boolean isLoaded) {
     }
 
     public BasicUpgradeItem getItem() {
         return item;
-    }
-
-    public static final HashMap<String, BasicUpgrade> UPGRADES = new HashMap<>();
-
-    public static BasicUpgrade getById(String id) {
-        return UPGRADES.get(id);
     }
 
     public int getDurability() {
@@ -70,5 +70,9 @@ public class BasicUpgrade {
 
     public boolean hasDescription() {
         return getDescription() != null;
+    }
+
+    public boolean canNotBeInserted(IItemHandler itemHandler, ItemStack bow) {
+        return false;
     }
 }

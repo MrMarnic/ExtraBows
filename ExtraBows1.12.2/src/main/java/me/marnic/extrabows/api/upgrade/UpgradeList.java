@@ -1,5 +1,6 @@
 package me.marnic.extrabows.api.upgrade;
 
+import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
 import me.marnic.extrabows.common.packet.PacketSendDestroyMessage;
 import net.minecraft.entity.Entity;
@@ -24,12 +25,14 @@ public class UpgradeList {
     private ArrayList<ArrowModifierUpgrade> arrowModifiers;
     private HashMap<BasicUpgrade, Object> dataMap;
     private ItemStackHandler handler;
+    private BasicBow basicBow;
 
-    public UpgradeList(ArrowMultiplierUpgrade arrowMultiplier, ArrayList<ArrowModifierUpgrade> arrowModifiers, ItemStackHandler handler) {
+    public UpgradeList(ArrowMultiplierUpgrade arrowMultiplier, ArrayList<ArrowModifierUpgrade> arrowModifiers, ItemStackHandler handler, BasicBow bow) {
         this.arrowMultiplier = arrowMultiplier;
         this.arrowModifiers = arrowModifiers;
         this.dataMap = new HashMap<>();
         this.handler = handler;
+        this.basicBow = bow;
     }
 
     public ArrayList<ArrowModifierUpgrade> getArrowModifiers() {
@@ -48,8 +51,12 @@ public class UpgradeList {
         return !arrowModifiers.isEmpty();
     }
 
+    public BasicBow getBasicBow() {
+        return basicBow;
+    }
+
     public boolean contains(BasicUpgrade upgrade) {
-        return ((arrowMultiplier!=null && arrowMultiplier.equals(upgrade)) | arrowModifiers.contains(upgrade));
+        return ((arrowMultiplier != null && arrowMultiplier.equals(upgrade)) | arrowModifiers.contains(upgrade));
     }
 
     public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, EntityPlayer player, EntityArrow arrow) {
@@ -82,6 +89,12 @@ public class UpgradeList {
             for (ArrowModifierUpgrade upgrade : getArrowModifiers()) {
                 upgrade.handleFlyingEvent(arrow, world, this);
             }
+        }
+    }
+
+    public void handleInsertedEvent(ItemStack bow) {
+        for (ArrowModifierUpgrade modifierUpgrade : getArrowModifiers()) {
+            modifierUpgrade.handleUpgradeInsert(bow);
         }
     }
 

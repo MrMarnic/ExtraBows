@@ -48,7 +48,7 @@ public class ArrowUtil {
         }
     }
 
-    public static EntityArrow createArrowComplete(World worldIn, ItemStack bow, ItemStack arrow, EntityPlayer entityplayer, BasicBow basicBow, float f, boolean flag1, float inacplus, float yawplus, UpgradeList list) {
+    public static EntityArrow createArrowComplete(World worldIn, ItemStack bow, ItemStack arrow, EntityPlayer entityplayer, BasicBow basicBow, float f, boolean flag1, float inacplus, float yawplus, UpgradeList list, boolean isLoaded) {
         CustomBowSettings settings = basicBow.getSettings();
         EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, bow, arrow, entityplayer, basicBow, entityplayer);
         UpgradeUtil.getUpgradesFromStackNEW(bow).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE, entityarrow, entityplayer, bow);
@@ -76,13 +76,20 @@ public class ArrowUtil {
             entityarrow.setFire(100);
         }
 
-        bow.damageItem(1, entityplayer);
+        if (!isLoaded) {
+            bow.damageItem(1, entityplayer);
+        }
 
         if (flag1 || entityplayer.capabilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
             entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
 
         entityarrow.addTag("extrabows");
+        if (isLoaded) {
+            entityarrow.addTag("electric");
+        }
+
+        basicBow.onArrowCreate(entityarrow);
 
         return entityarrow;
     }

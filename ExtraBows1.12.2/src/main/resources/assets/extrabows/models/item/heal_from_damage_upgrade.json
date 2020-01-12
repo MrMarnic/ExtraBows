@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "extrabows:items/heal_from_damage_upgrade"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "extrabows:items/heal_from_damage_upgrade"
+  }
 }

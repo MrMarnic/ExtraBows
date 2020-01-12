@@ -4,6 +4,7 @@ import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.ArrowMultiplierUpgrade;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
+import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -44,10 +45,10 @@ public class UpgradeUtil {
             }
         }
 
-        return new UpgradeList(multiplierUpgrade, mods, handler);
+        return new UpgradeList(multiplierUpgrade, mods, handler, ((BasicBow) stack.getItem()));
     }
 
-    public static UpgradeList getUpgradesFromHandler(ItemStackHandler handler) {
+    public static UpgradeList getUpgradesFromHandler(ItemStackHandler handler, BasicBow basicBow) {
         ArrowMultiplierUpgrade multiplierUpgrade = null;
         ArrayList<ArrowModifierUpgrade> modifierUpgrades = new ArrayList<>();
         ArrayList<Integer> indecs = new ArrayList<>();
@@ -64,7 +65,7 @@ public class UpgradeUtil {
             }
         }
 
-        return new UpgradeList(multiplierUpgrade, modifierUpgrades, handler);
+        return new UpgradeList(multiplierUpgrade, modifierUpgrades, handler, basicBow);
     }
 
     public static BasicUpgrade getUpgradeFromStack(ItemStack stack) {
@@ -81,17 +82,16 @@ public class UpgradeUtil {
     public static void saveUpgradesToStackNEW(ItemStack stack, ItemStackHandler handler2) {
         ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-        
 
         for (int i = 0; i < handler2.getSlots(); i++) {
             handler.setStackInSlot(i, handler2.getStackInSlot(i));
         }
     }
 
-    public static void copyUpgradesToStack(ItemStack old,ItemStack newOne) {
+    public static void copyUpgradesToStack(ItemStack old, ItemStack newOne) {
         ItemStackHandler handlerOld = getHandlerForItemStackNEW(old);
 
-        UpgradeUtil.saveUpgradesToStackNEW(newOne,handlerOld);
+        UpgradeUtil.saveUpgradesToStackNEW(newOne, handlerOld);
     }
 
     public static Iterable<BlockPos> getBlocksInRadius(BlockPos center, int radius) {
@@ -102,10 +102,10 @@ public class UpgradeUtil {
     }
 
     public static AxisAlignedBB getRadiusBoundingBox(BlockPos center, int radius) {
-        BlockPos min = new BlockPos(center.getX() - radius,center.getY() - radius,center.getZ() - radius);
-        BlockPos max = new BlockPos(center.getX() + radius,center.getY() + radius,center.getZ() + radius);
+        BlockPos min = new BlockPos(center.getX() - radius, center.getY() - radius, center.getZ() - radius);
+        BlockPos max = new BlockPos(center.getX() + radius, center.getY() + radius, center.getZ() + radius);
 
-        return new AxisAlignedBB(min,max);
+        return new AxisAlignedBB(min, max);
     }
 
     public static boolean isMultiplierUpgrade(ItemStack stack) {

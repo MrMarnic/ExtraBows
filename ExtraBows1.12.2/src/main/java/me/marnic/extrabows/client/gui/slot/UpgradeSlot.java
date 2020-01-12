@@ -1,8 +1,10 @@
 package me.marnic.extrabows.client.gui.slot;
 
+import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -17,16 +19,26 @@ import javax.annotation.Nonnull;
 public class UpgradeSlot extends SlotItemHandler {
 
     private boolean modifierSlot;
+    private ItemStack bow;
+    private EntityPlayer player;
 
-    public UpgradeSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean modifierSlot) {
+    public UpgradeSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean modifierSlot, ItemStack stack, EntityPlayer player) {
         super(itemHandler, index, xPosition, yPosition);
         this.modifierSlot = modifierSlot;
+        this.bow = stack;
+        this.player = player;
     }
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack) {
         if (modifierSlot) {
             if (!doesContainSameUpgrade(UpgradeUtil.getUpgradeFromStack(stack))) {
+                boolean v = UpgradeUtil.isModifierUpgrade(stack);
+
+                if (v) {
+                    ((ArrowModifierUpgrade) UpgradeUtil.getUpgradeFromStack(stack)).handleUpgradeInsert(player.getHeldItemMainhand());
+                    return true;
+                }
                 return UpgradeUtil.isModifierUpgrade(stack);
             }
             return false;
@@ -44,6 +56,6 @@ public class UpgradeSlot extends SlotItemHandler {
                 }
             }
         }
-        return false;
+        return upgrade.canNotBeInserted(getItemHandler(), bow);
     }
 }
