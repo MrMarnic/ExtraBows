@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.ArrayList;
+
 /**
  * Copyright (c) 30.05.2019
  * Developed by MrMarnic
@@ -50,7 +52,7 @@ public class BowUpgradeGuiContainer extends Container {
     @Override
     public void onContainerClosed(EntityPlayer playerIn) {
         super.onContainerClosed(playerIn);
-        UpgradeUtil.saveUpgradesToStackNEW(playerIn.getHeldItemMainhand(), (ItemStackHandler) handler);
+        //UpgradeUtil.saveUpgradesToStackNEW(playerIn.getHeldItemMainhand(), (ItemStackHandler) handler);
     }
 
     @Override

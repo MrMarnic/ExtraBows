@@ -1,5 +1,6 @@
 package me.marnic.extrabows.api.upgrade;
 
+import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
 import me.marnic.extrabows.common.packet.PacketSendDestroyMessage;

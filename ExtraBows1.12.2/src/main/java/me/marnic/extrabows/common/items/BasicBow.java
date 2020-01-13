@@ -7,8 +7,11 @@ import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
+import me.marnic.extrabows.common.items.bows.ItemEnergyBow;
+import me.marnic.extrabows.common.main.ExtraBows;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -183,6 +186,7 @@ public class BasicBow extends ItemBow implements BasicItem {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
+
         tooltip.add("Press B to open the Upgrade inventory");
         if (!list.hasMul() && !list.hasMods()) {
             tooltip.add(new TextComponentTranslation("message.no_upgrades.text").getUnformattedText());
@@ -200,12 +204,38 @@ public class BasicBow extends ItemBow implements BasicItem {
             }
         }
 
-        if (isElectric(list, stack) && stack.getTagCompound() != null) {
-            EnergyStorage storage = (EnergyStorage) stack.getCapability(CapabilityEnergy.ENERGY, null);
+        if (isElectric(list, stack) && stack.hasTagCompound()) {
+            ExtraBowsEnergy storage = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null);
             if (storage != null) {
-                tooltip.add("Energy: " + stack.getTagCompound().getInteger("energyAmount") + "/" + storage.getMaxEnergyStored() + "RF");
+                tooltip.add("Energy: " + storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + "RF");
             }
         }
+
+    }
+
+    @Nullable
+    @Override
+    public NBTTagCompound getNBTShareTag(ItemStack stack) {
+
+        NBTTagCompound compound = super.getNBTShareTag(stack);
+
+        if(compound == null) {
+            compound = new NBTTagCompound();
+        }
+
+        ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY,null);
+        if(extraBowsEnergy != null) {
+            compound.setInteger("energy",extraBowsEnergy.getEnergyStored());
+            compound.setInteger("maxEnergy",extraBowsEnergy.getMaxEnergyStored());
+        }
+
+        ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
+
+        if(handler != null) {
+            compound.setTag("itemHandlerData",handler.serializeNBT());
+        }
+
+        return compound;
     }
 
     @Override
@@ -213,15 +243,26 @@ public class BasicBow extends ItemBow implements BasicItem {
         return true;
     }
 
-    @Nullable
     @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack) {
-        NBTTagCompound tag = new NBTTagCompound();
-        ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null);
-        if (extraBowsEnergy != null) {
-            tag.setInteger("energyAmount", extraBowsEnergy.getEnergyStored());
+    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        super.readNBTShareTag(stack, nbt);
+
+        if(nbt != null) {
+            ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY,null);
+            ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
+
+            if(extraBowsEnergy != null) {
+                int energy = nbt.getInteger("energy");
+                int maxEnergy = nbt.getInteger("maxEnergy");
+                extraBowsEnergy.setEnergy(energy);
+                extraBowsEnergy.setCapacity(maxEnergy);
+            }
+
+            if(handler != null) {
+                NBTTagCompound tag = nbt.getCompoundTag("itemHandlerData");
+                handler.deserializeNBT(tag);
+            }
         }
-        return tag;
     }
 
     @Override
@@ -236,7 +277,7 @@ public class BasicBow extends ItemBow implements BasicItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        return new BowCapability();
+        return new BowCapability(stack);
     }
 
     @Override
@@ -245,11 +286,11 @@ public class BasicBow extends ItemBow implements BasicItem {
     }
 
     private boolean isElectric(UpgradeList list, ItemStack stack) {
-        return list.contains(Upgrades.ENERGY_UPGRADE) || (stack.getItem().getShareTag() && stack.getItem().getNBTShareTag(stack).hasKey("energy"));
+        return list.contains(Upgrades.ENERGY_UPGRADE) || stack.getItem() instanceof ItemEnergyBow;
     }
 
     private boolean isLoaded(UpgradeList list, ItemStack stack) {
-        boolean b = list.contains(Upgrades.ENERGY_UPGRADE) || (stack.getItem().getShareTag() && stack.getItem().getNBTShareTag(stack).hasKey("energy"));
+        boolean b = list.contains(Upgrades.ENERGY_UPGRADE) || stack.getItem() instanceof ItemEnergyBow;
         if (b) {
             return stack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored() >= CustomBowSettings.ENERGY_COST_PER_ARROW;
         }
@@ -269,16 +310,20 @@ public class BasicBow extends ItemBow implements BasicItem {
         private ItemStackHandler handler = new ItemStackHandler(4);
         private ExtraBowsEnergy energy = new ExtraBowsEnergy(CustomBowSettings.ENERGY_BOW_UPGRADE, CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3);
 
-        public BowCapability() {
+        private ItemStack stack;
+
+        public BowCapability(ItemStack stack) {
+            this.stack = stack;
         }
 
-        public BowCapability(ExtraBowsEnergy energy) {
+        public BowCapability(ExtraBowsEnergy energy,ItemStack stack) {
             this.energy = energy;
+            this.stack = stack;
         }
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-            return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY | capability == CapabilityEnergy.ENERGY;
+            return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY | (capability == CapabilityEnergy.ENERGY && isElectric(UpgradeUtil.getUpgradesFromStackNEW(stack),stack));
         }
 
         @Nullable

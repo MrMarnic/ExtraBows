@@ -41,16 +41,7 @@ public class ItemEnergyBow extends BasicBow {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        return new BowCapability(new ExtraBowsEnergy(getSettings().getEnergy(), CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3));
-    }
-
-
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack) {
-        NBTTagCompound nbt = super.getNBTShareTag(stack);
-        nbt.setBoolean("energy", true);
-        return nbt;
+        return new BowCapability(new ExtraBowsEnergy(getSettings().getEnergy(), CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3),stack);
     }
 
     @Override
@@ -70,13 +61,5 @@ public class ItemEnergyBow extends BasicBow {
         if (arrow.getTags().contains("electric")) {
             arrow.setDead();
         }
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if (stack.hasTagCompound()) {
-            tooltip.add("Type: " + stack.getTagCompound().getString("energyType"));
-        }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 }
