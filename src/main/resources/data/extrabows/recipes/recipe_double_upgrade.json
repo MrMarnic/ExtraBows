@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "SBS",
+    "   "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:arrow"
+    },
+    "B": {
+      "item": "extrabows:upgrade_plate"
+    }
+  },
+  "result": {
+    "item": "extrabows:double_upgrade"
+  }
+}
