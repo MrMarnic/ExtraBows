@@ -8,15 +8,11 @@ import net.minecraft.item.Item;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public interface BasicItem{
+public interface BasicItem extends ConfigLoad{
     default void createItem(String name) {
         getItem().setRegistryName(name);
         ExtraBowsRegistry.register(this);
     }
 
     Item getItem();
-
-    default void initConfigOptions() {
-
-    }
 }

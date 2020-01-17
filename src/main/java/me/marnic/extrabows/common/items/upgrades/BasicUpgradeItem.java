@@ -48,6 +48,7 @@ public class BasicUpgradeItem extends Item implements BasicItem {
 
     public void setMaxDamage(int maxDamage) {
         this.maxDamage = maxDamage;
+        System.out.println(maxDamage + "AAAAA");
     }
 
     @Override

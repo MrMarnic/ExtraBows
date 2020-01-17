@@ -57,7 +57,7 @@ public class Upgrades {
     public static ArrowModifierUpgrade ELECTRIC_UPGRADE;
 
     public static void init() {
-        DOUBLE_UPGRADE = new ArrowMultiplierUpgrade("double_upgrade", ExtraBowsConfig.DURABILITY_DOUBLE_UPGRADE) {
+        DOUBLE_UPGRADE = new ArrowMultiplierUpgrade("double_upgrade") {
             @Override
             public void handleAction(BasicBow basicBow, World worldIn, ItemStack bow, PlayerEntity entityplayer, float f, ItemStack arrow, boolean flag1, UpgradeList list, boolean isLoaded) {
 
@@ -92,8 +92,13 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_DOUBLE_UPGRADE.get());
+            }
         };
-        TRIPLE_UPGRADE = new ArrowMultiplierUpgrade("triple_upgrade", ExtraBowsConfig.DURABILITY_TRIPLE_UPGRADE) {
+        TRIPLE_UPGRADE = new ArrowMultiplierUpgrade("triple_upgrade") {
             @Override
             public void handleAction(BasicBow basicBow, World worldIn, ItemStack bow, PlayerEntity entityplayer, float f, ItemStack arrow, boolean flag1, UpgradeList list, boolean isLoaded) {
                 if (arrow.getCount() >= 3 || flag1 || isLoaded) {
@@ -133,9 +138,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_TRIPLE_UPGRADE.get());
+            }
         };
 
-        LIGHTNING_UPGRADE = new ArrowModifierUpgrade("lightning_upgrade", ExtraBowsConfig.DURABILITY_LIGHTNING_UPGRADE) {
+        LIGHTNING_UPGRADE = new ArrowModifierUpgrade("lightning_upgrade") {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 ((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), false));
@@ -157,9 +167,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_LIGHTNING_UPGRADE.get());
+            }
         };
 
-        FIRE_UPGRADE = new ArrowModifierUpgrade("fire_upgrade", ExtraBowsConfig.DURABILITY_FIRE_UPGRADE) {
+        FIRE_UPGRADE = new ArrowModifierUpgrade("fire_upgrade") {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 pos = pos.add(0, 1, 0);
@@ -184,9 +199,13 @@ public class Upgrades {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 1), UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 2));
             }
 
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_FIRE_UPGRADE.get());
+            }
         };
 
-        ENDER_UPGRADE = new ArrowModifierUpgrade("ender_upgrade", ExtraBowsConfig.DURABILITY_ENDER_UPGRADE) {
+        ENDER_UPGRADE = new ArrowModifierUpgrade("ender_upgrade") {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 player.setPositionAndUpdate(pos.getX(), pos.getY() + 1, pos.getZ());
@@ -201,9 +220,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_ENDER_UPGRADE.get());
+            }
         };
 
-        FREEZE_UPGRADE = new ArrowModifierUpgrade("freeze_upgrade", ExtraBowsConfig.DURABILITY_FREEZE_UPGRADE) {
+        FREEZE_UPGRADE = new ArrowModifierUpgrade("freeze_upgrade") {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 pos = pos.add(0, 1, 0);
@@ -251,9 +275,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_FREEZE_UPGRADE.get());
+            }
         };
 
-        EXPLOSIVE_UPGRADE = new ArrowModifierUpgrade("explosive_upgrade", ExtraBowsConfig.DURABILITY_EXPLOSIVE_UPGRADE) {
+        EXPLOSIVE_UPGRADE = new ArrowModifierUpgrade("explosive_upgrade") {
 
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
@@ -272,9 +301,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_EXPLOSIVE_UPGRADE.get());
+            }
         };
 
-        HEAL_FROM_DAMAGE = new ArrowModifierUpgrade("heal_from_damage_upgrade", ExtraBowsConfig.DURABILITY_HEAL_FROM_DAMAGE_UPGRADE) {
+        HEAL_FROM_DAMAGE = new ArrowModifierUpgrade("heal_from_damage_upgrade") {
             @Override
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 if (entity instanceof LivingEntity) {
@@ -288,9 +322,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_HEAL_FROM_DAMAGE_UPGRADE.get());
+            }
         };
 
-        ARROW_COST = new ArrowModifierUpgrade("arrow_cost_upgrade", ExtraBowsConfig.DURABILITY_ARROW_COST_UPGRADE) {
+        ARROW_COST = new ArrowModifierUpgrade("arrow_cost_upgrade") {
             @Override
             public void handleArrowCreate(AbstractArrowEntity arrow, PlayerEntity player, UpgradeList upgradeList) {
                 if (RandomUtil.isChance(8, 1)) {
@@ -304,9 +343,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_ARROW_COST_UPGRADE.get());
+            }
         };
 
-        WATER_UPGRADE = new ArrowModifierUpgrade("water_upgrade", ExtraBowsConfig.DURABILITY_WATER_UPGRADE) {
+        WATER_UPGRADE = new ArrowModifierUpgrade("water_upgrade") {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 Stream<BlockPos> list = UpgradeUtil.getBlocksInRadius(pos, 3);
@@ -327,9 +371,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 1), UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 2));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_WATER_UPGRADE.get());
+            }
         };
 
-        PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade", ExtraBowsConfig.DURABILITY_PUSH_UPGRADE) {
+        PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade") {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 world.getEntitiesWithinAABB(LivingEntity.class, UpgradeUtil.getRadiusBoundingBox(pos, 6)).forEach((livingEntity -> {
@@ -371,9 +420,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_PUSH_UPGRADE.get());
+            }
         };
 
-        FLYING_UPGRADE = new ArrowModifierUpgrade("flying_upgrade", ExtraBowsConfig.DURABILITY_FLY_UPGRADE) {
+        FLYING_UPGRADE = new ArrowModifierUpgrade("flying_upgrade") {
             @Override
             public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
                 arrow.getTags().add("flyingUpgrade");
@@ -398,9 +452,14 @@ public class Upgrades {
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
             }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_FLY_UPGRADE.get());
+            }
         };
 
-        METEOR_UPGRADE = new ArrowModifierUpgrade("meteor_upgrade", ExtraBowsConfig.DURABILITY_METEOR_UPGRADE) {
+        METEOR_UPGRADE = new ArrowModifierUpgrade("meteor_upgrade") {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
                 spawnMeteor(world, arrow);
@@ -423,6 +482,11 @@ public class Upgrades {
             @Override
             public List<ITextComponent> getDescription() {
                 return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this));
+            }
+
+            @Override
+            public void initConfigOptions() {
+                getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_METEOR_UPGRADE.get());
             }
         };
 

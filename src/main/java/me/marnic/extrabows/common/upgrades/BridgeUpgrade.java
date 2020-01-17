@@ -32,7 +32,12 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     public static int ACTIVE_TIME = 20;
 
     public BridgeUpgrade() {
-        super("bridge_upgrade", ExtraBowsConfig.DURABILITY_BRIDGE_UPGRADE);
+        super("bridge_upgrade");
+    }
+
+    @Override
+    public void initConfigOptions() {
+        getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_BRIDGE_UPGRADE.get());
     }
 
     public static boolean placeBlock(BlockPos pos, BlockState state, World world) {

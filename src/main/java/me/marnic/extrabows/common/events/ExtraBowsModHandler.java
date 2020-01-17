@@ -2,6 +2,8 @@ package me.marnic.extrabows.common.events;
 
 import com.google.common.collect.ImmutableMap;
 import me.marnic.extrabows.api.item.BasicItem;
+import me.marnic.extrabows.api.item.ConfigLoad;
+import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.client.gui.BowUpgradeGui;
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.items.BasicBow;
@@ -83,7 +85,7 @@ public class ExtraBowsModHandler {
     public static void configLoad(ModConfig.Loading e) {
         BowSettings.init();
 
-        for(BasicItem item:ExtraBowsRegistry.CONFIG_LOAD) {
+        for(ConfigLoad item:ExtraBowsRegistry.CONFIG_LOAD) {
             item.initConfigOptions();
         }
     }

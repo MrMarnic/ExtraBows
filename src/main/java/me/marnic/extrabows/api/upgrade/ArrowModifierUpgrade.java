@@ -17,10 +17,6 @@ public class ArrowModifierUpgrade extends BasicUpgrade {
         super(name);
     }
 
-    public ArrowModifierUpgrade(String name, int durability) {
-        super(name, durability);
-    }
-
     public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
 
     }

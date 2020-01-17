@@ -18,24 +18,23 @@ public class ExtraBowsConfig {
     public static BowConfig DIAMOND_BOW = new BowConfig("DIAMOND_BOW",750,3.75f,5f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
     public static BowConfig EMERALD_BOW = new BowConfig("EMERALD_BOW",1500,4f,8f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
 
-    public static ForgeConfigSpec SPEC = BUILDER.build();
+    public static ForgeConfigSpec.IntValue DURABILITY_DOUBLE_UPGRADE = BUILDER.defineInRange("DURABILITY_DOUBLE_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_TRIPLE_UPGRADE = BUILDER.defineInRange("DURABILITY_TRIPLE_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_ARROW_COST_UPGRADE = BUILDER.defineInRange("DURABILITY_ARROW_COST_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_HEAL_FROM_DAMAGE_UPGRADE = BUILDER.defineInRange("DURABILITY_HEAL_FROM_DAMAGE_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_FIRE_UPGRADE = BUILDER.defineInRange("DURABILITY_FIRE_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_FREEZE_UPGRADE = BUILDER.defineInRange("DURABILITY_FREEZE_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_WATER_UPGRADE = BUILDER.defineInRange("DURABILITY_WATER_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_BRIDGE_UPGRADE = BUILDER.defineInRange("DURABILITY_BRIDGE_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_ENDER_UPGRADE = BUILDER.defineInRange("DURABILITY_ENDER_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_LIGHTNING_UPGRADE = BUILDER.defineInRange("DURABILITY_LIGHTNING_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_EXPLOSIVE_UPGRADE = BUILDER.defineInRange("DURABILITY_EXPLOSIVE_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_PUSH_UPGRADE = BUILDER.defineInRange("DURABILITY_PUSH_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_FLY_UPGRADE = BUILDER.defineInRange("DURABILITY_FLY_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_METEOR_UPGRADE = BUILDER.defineInRange("DURABILITY_METEOR_UPGRADE",400,1,Integer.MAX_VALUE);
+    public static ForgeConfigSpec.IntValue DURABILITY_ENERGY_UPGRADE = BUILDER.defineInRange("DURABILITY_ENERGY_UPGRADE",400,1,Integer.MAX_VALUE);
 
-    public static int DURABILITY_DOUBLE_UPGRADE = 400;
-    public static int DURABILITY_TRIPLE_UPGRADE = 400;
-    public static int DURABILITY_ARROW_COST_UPGRADE = 400;
-    public static int DURABILITY_HEAL_FROM_DAMAGE_UPGRADE = 400;
-    public static int DURABILITY_FIRE_UPGRADE = 400;
-    public static int DURABILITY_FREEZE_UPGRADE = 400;
-    public static int DURABILITY_WATER_UPGRADE = 400;
-    public static int DURABILITY_BRIDGE_UPGRADE = 400;
-    public static int DURABILITY_ENDER_UPGRADE = 400;
-    public static int DURABILITY_LIGHTNING_UPGRADE = 400;
-    public static int DURABILITY_EXPLOSIVE_UPGRADE = 400;
-    public static int DURABILITY_BONE_MEAL_UPGRADE = 400;
-    public static int DURABILITY_PUSH_UPGRADE = 400;
-    public static int DURABILITY_FLY_UPGRADE = 400;
-    public static int DURABILITY_METEOR_UPGRADE = 400;
-    public static int DURABILITY_ENERGY_UPGRADE = 400;
+    public static ForgeConfigSpec SPEC = BUILDER.build();
 
     public static class BowConfig{
 

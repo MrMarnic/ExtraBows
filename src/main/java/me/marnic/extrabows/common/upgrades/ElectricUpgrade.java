@@ -20,7 +20,12 @@ import net.minecraftforge.items.IItemHandler;
 
 public class ElectricUpgrade extends ArrowModifierUpgrade {
     public ElectricUpgrade() {
-        super("electric_upgrade", ExtraBowsConfig.DURABILITY_ENERGY_UPGRADE);
+        super("electric_upgrade");
+    }
+
+    @Override
+    public void initConfigOptions() {
+        getItem().setMaxDamage(ExtraBowsConfig.DURABILITY_ENERGY_UPGRADE.get());
     }
 
     @Override
