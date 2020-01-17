@@ -1,6 +1,7 @@
 package me.marnic.extrabows.common.items.bows;
 
 import me.marnic.extrabows.api.energy.ExtraBowsEnergy;
+import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.BowSettings;
 import me.marnic.extrabows.common.items.CustomBowSettings;
@@ -20,33 +21,16 @@ import java.util.List;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class ItemEnergyBow extends BasicBow {
+public class ItemElectricBow extends BasicBow {
 
-    public ItemEnergyBow() {
-        super(new CustomBowSettings("energy_bow").copy(BowSettings.IRON));
+    public ItemElectricBow() {
+        super(new CustomBowSettings("electric_bow").copy(BowSettings.IRON));
     }
-
-    public ItemStack setType(CustomBowSettings type, ItemStack stack) {
-        ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null);
-        extraBowsEnergy.setCapacity(type.getEnergy());
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-
-        stack.getTagCompound().setString("energyType", type.getName());
-        return stack;
-    }
-
 
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        return new BowCapability(new ExtraBowsEnergy(getSettings().getEnergy(), CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3),stack);
-    }
-
-    @Override
-    public boolean getShareTag() {
-        return true;
+        return new BowCapability(new ExtraBowsEnergy(CustomBowSettings.ENERGY_BOW, CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3),stack);
     }
 
     @Override

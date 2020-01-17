@@ -25,13 +25,13 @@ import java.util.List;
  */
 public class UpgradeUtil {
 
-    public static UpgradeList getUpgradesFromStackNEW(ItemStack stack) {
+    public static UpgradeList getUpgradesFromStack(ItemStack stack) {
 
         ArrowMultiplierUpgrade multiplierUpgrade = null;
 
         ArrayList<ArrowModifierUpgrade> mods = new ArrayList<>();
 
-        ItemStackHandler handler = getHandlerForItemStackNEW(stack);
+        ItemStackHandler handler = getHandlerForItemStack(stack);
 
         if (handler != null) {
             if (!handler.getStackInSlot(0).isEmpty()) {
@@ -48,26 +48,6 @@ public class UpgradeUtil {
         return new UpgradeList(multiplierUpgrade, mods, handler, ((BasicBow) stack.getItem()));
     }
 
-    public static UpgradeList getUpgradesFromHandler(ItemStackHandler handler, BasicBow basicBow) {
-        ArrowMultiplierUpgrade multiplierUpgrade = null;
-        ArrayList<ArrowModifierUpgrade> modifierUpgrades = new ArrayList<>();
-        ArrayList<Integer> indecs = new ArrayList<>();
-        if (handler.getSlots() == 4) {
-            if (!handler.getStackInSlot(0).isEmpty()) {
-                multiplierUpgrade = (ArrowMultiplierUpgrade) getUpgradeFromStack(handler.getStackInSlot(0));
-            }
-
-            for (int i = 1; i < 4; i++) {
-                if (!handler.getStackInSlot(i).isEmpty()) {
-                    modifierUpgrades.add((ArrowModifierUpgrade) getUpgradeFromStack(handler.getStackInSlot(i)));
-                    indecs.add(i);
-                }
-            }
-        }
-
-        return new UpgradeList(multiplierUpgrade, modifierUpgrades, handler, basicBow);
-    }
-
     public static BasicUpgrade getUpgradeFromStack(ItemStack stack) {
         if (stack.getItem() instanceof BasicUpgradeItem) {
             return ((BasicUpgradeItem) stack.getItem()).getUpgrade();
@@ -75,11 +55,11 @@ public class UpgradeUtil {
         return null;
     }
 
-    public static ItemStackHandler getHandlerForItemStackNEW(ItemStack stack) {
+    public static ItemStackHandler getHandlerForItemStack(ItemStack stack) {
         return (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
     }
 
-    public static void saveUpgradesToStackNEW(ItemStack stack, ItemStackHandler handler2) {
+    public static void saveUpgradesToStack(ItemStack stack, ItemStackHandler handler2) {
         ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
 
@@ -89,9 +69,9 @@ public class UpgradeUtil {
     }
 
     public static void copyUpgradesToStack(ItemStack old, ItemStack newOne) {
-        ItemStackHandler handlerOld = getHandlerForItemStackNEW(old);
+        ItemStackHandler handlerOld = getHandlerForItemStack(old);
 
-        UpgradeUtil.saveUpgradesToStackNEW(newOne, handlerOld);
+        UpgradeUtil.saveUpgradesToStack(newOne, handlerOld);
     }
 
     public static Iterable<BlockPos> getBlocksInRadius(BlockPos center, int radius) {

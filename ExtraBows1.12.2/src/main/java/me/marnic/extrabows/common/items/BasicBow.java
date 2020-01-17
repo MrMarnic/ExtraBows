@@ -7,11 +7,9 @@ import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
-import me.marnic.extrabows.common.items.bows.ItemEnergyBow;
-import me.marnic.extrabows.common.main.ExtraBows;
+import me.marnic.extrabows.common.items.bows.ItemElectricBow;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -28,7 +26,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -87,7 +85,7 @@ public class BasicBow extends ItemBow implements BasicItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        if (isLoaded(UpgradeUtil.getUpgradesFromStackNEW(stack), stack)) {
+        if (isLoaded(UpgradeUtil.getUpgradesFromStack(stack), stack)) {
             playerIn.setActiveHand(handIn);
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
@@ -100,14 +98,16 @@ public class BasicBow extends ItemBow implements BasicItem {
             EntityPlayer entityplayer = (EntityPlayer) entityLiving;
             boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
-            UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
+            UpgradeList list = UpgradeUtil.getUpgradesFromStack(stack);
 
             boolean isLoaded = isLoaded(list, stack);
 
             ItemStack arrowStack = this.findAmmoNEW(entityplayer, isLoaded);
 
             int i = this.getMaxItemUseDuration(stack) - timeLeft;
+
             i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !arrowStack.isEmpty() || flag);
+
             if (i < 0) return;
 
             if (!arrowStack.isEmpty() || flag) {
@@ -126,7 +126,6 @@ public class BasicBow extends ItemBow implements BasicItem {
                             list.getArrowMultiplier().handleAction(this, worldIn, stack, entityplayer, f, arrowStack, flag1, list, isLoaded);
                         } else {
                             EntityArrow entityarrow = ArrowUtil.createArrowComplete(worldIn, stack, arrowStack, entityplayer, this, f, flag1, 0, 0, list, isLoaded);
-
                             worldIn.spawnEntity(entityarrow);
                         }
                     }
@@ -185,7 +184,7 @@ public class BasicBow extends ItemBow implements BasicItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(stack);
+        UpgradeList list = UpgradeUtil.getUpgradesFromStack(stack);
 
         tooltip.add("Press B to open the Upgrade inventory");
         if (!list.hasMul() && !list.hasMods()) {
@@ -204,7 +203,7 @@ public class BasicBow extends ItemBow implements BasicItem {
             }
         }
 
-        if (isElectric(list, stack) && stack.hasTagCompound()) {
+        if (isElectric(list, stack)) {
             ExtraBowsEnergy storage = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null);
             if (storage != null) {
                 tooltip.add("Energy: " + storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + "RF");
@@ -286,11 +285,11 @@ public class BasicBow extends ItemBow implements BasicItem {
     }
 
     private boolean isElectric(UpgradeList list, ItemStack stack) {
-        return list.contains(Upgrades.ENERGY_UPGRADE) || stack.getItem() instanceof ItemEnergyBow;
+        return list.contains(Upgrades.ELECTRIC_UPGRADE) || stack.getItem() instanceof ItemElectricBow;
     }
 
     private boolean isLoaded(UpgradeList list, ItemStack stack) {
-        boolean b = list.contains(Upgrades.ENERGY_UPGRADE) || stack.getItem() instanceof ItemEnergyBow;
+        boolean b = list.contains(Upgrades.ELECTRIC_UPGRADE) || stack.getItem() instanceof ItemElectricBow;
         if (b) {
             return stack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored() >= CustomBowSettings.ENERGY_COST_PER_ARROW;
         }
@@ -323,7 +322,7 @@ public class BasicBow extends ItemBow implements BasicItem {
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-            return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY | (capability == CapabilityEnergy.ENERGY && isElectric(UpgradeUtil.getUpgradesFromStackNEW(stack),stack));
+            return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY | (capability == CapabilityEnergy.ENERGY && isElectric(UpgradeUtil.getUpgradesFromStack(stack),stack));
         }
 
         @Nullable

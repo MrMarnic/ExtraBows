@@ -59,7 +59,8 @@ public class ExtraBowsEventHandler {
             e.getRegistry().register(item);
         }
 
-        e.getRegistry().register(new BasicBow(new CustomBowSettings("minecraft:bow")).setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("bow"));
+        //Not working completely: Needs fix onArrowLoose
+        //e.getRegistry().register(new BasicBow(new CustomBowSettings("minecraft:bow")).setCreativeTab(CreativeTabs.COMBAT).setUnlocalizedName("bow"));
     }
 
     @SubscribeEvent
@@ -146,7 +147,7 @@ public class ExtraBowsEventHandler {
     }
 
     @SubscribeEvent
-    public static void projectileHit(ProjectileImpactEvent e) {
+    public static void projectileHit(ProjectileImpactEvent.Arrow e) {
         if (e.getEntity() instanceof EntityArrow) {
             EntityArrow arrow = (EntityArrow) e.getEntity();
 
@@ -156,6 +157,7 @@ public class ExtraBowsEventHandler {
                     if (arrow.shootingEntity.equals(e.getRayTraceResult().entityHit)) {
                         if (arrow.getTags().contains("flyingUpgrade")) {
                             e.setCanceled(true);
+                            return;
                         }
                     }
                 }
@@ -192,7 +194,7 @@ public class ExtraBowsEventHandler {
                 if (arrow.shootingEntity instanceof EntityPlayerMP) {
                     ItemStack bow = ((EntityPlayer) arrow.shootingEntity).getHeldItemMainhand();
 
-                    UpgradeList list = UpgradeUtil.getUpgradesFromStackNEW(bow);
+                    UpgradeList list = UpgradeUtil.getUpgradesFromStack(bow);
 
                     ArrowUtil.ARROWS_TO_UPGRADES.put(arrow.getUniqueID(), list);
                     TimeCommand.EndableTimeCommand command = new TimeCommand.EndableTimeCommand(0, arrow.getEntityId());

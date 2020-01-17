@@ -24,8 +24,6 @@ public class CustomBowSettings {
     private float inaccuracy;
     private float time;
     private Item type;
-    private int energy = CustomBowSettings.ENERGY_BOW;
-    private PotionEffect effect;
 
     public CustomBowSettings(String name, int maxUses, float velocityMul, float damage, float inaccuracy, float time) {
         this.name = name;
@@ -95,21 +93,5 @@ public class CustomBowSettings {
     public CustomBowSettings setType(Item type) {
         this.type = type;
         return this;
-    }
-
-    public PotionEffect getEffect() {
-        return effect;
-    }
-
-    public void setEffect(PotionEffect effect) {
-        this.effect = effect;
-    }
-
-    public boolean hasEffect() {
-        return effect != null;
-    }
-
-    public int getEnergy() {
-        return energy;
     }
 }

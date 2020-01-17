@@ -25,7 +25,7 @@ public class ExtraBowsObjects {
     public static ItemGoldBow GOLD_BOW;
     public static ItemDiamondBow DIAMOND_BOW;
     public static ItemEmeraldBow EMERALD_BOW;
-    public static ItemEnergyBow ENERGY_BOW;
+    public static ItemElectricBow ENERGY_BOW;
 
     public static ItemUpgradePlate UPGRADE_PLATE;
 
@@ -60,7 +60,7 @@ public class ExtraBowsObjects {
         GOLD_BOW = new ItemGoldBow();
         DIAMOND_BOW = new ItemDiamondBow();
         EMERALD_BOW = new ItemEmeraldBow();
-        ENERGY_BOW = new ItemEnergyBow();
+        ENERGY_BOW = new ItemElectricBow();
 
         UPGRADE_PLATE = new ItemUpgradePlate();
 

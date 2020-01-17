@@ -8,9 +8,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-
-import java.util.ArrayList;
 
 /**
  * Copyright (c) 30.05.2019
@@ -26,7 +23,7 @@ public class BowUpgradeGuiContainer extends Container {
 
         ItemStack bowStack = player.getHeldItemMainhand();
 
-        handler = UpgradeUtil.getHandlerForItemStackNEW(bowStack);
+        handler = UpgradeUtil.getHandlerForItemStack(bowStack);
         this.addSlotToContainer(new UpgradeSlot(handler, 0, 51, 37, false, bowStack, player));
 
         this.addSlotToContainer(new UpgradeSlot(handler, 1, 73, 37, true, bowStack, player));
@@ -47,12 +44,6 @@ public class BowUpgradeGuiContainer extends Container {
                 }
             });
         }
-    }
-
-    @Override
-    public void onContainerClosed(EntityPlayer playerIn) {
-        super.onContainerClosed(playerIn);
-        //UpgradeUtil.saveUpgradesToStackNEW(playerIn.getHeldItemMainhand(), (ItemStackHandler) handler);
     }
 
     @Override

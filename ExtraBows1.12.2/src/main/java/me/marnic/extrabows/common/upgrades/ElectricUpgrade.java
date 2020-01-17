@@ -1,17 +1,15 @@
 package me.marnic.extrabows.common.upgrades;
 
-import me.marnic.extrabows.api.energy.ExtraBowsEnergy;
 import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
-import me.marnic.extrabows.common.items.bows.ItemEnergyBow;
+import me.marnic.extrabows.common.items.bows.ItemElectricBow;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.IItemHandler;
 
 /**
@@ -20,14 +18,9 @@ import net.minecraftforge.items.IItemHandler;
  * GitHub: https://github.com/MrMarnic
  */
 
-public class EnergyUpgrade extends ArrowModifierUpgrade {
-    public EnergyUpgrade() {
-        super("energy_upgrade", ExtraBowsConfig.DURABILITY_ENERGY_UPGRADE);
-    }
-
-    @Override
-    public void handleUpgradeInsert(ItemStack bow) {
-        ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) bow.getCapability(CapabilityEnergy.ENERGY, null);
+public class ElectricUpgrade extends ArrowModifierUpgrade {
+    public ElectricUpgrade() {
+        super("electric_upgrade", ExtraBowsConfig.DURABILITY_ENERGY_UPGRADE);
     }
 
     @Override
@@ -53,6 +46,6 @@ public class EnergyUpgrade extends ArrowModifierUpgrade {
 
     @Override
     public boolean canNotBeInserted(IItemHandler itemHandler, ItemStack bow) {
-        return bow.getItem() instanceof ItemEnergyBow;
+        return bow.getItem() instanceof ItemElectricBow;
     }
 }

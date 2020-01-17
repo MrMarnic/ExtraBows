@@ -48,6 +48,9 @@ public class UpgradeSlot extends SlotItemHandler {
     }
 
     private boolean doesContainSameUpgrade(BasicUpgrade upgrade) {
+
+        if(upgrade == null)return false;
+
         for (int i = 0; i < getItemHandler().getSlots(); i++) {
             if (getItemHandler().getStackInSlot(i).getItem() instanceof BasicUpgradeItem) {
                 BasicUpgrade up = UpgradeUtil.getUpgradeFromStack(getItemHandler().getStackInSlot(i));

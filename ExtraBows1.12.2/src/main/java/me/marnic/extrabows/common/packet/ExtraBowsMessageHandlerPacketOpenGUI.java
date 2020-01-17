@@ -1,6 +1,7 @@
 package me.marnic.extrabows.common.packet;
 
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
+import me.marnic.extrabows.common.items.BasicBow;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBow;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -17,7 +18,7 @@ public class ExtraBowsMessageHandlerPacketOpenGUI implements IMessageHandler<Pac
     public IMessage onMessage(PacketOpenUpgradeGUI message, MessageContext ctx) {
         EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
 
-        if (serverPlayer.getHeldItemMainhand().getItem() instanceof ItemBow) {
+        if (serverPlayer.getHeldItemMainhand().getItem() instanceof BasicBow) {
             serverPlayer.getServerWorld().addScheduledTask(() -> {
                 ExtraBowsInputHandler.handleUpgradeInvKeyPressedServer(serverPlayer);
             });

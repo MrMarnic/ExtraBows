@@ -51,7 +51,7 @@ public class ArrowUtil {
     public static EntityArrow createArrowComplete(World worldIn, ItemStack bow, ItemStack arrow, EntityPlayer entityplayer, BasicBow basicBow, float f, boolean flag1, float inacplus, float yawplus, UpgradeList list, boolean isLoaded) {
         CustomBowSettings settings = basicBow.getSettings();
         EntityArrow entityarrow = ArrowUtil.createArrow(worldIn, bow, arrow, entityplayer, basicBow, entityplayer);
-        UpgradeUtil.getUpgradesFromStackNEW(bow).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE, entityarrow, entityplayer, bow);
+        UpgradeUtil.getUpgradesFromStack(bow).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE, entityarrow, entityplayer, bow);
 
         shootArrow(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus, entityarrow, yawplus);
         if (f == 1.0F) {

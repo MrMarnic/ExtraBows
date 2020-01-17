@@ -48,7 +48,6 @@ public class ArrowModifierUpgrade extends BasicUpgrade {
     }
 
     public void handleUpgradeInsert(ItemStack bow) {
-
     }
 
     public enum EventType {

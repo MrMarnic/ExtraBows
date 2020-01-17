@@ -51,7 +51,7 @@ public class BasicBowRecipe extends ShapedRecipes {
             UpgradeUtil.copyUpgradesToStack(base, out);
         }
 
-        UpgradeUtil.getUpgradesFromStackNEW(out).handleInsertedEvent(out);
+        UpgradeUtil.getUpgradesFromStack(out).handleInsertedEvent(out);
 
         return out;
     }

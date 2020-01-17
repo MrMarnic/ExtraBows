@@ -5,13 +5,13 @@
       "item": "extrabows:iron_upgrade_kit"
     },
     {
-      "item": "extrabows:energy_upgrade"
+      "item": "extrabows:electric_upgrade"
     },
     {
-      "item": "extrabows:energy_upgrade"
+      "item": "extrabows:electric_upgrade"
     }
   ],
   "result": {
-    "item": "extrabows:energy_bow"
+    "item": "extrabows:electric_bow"
   }
 }

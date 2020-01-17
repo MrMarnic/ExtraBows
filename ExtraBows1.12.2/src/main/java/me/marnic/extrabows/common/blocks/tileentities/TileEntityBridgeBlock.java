@@ -16,11 +16,6 @@ public class TileEntityBridgeBlock extends TileEntity implements ITickable {
     private Block toPlace;
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-    }
-
-    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setInteger("ticksToLive", ticksToLive);
         return super.writeToNBT(compound);

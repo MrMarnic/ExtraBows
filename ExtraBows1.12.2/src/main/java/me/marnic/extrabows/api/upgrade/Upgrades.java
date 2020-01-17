@@ -6,7 +6,7 @@ import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
-import me.marnic.extrabows.common.upgrades.EnergyUpgrade;
+import me.marnic.extrabows.common.upgrades.ElectricUpgrade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -51,7 +51,7 @@ public class Upgrades {
     public static ArrowModifierUpgrade HEAL_FROM_DAMAGE;
     public static ArrowModifierUpgrade ARROW_COST;
 
-    public static ArrowModifierUpgrade ENERGY_UPGRADE;
+    public static ArrowModifierUpgrade ELECTRIC_UPGRADE;
 
     public static void init() {
         DOUBLE_UPGRADE = new ArrowMultiplierUpgrade("double_upgrade", ExtraBowsConfig.DURABILITY_DOUBLE_UPGRADE) {
@@ -423,7 +423,7 @@ public class Upgrades {
             }
         };
 
-        ENERGY_UPGRADE = new EnergyUpgrade();
+        ELECTRIC_UPGRADE = new ElectricUpgrade();
 
         BRIDGE_UPGRADE = new BridgeUpgrade();
     }
