@@ -1,7 +1,9 @@
 package me.marnic.extrabows.api.upgrade;
 
+import me.marnic.extrabows.api.item.ConfigLoad;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
+import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
@@ -17,29 +19,19 @@ import java.util.List;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class BasicUpgrade {
+public class BasicUpgrade implements ConfigLoad {
     public static final HashMap<String, BasicUpgrade> UPGRADES = new HashMap<>();
     private String name;
     private BasicUpgradeItem item;
-    private int durability;
     private TranslationTextComponent translation;
-
-    public BasicUpgrade(String name, int durability) {
-        this.name = name;
-        UPGRADES.put(name, this);
-        this.item = new BasicUpgradeItem(name, this);
-        this.item.setMaxDamage(durability);
-        this.durability = durability;
-        this.translation = new TranslationTextComponent("item.extrabows." + name);
-    }
 
     public BasicUpgrade(String name) {
         this.name = name;
         UPGRADES.put(name, this);
         this.item = new BasicUpgradeItem(name, this);
         this.item.setMaxDamage(400);
-        this.durability = 400;
         this.translation = new TranslationTextComponent("item.extrabows." + name);
+        ExtraBowsRegistry.CONFIG_LOAD.add(this);
     }
 
     public static BasicUpgrade getById(String id) {
@@ -59,10 +51,6 @@ public class BasicUpgrade {
 
     public BasicUpgradeItem getItem() {
         return item;
-    }
-
-    public int getDurability() {
-        return durability;
     }
 
     public List<ITextComponent> getDescription() {

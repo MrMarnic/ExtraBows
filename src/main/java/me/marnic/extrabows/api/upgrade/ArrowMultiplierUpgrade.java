@@ -14,10 +14,6 @@ public class ArrowMultiplierUpgrade extends BasicUpgrade {
         super(name);
     }
 
-    public ArrowMultiplierUpgrade(String name, int durability) {
-        super(name, durability);
-    }
-
     public boolean canShoot(ItemStack arrow, PlayerEntity player) {
         return true;
     }

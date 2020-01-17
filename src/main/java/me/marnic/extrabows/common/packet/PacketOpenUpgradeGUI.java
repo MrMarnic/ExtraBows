@@ -1,6 +1,7 @@
 package me.marnic.extrabows.common.packet;
 
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
+import me.marnic.extrabows.common.items.BasicBow;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.network.PacketBuffer;
@@ -25,7 +26,7 @@ public class PacketOpenUpgradeGUI extends BasicPacket {
         if(context.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ServerPlayerEntity serverPlayer = context.get().getSender();
 
-            if(serverPlayer.getHeldItemMainhand().getItem() instanceof BowItem) {
+            if(serverPlayer.getHeldItemMainhand().getItem() instanceof BasicBow) {
                 serverPlayer.getServer().enqueue(new TickDelayedTask(0, () -> ExtraBowsInputHandler.handleUpgradeInvKeyPressedServer(serverPlayer)));
             }
         }

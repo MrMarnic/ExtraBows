@@ -2,6 +2,7 @@ package me.marnic.extrabows.common.registry;
 
 import me.marnic.extrabows.api.block.BasicBlock;
 import me.marnic.extrabows.api.item.BasicItem;
+import me.marnic.extrabows.api.item.ConfigLoad;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
@@ -21,7 +22,7 @@ public class ExtraBowsRegistry {
     public static final ArrayList<Block> BLOCKS_TO_REGISTER = new ArrayList<>();
     public static final ArrayList<TileEntityType> TILE_ENTITY_TYPES_TO_REGISTER = new ArrayList<>();
     public static final ArrayList<ContainerType> CONTAINER_TYPES_TO_REGISTER = new ArrayList<>();
-    public static final ArrayList<BasicItem> CONFIG_LOAD = new ArrayList<>();
+    public static final ArrayList<ConfigLoad> CONFIG_LOAD = new ArrayList<>();
 
     public static void register(BasicItem item) {
         ITEMS_TO_REGISTER.add(item.getItem());

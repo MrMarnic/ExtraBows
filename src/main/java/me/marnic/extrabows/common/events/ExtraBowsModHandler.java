@@ -2,6 +2,7 @@ package me.marnic.extrabows.common.events;
 
 import com.google.common.collect.ImmutableMap;
 import me.marnic.extrabows.api.item.BasicItem;
+import me.marnic.extrabows.api.item.ConfigLoad;
 import me.marnic.extrabows.client.gui.BowUpgradeGui;
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.items.BasicBow;
@@ -52,9 +53,9 @@ public class ExtraBowsModHandler {
             e.getRegistry().register(item);
         }
 
-        BasicBow vanilla = (BasicBow) new BasicBow("minecraft:bow",new Item.Properties().group(ItemGroup.COMBAT),new CustomBowSettings("minecraft:bow"));
-
-        e.getRegistry().register(vanilla);
+        //Not working completely: Needs fix onArrowLoose
+        //BasicBow vanilla = (BasicBow) new BasicBow("minecraft:bow",new Item.Properties().group(ItemGroup.COMBAT),new CustomBowSettings("minecraft:bow"));
+        //e.getRegistry().register(vanilla);
     }
 
     @SubscribeEvent
@@ -82,7 +83,7 @@ public class ExtraBowsModHandler {
     public static void configLoad(ModConfig.Loading e) {
         BowSettings.init();
 
-        for(BasicItem item:ExtraBowsRegistry.CONFIG_LOAD) {
+        for(ConfigLoad item:ExtraBowsRegistry.CONFIG_LOAD) {
             item.initConfigOptions();
         }
     }
