@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    " B ",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:planks"
+    },
+    "B": {
+      "item": "minecraft:cobblestone"
+    }
+  },
+  "result": {
+    "item": "extrabows:strong_stone"
+  }
+}

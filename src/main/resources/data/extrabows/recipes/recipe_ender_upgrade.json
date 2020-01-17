@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SES",
+    "EBE",
+    "SES"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:ender_eye"
+    },
+    "B": {
+      "item": "extrabows:upgrade_plate"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "result": {
+    "item": "extrabows:ender_upgrade"
+  }
+}

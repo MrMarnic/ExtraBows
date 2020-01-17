@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "extrabows:iron_upgrade_kit"
+    },
+    {
+      "item": "extrabows:electric_upgrade"
+    },
+    {
+      "item": "extrabows:electric_upgrade"
+    }
+  ],
+  "result": {
+    "item": "extrabows:electric_bow"
+  }
+}
