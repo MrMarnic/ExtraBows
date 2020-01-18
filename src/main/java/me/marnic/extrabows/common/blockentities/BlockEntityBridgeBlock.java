@@ -43,7 +43,7 @@ public class BlockEntityBridgeBlock extends BlockEntity implements Tickable {
     @Override
     public void tick() {
         if(ticksToLive<=0) {
-            world.removeBlock(pos,false);
+            world.clearBlockState(pos,false);
 
             if(toPlace!=null) {
                 world.setBlockState(pos,toPlace.getDefaultState());

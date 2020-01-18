@@ -23,7 +23,7 @@ public class BasicBowRecipe extends ShapedRecipe {
 
     @Override
     public boolean matches(CraftingInventory var1, World var2) {
-        boolean b = matches(var1, var2);
+        boolean b = method_17728(var1, var2);
         if(b) {
             base = var1.getInvStack(4);
         }

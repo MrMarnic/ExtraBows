@@ -46,7 +46,7 @@ public class BlockBridgeBlock extends Block implements BlockEntityProvider {
     @Override
     public void onPlaced(World worldIn, BlockPos pos, BlockState blockState_1, LivingEntity placer, ItemStack itemStack_1) {
         super.onPlaced(worldIn, pos, blockState_1, placer, itemStack_1);
-        worldIn.removeBlock(pos,false);
+        worldIn.clearBlockState(pos,false);
         if(placer instanceof PlayerEntity) {
             AlertUtil.alert((PlayerEntity) placer,"This block can not be placed manually!", Formatting.RED);
         }

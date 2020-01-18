@@ -134,7 +134,7 @@ public class Upgrades {
 
             @Override
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
-                ((ServerWorld)world).addLightning(new LightningEntity(world,entity.getX(),entity.getY(),entity.getZ(),false));
+                ((ServerWorld)world).addLightning(new LightningEntity(world,entity.x,entity.y,entity.z,false));
                 arrow.remove();
             }
 
@@ -183,7 +183,7 @@ public class Upgrades {
 
             @Override
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
-                player.teleport(entity.getX(),entity.getY(),entity.getZ());
+                player.teleport(entity.x,entity.y,entity.z);
             }
 
             @Override
@@ -211,7 +211,7 @@ public class Upgrades {
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
                 if(entity instanceof LivingEntity) {
 
-                    ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,200,1));
+                    ((LivingEntity)entity).addPotionEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,200,1));
                 }
             }
 
@@ -255,7 +255,7 @@ public class Upgrades {
 
             @Override
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
-                world.createExplosion(player,entity.getX(),entity.getY(),entity.getZ(),3, Explosion.DestructionType.BREAK);
+                world.createExplosion(player,entity.x, entity.y,entity.z,3, Explosion.DestructionType.BREAK);
                 arrow.remove();
             }
 
@@ -304,7 +304,7 @@ public class Upgrades {
 
                 list.forEach(pos1 -> {
                     if(world.getBlockState(pos1).getBlock().equals(Blocks.FIRE)) {
-                        world.removeBlock(pos1,false);
+                        world.clearBlockState(pos1,false);
                     }
                 });
 
@@ -312,7 +312,7 @@ public class Upgrades {
                     world.setBlockState(pos, Blocks.WATER.getDefaultState());
                     TimerUtil.addTimeCommand(new TimeCommand( 20 * 5, () -> {
                         world.setBlockState(pos, Blocks.STONE.getDefaultState());
-                        world.removeBlock(pos,false);
+                        world.clearBlockState(pos,false);
                     }));
                 }
             }
@@ -352,10 +352,10 @@ public class Upgrades {
         PUSH_UPGRADE = new ArrowModifierUpgrade("push_upgrade",DURABILITY_UPGRADE) {
             @Override
             public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
-                world.getNonSpectatingEntities(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(pos,6)).forEach((livingEntity -> {
+                world.getEntities(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(pos,6)).forEach((livingEntity -> {
 
-                    double deltaX = (livingEntity.getX()-arrow.getX());
-                    double deltaZ = (livingEntity.getZ()-arrow.getZ());
+                    double deltaX = (livingEntity.x-arrow.x);
+                    double deltaZ = (livingEntity.z-arrow.z);
 
                     int posX = deltaX>0 ? 1:-1;
                     int posZ = deltaZ>0 ? 1:-1;
@@ -371,9 +371,9 @@ public class Upgrades {
 
             @Override
             public void handleEntityHit(Entity entity, World world, PlayerEntity player, ProjectileEntity arrow, UpgradeList upgradeList) {
-                world.getNonSpectatingEntities(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(entity.getBlockPos(),6)).forEach((livingEntity -> {
-                    double deltaX = (livingEntity.getX()-arrow.getX());
-                    double deltaZ = (livingEntity.getZ()-arrow.getZ());
+                world.getEntities(LivingEntity.class,UpgradeUtil.getRadiusBoundingBox(entity.getBlockPos(),6)).forEach((livingEntity -> {
+                    double deltaX = (livingEntity.x-arrow.x);
+                    double deltaZ = (livingEntity.z-arrow.z);
 
                     int posX = deltaX>0 ? 1:-1;
                     int posZ = deltaZ>0 ? 1:-1;
@@ -405,10 +405,10 @@ public class Upgrades {
             }
 
             private void spawnMeteor(World world,ProjectileEntity arrow) {
-                if(world.isAir(new BlockPos(arrow.getX(),arrow.getY() + 20,arrow.getZ()))) {
+                if(world.isAir(new BlockPos(arrow.x,arrow.y + 20,arrow.z))) {
                     FireballEntity fireballEntity = new FireballEntity(EntityType.FIREBALL,world);
                     fireballEntity.explosionPower = 2;
-                    fireballEntity.setPosition(arrow.getX(),arrow.getY() + 20,arrow.getZ());
+                    fireballEntity.setPosition(arrow.x,arrow.y + 20,arrow.z);
                     fireballEntity.addVelocity(0,-2f,0);
                     world.spawnEntity(fireballEntity);
                 }
