@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SES",
+    "EBE",
+    "SES"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:snowball"
+    },
+    "B": {
+      "item": "extrabows:upgrade_plate"
+    },
+    "E": {
+      "item": "minecraft:snow"
+    }
+  },
+  "result": {
+    "item": "extrabows:freeze_upgrade"
+  }
+}
