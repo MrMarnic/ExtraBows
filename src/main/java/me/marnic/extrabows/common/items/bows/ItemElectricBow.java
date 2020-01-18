@@ -29,7 +29,7 @@ public class ItemElectricBow extends BasicBow {
 
     @Override
     public void initConfigOptions() {
-        setSettings(new CustomBowSettings("electric_bow").copy(BowSettings.IRON));
+        setSettings(BowSettings.ELECTRIC);
         super.initConfigOptions();
     }
 
