@@ -34,7 +34,7 @@ public class BowUpgradeGui extends AbstractContainerScreen<BowUpgradeContainer> 
     @Override
     protected void drawBackground(float partialTicks, int mouseX, int mouseY) {
         minecraft.getTextureManager().bindTexture(TEXTURE);
-        blit(x,y,0,0,containerWidth,containerHeight);
+        blit(left,top,0,0,containerWidth,containerHeight);
     }
 
     @Override
