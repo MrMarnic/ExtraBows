@@ -24,7 +24,7 @@ import java.util.List;
 public class ItemElectricBow extends BasicBow {
 
     public ItemElectricBow() {
-        super(new CustomBowSettings("electric_bow").copy(BowSettings.IRON));
+        super(BowSettings.ELECTRIC);
     }
 
     @Nullable

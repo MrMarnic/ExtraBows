@@ -17,6 +17,7 @@ public class ExtraBowsConfig {
     public static BowConfig GOLD_BOW = new BowConfig(300, 4.25f, 0, 0.5f, 10f);
     public static BowConfig DIAMOND_BOW = new BowConfig(750, 3.75f, 5f, CustomBowSettings.NORMAL_INACCURACY, 15f);
     public static BowConfig EMERALD_BOW = new BowConfig(1500, 4f, 8f, CustomBowSettings.NORMAL_INACCURACY, 15f);
+    public static BowConfig ELECTRIC_BOW = BowConfig.copy(IRON_BOW);
 
     public static int DURABILITY_DOUBLE_UPGRADE = 400;
     public static int DURABILITY_TRIPLE_UPGRADE = 400;
@@ -49,6 +50,10 @@ public class ExtraBowsConfig {
             this.inaccuracy = inaccuracy;
             this.time = time;
             this.damage = damage;
+        }
+
+        public static BowConfig copy(BowConfig from) {
+            return new BowConfig(from.durability,from.velocityMultiplier,from.damage,from.inaccuracy,from.time);
         }
     }
 }
