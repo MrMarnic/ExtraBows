@@ -17,6 +17,7 @@ public class ExtraBowsConfig {
     public static BowConfig GOLD_BOW = new BowConfig("GOLD_BOW",300,4.25f,0, 0.5f,10f,BUILDER);
     public static BowConfig DIAMOND_BOW = new BowConfig("DIAMOND_BOW",750,3.75f,5f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
     public static BowConfig EMERALD_BOW = new BowConfig("EMERALD_BOW",1500,4f,8f, CustomBowSettings.NORMAL_INACCURACY,15f,BUILDER);
+    public static BowConfig ELECTRIC_BOW = BowConfig.copy("ELECTRIC_BOW",IRON_BOW,BUILDER);
 
     public static ForgeConfigSpec.IntValue DURABILITY_DOUBLE_UPGRADE = BUILDER.defineInRange("DURABILITY_DOUBLE_UPGRADE",400,1,Integer.MAX_VALUE);
     public static ForgeConfigSpec.IntValue DURABILITY_TRIPLE_UPGRADE = BUILDER.defineInRange("DURABILITY_TRIPLE_UPGRADE",400,1,Integer.MAX_VALUE);
@@ -44,6 +45,13 @@ public class ExtraBowsConfig {
         public ForgeConfigSpec.DoubleValue time;
         public ForgeConfigSpec.DoubleValue damage;
 
+        private int defaultDurability;
+        private float defaultVelocityMultiplier;
+        private float defaultInaccuracy;
+        private float defaultTime;
+        private float defaultDamage;
+
+
         public BowConfig(String name,int durability,float velocityMultiplier,float damage,float inaccuracy,float time,ForgeConfigSpec.Builder builder){
 
             builder.push(name);
@@ -53,7 +61,17 @@ public class ExtraBowsConfig {
             this.inaccuracy = builder.defineInRange("inaccuracy",inaccuracy,0,Double.MAX_VALUE);
             this.time = builder.defineInRange("time",time,0,Double.MAX_VALUE);
             this.damage = builder.defineInRange("damage",damage,0,Double.MAX_VALUE);
+
+            this.defaultDurability = durability;
+            this.defaultVelocityMultiplier = velocityMultiplier;
+            this.defaultInaccuracy = inaccuracy;
+            this.defaultTime = time;
+            this.defaultDamage = damage;
             builder.pop();
+        }
+
+        public static BowConfig copy(String name,BowConfig from,ForgeConfigSpec.Builder builder) {
+            return new BowConfig(name,from.defaultDurability,from.defaultVelocityMultiplier,from.defaultDamage,from.defaultInaccuracy,from.defaultTime,builder);
         }
     }
 }

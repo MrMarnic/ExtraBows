@@ -31,7 +31,6 @@ public class ElectricUpgrade extends ArrowModifierUpgrade {
     @Override
     public void handleEntityHit(Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
         if (arrow.getTags().contains("electric")) {
-            arrow.remove();
         }
     }
 

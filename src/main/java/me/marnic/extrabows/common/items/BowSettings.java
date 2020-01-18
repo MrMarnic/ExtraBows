@@ -15,6 +15,7 @@ public class BowSettings {
     public static CustomBowSettings GOLD;
     public static CustomBowSettings DIAMOND;
     public static CustomBowSettings EMERALD;
+    public static CustomBowSettings ELECTRIC;
 
     public static void init() {
         STONE = new CustomBowSettings("stone_bow", ExtraBowsConfig.STONE_BOW).setType(Blocks.COBBLESTONE.asItem());
@@ -22,5 +23,6 @@ public class BowSettings {
         GOLD = new CustomBowSettings("golden_bow", ExtraBowsConfig.GOLD_BOW).setType(Items.GOLD_INGOT);
         DIAMOND = new CustomBowSettings("diamond_bow", ExtraBowsConfig.DIAMOND_BOW).setType(Items.DIAMOND);
         EMERALD = new CustomBowSettings("emerald_bow", ExtraBowsConfig.EMERALD_BOW).setType(Items.EMERALD);
+        ELECTRIC = new CustomBowSettings("electric_bow", ExtraBowsConfig.ELECTRIC_BOW).setType(Items.IRON_INGOT);
     }
 }
