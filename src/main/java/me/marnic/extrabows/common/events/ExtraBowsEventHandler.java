@@ -22,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -136,6 +137,10 @@ public class ExtraBowsEventHandler {
                 AbstractArrowEntity arrow = (AbstractArrowEntity) e.getEntity();
                 if (arrow.getShooter() instanceof PlayerEntity) {
                     ItemStack bow = ((PlayerEntity) arrow.getShooter()).getHeldItemMainhand();
+
+                    if(!(bow.getItem() instanceof BowItem)) {
+                        return;
+                    }
 
                     UpgradeList list = UpgradeUtil.getUpgradesFromStack(bow);
 
