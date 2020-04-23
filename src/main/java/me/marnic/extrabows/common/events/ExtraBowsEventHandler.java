@@ -138,7 +138,7 @@ public class ExtraBowsEventHandler {
                 if (arrow.getShooter() instanceof PlayerEntity) {
                     ItemStack bow = ((PlayerEntity) arrow.getShooter()).getHeldItemMainhand();
 
-                    if(!(bow.getItem() instanceof BowItem)) {
+                    if(!(bow.getItem() instanceof BasicBow)) {
                         return;
                     }
 
