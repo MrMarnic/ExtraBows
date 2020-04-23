@@ -25,7 +25,9 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
@@ -193,6 +195,10 @@ public class ExtraBowsEventHandler {
                 EntityArrow arrow = (EntityArrow) e.getEntity();
                 if (arrow.shootingEntity instanceof EntityPlayerMP) {
                     ItemStack bow = ((EntityPlayer) arrow.shootingEntity).getHeldItemMainhand();
+
+                    if(!(bow.getItem() instanceof BasicBow)) {
+                        return;
+                    }
 
                     UpgradeList list = UpgradeUtil.getUpgradesFromStack(bow);
 
