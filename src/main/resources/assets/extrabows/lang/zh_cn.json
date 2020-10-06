@@ -64,7 +64,7 @@
 
   "flying_upgrade.description.text": "你会御箭飞行 §7(按 shift 脱离, 从而可以替代烟花起飞)",
 
-  "bone_meal_upgrade.description.text": "箭矢落点半径 3 格内分别有 50% 的几率生成植物",
+  "bone_meal_upgrade.description.text": "箭矢落点半径 3 格内有 50% 几率生成植物",
 
   "meteor_upgrade.description.text": "在箭矢落点上方 30 格的位置召唤一颗快速坠落的陨石, 并在碰撞时爆炸",
 
