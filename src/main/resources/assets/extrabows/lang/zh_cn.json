@@ -62,7 +62,7 @@
 
   "push_upgrade.description.text":"将箭矢落点半径 5 格内的动物推远",
 
-  "flying_upgrade.description.text": "你会御箭飞行 §7(按 shift 可以脱离, 从而可以替代烟花起飞)",
+  "flying_upgrade.description.text": "你会御箭飞行 §7(按 shift 脱离, 从而可以替代烟花起飞)",
 
   "bone_meal_upgrade.description.text": "箭矢落点半径 3 格内分别有 50% 的几率生成植物",
 
