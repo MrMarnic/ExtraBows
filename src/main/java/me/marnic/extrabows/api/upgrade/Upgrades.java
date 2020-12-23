@@ -65,6 +65,10 @@ public class Upgrades {
                     AbstractArrowEntity entityarrow2 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 2.5f, list, isLoaded);
                     worldIn.addEntity(entityarrow2);
 
+                    if(bow.isEmpty()) {
+                        return;
+                    }
+
                     AbstractArrowEntity entityarrow1 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, -2.5f, list, isLoaded);
                     worldIn.addEntity(entityarrow1);
                 } else {
@@ -105,8 +109,16 @@ public class Upgrades {
                     AbstractArrowEntity entityarrow1 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 2.5f, list, isLoaded);
                     worldIn.addEntity(entityarrow1);
 
+                    if(bow.isEmpty()) {
+                        return;
+                    }
+
                     AbstractArrowEntity entityarrow2 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, 0, list, isLoaded);
                     worldIn.addEntity(entityarrow2);
+
+                    if(bow.isEmpty()) {
+                        return;
+                    }
 
                     AbstractArrowEntity entityarrow3 = ArrowUtil.createArrowComplete(worldIn, bow, arrow, entityplayer, basicBow, f, flag1, 0, -2.5f, list, isLoaded);
                     worldIn.addEntity(entityarrow3);

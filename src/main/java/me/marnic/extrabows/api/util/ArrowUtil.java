@@ -73,6 +73,7 @@ public class ArrowUtil {
 
         if (!isLoaded) {
             bow.damageItem(1, entityplayer,(p)->p.sendBreakAnimation(p.getActiveHand()));
+            System.out.println(bow.getDamage());
         }
 
         if (flag1 || entityplayer.abilities.isCreativeMode && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
