@@ -1,0 +1,6 @@
+{
+  "parent": "item/bow",
+  "textures": {
+    "layer0": "extrabows:items/electric_bow_pulling_0"
+  }
+}
