@@ -37,8 +37,9 @@
   "freeze_upgrade.description.text": "在被击中的块上生成雪，冻结水面并会产生缓慢效果，有一定概率召唤一个雪人",
   "explosive_upgrade.description.text": "对命中的块或实体造成爆炸",
   "double_upgrade.description.text": "可以射出两只箭矢",
-  "triple_upgrade.description.text": "可以射出三只箭矢",
+  "triple_upgrade.description.text": "每次消耗并射出 3 支箭矢",
   "key.extrabows.category": "更多的弓 的选项",
+  "push_upgrade.description.text":"将箭矢落点半径 5 格内的生物推远",
   "": "-------------------------Others-------------------------)",
   "Bow Upgrade Inventory": "弓升级面板",
   "Press B to open the  Upgrade Inventory": "按B打开弓升级面板"
