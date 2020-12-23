@@ -61,12 +61,8 @@ public class BasicBow extends BowItem implements BasicItem {
     }
 
     @Override
-    public void initConfigOptions() {
-        initClientConfigOptions();
-    }
-
     @OnlyIn(Dist.CLIENT)
-    private void initClientConfigOptions() {
+    public void initConfigOptions() {
         ItemModelsProperties.func_239418_a_(this,new ResourceLocation("pull"),(p_210310_0_, p_210310_1_, p_210310_2_) -> {
             if (p_210310_2_ == null) {
                 return 0.0F;
