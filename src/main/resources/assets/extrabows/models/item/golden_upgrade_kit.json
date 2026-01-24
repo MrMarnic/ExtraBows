@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "extrabows:items/golden_upgrade_kit"
+  }
+}

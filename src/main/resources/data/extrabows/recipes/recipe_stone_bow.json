@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SS",
+    "SBD",
+    " SS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:cobblestone",
+      "data": 0
+    },
+    "B": {
+      "item": "minecraft:bow"
+    },
+    "D": {
+      "item": "extrabows:strong_stone"
+    }
+  },
+  "result": {
+    "item": "extrabows:stone_bow"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SES",
+    "EBE",
+    "SES"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:prismarine_crystals"
+    },
+    "B": {
+      "item": "extrabows:upgrade_plate"
+    },
+    "E": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "extrabows:water_upgrade"
+  }
+}

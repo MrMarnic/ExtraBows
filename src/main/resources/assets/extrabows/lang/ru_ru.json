@@ -1,0 +1,80 @@
+{
+  "block.extrabows.bridge_block":"Мост",
+  "block.extrabows.strong_stone":"Усиленый камень",
+  
+  "item.extrabows.upgrade_plate":"Основа улучшения",
+  "item.extrabows.arrow_cost_upgrade":"Улучшение Стрела",
+  "item.extrabows.heal_from_damage_upgrade":"Улучшение Исцеление",
+  "item.extrabows.fire_upgrade":"Улучшение Поджог",
+  "item.extrabows.freeze_upgrade":"Улучшение Замораживание",
+  "item.extrabows.lightning_upgrade":"Улучшение Удар молнии",
+  "item.extrabows.explosive_upgrade":"Улучшение Взрыв",
+  "item.extrabows.double_upgrade":"Улучшение Двойной выстрел",
+  "item.extrabows.triple_upgrade":"Улучшение Тройной выстрел",
+  "item.extrabows.water_upgrade":"Улучшение Вода",
+  "item.extrabows.ender_upgrade":"Улучшение Телепорт",
+  "item.extrabows.bridge_upgrade":"Улучшение Мост",
+  "item.extrabows.push_upgrade":"Улучшение Отталкивание",
+  "item.extrabows.flying_upgrade":"Улучшение Полет",
+  "item.extrabows.bone_meal_upgrade":"Улучшение Удобрение",
+  "item.extrabows.meteor_upgrade":"Улучшение Метеор",
+  "item.extrabows.electric_upgrade":"Улучшение Электричество",
+  
+  "item.extrabows.stone_bow":"Каменный лук",
+  "item.extrabows.iron_bow":"Железный лук",
+  "item.extrabows.golden_bow":"Золотой лук",
+  "item.extrabows.diamond_bow":"Алмазный лук",
+  "item.extrabows.emerald_bow":"Изумрудный лук",
+  "item.extrabows.electric_bow":"Электрический лук",
+  
+  "item.extrabows.stone_upgrade_kit":"Набор каменного улучшения",
+  "item.extrabows.iron_upgrade_kit":"Набор железного улучшения",
+  "item.extrabows.golden_upgrade_kit":"Набор золотого улучшения",
+  "item.extrabows.diamond_upgrade_kit":"Набор алмазного улучшения",
+  "item.extrabows.emerald_upgrade_kit":"Набор изумрудного улучшения",
+
+  "itemGroup.extrabows_items":"Extra Bows Предметы",
+
+  "item.extrabows.strong_iron":"Усиленое железо",
+  "item.extrabows.strong_gold":"Усиленое золото",
+  "item.extrabows.strong_diamond":"Усиленый алмаз",
+  "item.extrabows.strong_emerald":"Усиленый изумруд",
+
+
+  "message.no_upgrades.text":"Улучшения: Нету",
+
+  "lightning_upgrade.description.text":"Удар молнии на месте падения стрелы",
+
+  "fire_upgrade.description.text1":"Поджигает место падения стрелы",
+  "fire_upgrade.description.text2":"Поджигает моба при поподании на 3 секунды",
+
+  "water_upgrade.description.text1":"Тушит огонь в радиусе 2 блоков",
+  "water_upgrade.description.text2":"Случайный шанс что появится вода на 5 секунд",
+
+  "ender_upgrade.description.text":"Телепортирует Вас на точку падения стрелы",
+
+  "bridge_upgrade.description.text1":"Вслед за стрелой строит мост",
+  "bridge_upgrade.description.text2":"Мост пропадает через 20 секунд",
+
+  "arrow_cost_upgrade.description.text":"Случайный шанс получить стрелу, при выстреле",
+
+  "heal_from_damage_upgrade.description.text":"Случайный шанс получить полсердечка при поподании",
+
+  "freeze_upgrade.description.text":"Вода под стрелой замерзает, дает эффект медлительности и может случайно создать снеговика",
+
+  "explosive_upgrade.description.text":"Происходит взрыв на месте падения стрелы",
+
+  "double_upgrade.description.text":"Выстрел двумя стрелами",
+
+  "triple_upgrade.description.text":"Выстрел тремя стрелами",
+
+  "push_upgrade.description.text":"Откидывает всех в радиусе 5 блоков",
+
+  "flying_upgrade.description.text":"Вы полетите вслед за стрелой",
+
+  "bone_meal_upgrade.description.text":"Растения вырастут в радиусе 3 блоков с 50% шансом",
+
+  "meteor_upgrade.description.text":"Призывает фаерболл (или метеор)",
+
+  "key.extrabows.category":"Кнопка для улучшений"
+}

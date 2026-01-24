@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SBS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "extrabows:strong_iron"
+    },
+    "B": {
+      "item": "extrabows:strong_diamond"
+    }
+  },
+  "result": {
+    "item": "extrabows:upgrade_plate"
+  }
+}

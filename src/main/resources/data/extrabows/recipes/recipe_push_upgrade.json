@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#F#",
+    "#i#",
+    "#L#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    },
+    "F": {
+      "item": "minecraft:fishing_rod"
+    },
+    "i": {
+      "item": "extrabows:upgrade_plate"
+    },
+    "L": {
+      "item": "minecraft:lead",
+      "count": 2
+    }
+  },
+  "result": {
+    "item": "extrabows:push_upgrade",
+    "count": 1
+  }
+}

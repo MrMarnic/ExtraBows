@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    " B ",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:diamond"
+    },
+    "B": {
+      "item": "minecraft:emerald"
+    }
+  },
+  "result": {
+    "item": "extrabows:strong_emerald"
+  }
+}
