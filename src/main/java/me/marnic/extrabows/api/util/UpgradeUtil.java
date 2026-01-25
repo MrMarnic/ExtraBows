@@ -9,8 +9,6 @@ import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
@@ -111,18 +109,18 @@ public class UpgradeUtil {
         ArrayList<Component> list1 = new ArrayList();
 
         for (String s : list) {
-            list1.add(new TextComponent(s).withStyle(ChatFormatting.GRAY));
+            list1.add(Component.literal(s).withStyle(ChatFormatting.GRAY));
         }
 
         return list1;
     }
 
     public static String getTranslatedDescriptionForUpgrade(BasicUpgrade upgrade) {
-        return new TranslatableComponent(upgrade.getNonFormattedName() + ".description.text").getString();
+        return Component.translatable(upgrade.getNonFormattedName() + ".description.text").getString();
     }
 
     public static String getTranslatedDescriptionForUpgrade(BasicUpgrade upgrade, int numb) {
-        return new TranslatableComponent(upgrade.getNonFormattedName() + ".description.text" + numb).getString();
+        return Component.translatable(upgrade.getNonFormattedName() + ".description.text" + numb).getString();
     }
 
     public static boolean isExtraBowsArrow(Entity e) {

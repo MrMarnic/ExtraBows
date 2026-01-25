@@ -15,7 +15,7 @@ public class BasicBowUpgradeKitItem extends Item implements BasicItem {
     private CustomBowSettings settings;
 
     public BasicBowUpgradeKitItem(String name, CustomBowSettings settings) {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+        super(new Properties());
         createItem(name);
         this.settings = settings;
     }

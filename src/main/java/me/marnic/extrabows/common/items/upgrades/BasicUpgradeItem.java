@@ -23,7 +23,7 @@ public class BasicUpgradeItem extends Item implements BasicItem {
     private int maxDamage;
 
     public BasicUpgradeItem(String name, BasicUpgrade upgrade) {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB).stacksTo(1));
+        super(new Properties().stacksTo(1));
         createItem(name);
         this.upgrade = upgrade;
     }

@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 public class ItemStrongGold extends Item implements BasicItem {
 
     public ItemStrongGold() {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+        super(new Properties());
         createItem("strong_gold");
     }
 

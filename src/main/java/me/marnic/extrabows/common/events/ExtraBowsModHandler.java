@@ -1,24 +1,19 @@
 package me.marnic.extrabows.common.events;
 
-import com.mojang.blaze3d.platform.ScreenManager;
 import me.marnic.extrabows.api.item.ConfigLoad;
 import me.marnic.extrabows.client.gui.BowUpgradeGui;
-import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.items.BowSettings;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -39,10 +34,19 @@ public class ExtraBowsModHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onCreativeTabRegister(CreativeModeTabEvent.Register e) {
+        e.registerCreativeModeTab(ResourceLocation.fromNamespaceAndPath("extrabows","extrabows_items"),(b) -> b.icon(() -> new ItemStack(ExtraBowsObjects.DIAMOND_BOW.get()))
+                .displayItems((g,output) -> {
+                    ExtraBowsObjects.ITEM_REGISTRY.getEntries().forEach((item) -> {
+                        output.accept(item.get());
+                    });
+                }).title(Component.translatable("itemGroup.extrabows_items")));
+    }
+
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent e) {
-        ExtraBowsInputHandler.registerKeys();
         e.enqueueWork(
                 // Assume RegistryObject<MenuType<MyMenu>> MY_MENU
                 // Assume MyContainerScreen<MyMenu> which takes in three parameters

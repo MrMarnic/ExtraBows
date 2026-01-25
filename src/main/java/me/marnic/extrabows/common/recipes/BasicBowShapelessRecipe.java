@@ -6,11 +6,14 @@ import me.marnic.extrabows.common.items.other.bowUpgradeKits.BasicBowUpgradeKitI
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import me.marnic.extrabows.common.main.Identification;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
@@ -24,9 +27,8 @@ public class BasicBowShapelessRecipe extends ShapelessRecipe {
 
     ItemStack base;
 
-    public BasicBowShapelessRecipe(BasicBowRecipe recipe, BasicBowUpgradeKitItem upgradeKit) {
-        super(new ResourceLocation(Identification.MODID, recipe.getGroup()), recipe.getGroup(), recipe.getResultItem(), NonNullList.create());
-
+    public BasicBowShapelessRecipe(BasicBowRecipe recipe, BasicBowUpgradeKitItem upgradeKit, ItemStack output) {
+        super(new ResourceLocation(Identification.MODID, recipe.getGroup()), recipe.getGroup(), CraftingBookCategory.EQUIPMENT, output, NonNullList.create());
         getIngredients().add(Ingredient.of(Items.BOW, ExtraBowsObjects.STONE_BOW.get(), ExtraBowsObjects.IRON_BOW.get(), ExtraBowsObjects.GOLD_BOW.get(), ExtraBowsObjects.DIAMOND_BOW.get(), ExtraBowsObjects.EMERALD_BOW.get()));
         getIngredients().add(Ingredient.of(upgradeKit));
     }
@@ -50,9 +52,11 @@ public class BasicBowShapelessRecipe extends ShapelessRecipe {
         return b;
     }
 
+
+
     @Override
-    public ItemStack assemble(CraftingContainer inv) {
-        ItemStack out = super.assemble(inv);
+    public ItemStack assemble(CraftingContainer inv, RegistryAccess access) {
+        ItemStack out = super.assemble(inv, access);
 
         if (base != null) {
             UpgradeUtil.copyUpgradesToStack(base, out);

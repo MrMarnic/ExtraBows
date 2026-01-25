@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "extrabows:items/explosive_upgrade"
+    "layer0": "extrabows:item/explosive_upgrade"
   }
 }

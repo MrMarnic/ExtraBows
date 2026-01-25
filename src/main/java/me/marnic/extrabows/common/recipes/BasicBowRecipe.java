@@ -5,9 +5,11 @@ import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.main.Identification;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
@@ -24,7 +26,7 @@ public class BasicBowRecipe extends ShapedRecipe {
     private CustomBowSettings settings;
 
     public BasicBowRecipe(String type, NonNullList<Ingredient> ingredients, ItemStack output, CustomBowSettings settings) {
-        super(new ResourceLocation(Identification.MODID, "recipe_" + type), type, 3, 3, ingredients, output);
+        super(new ResourceLocation(Identification.MODID, "recipe_" + type), type, CraftingBookCategory.EQUIPMENT, 3, 3, ingredients, output);
 
         this.settings = settings;
 
@@ -48,8 +50,8 @@ public class BasicBowRecipe extends ShapedRecipe {
 
 
     @Override
-    public ItemStack assemble(CraftingContainer inv) {
-        ItemStack out = super.assemble(inv);
+    public ItemStack assemble(CraftingContainer inv, RegistryAccess access) {
+        ItemStack out = super.assemble(inv, access);
 
         if (base != null) {
             UpgradeUtil.copyUpgradesToStack(base, out);

@@ -1,7 +1,7 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "extrabows:items/iron_bow"
+    "layer0": "extrabows:item/iron_bow"
   },
   "display": {
     "thirdperson_righthand": {

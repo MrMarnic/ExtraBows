@@ -9,6 +9,9 @@ import me.marnic.extrabows.common.items.other.*;
 import me.marnic.extrabows.common.items.other.bowUpgradeKits.BasicBowUpgradeKitItem;
 import me.marnic.extrabows.common.items.upgrades.ItemUpgradePlate;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -33,8 +36,9 @@ public class ExtraBowsObjects {
 
     public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS,Identification.MODID);
     public static final DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS,Identification.MODID);
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES,Identification.MODID);
-    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPE_REGISTRY = DeferredRegister.create(ForgeRegistries.CONTAINERS,Identification.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,Identification.MODID);
+    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPE_REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES,Identification.MODID);
+
 
     public static RegistryObject<ItemStoneBow> STONE_BOW = ITEM_REGISTRY.register("stone_bow",ItemStoneBow::new);
     public static RegistryObject<ItemIronBow> IRON_BOW = ITEM_REGISTRY.register("iron_bow",ItemIronBow::new);
@@ -44,14 +48,6 @@ public class ExtraBowsObjects {
     public static RegistryObject<ItemElectricBow> ENERGY_BOW = ITEM_REGISTRY.register("electric_bow",ItemElectricBow::new);
 
     public static RegistryObject<ItemUpgradePlate> UPGRADE_PLATE = ITEM_REGISTRY.register("upgrade_plate", ItemUpgradePlate::new);
-
-    public static CreativeModeTab CREATIVE_TAB = new CreativeModeTab("extrabows_items") {
-
-        @Override
-        public @NotNull ItemStack makeIcon() {
-            return new ItemStack(DIAMOND_BOW.get());
-        }
-    };
 
     public static RegistryObject<BlockBridgeBlock> BRIDGE_BLOCK = registerBlock("bridge_block",BlockBridgeBlock::new);
 
@@ -70,12 +66,12 @@ public class ExtraBowsObjects {
 
     public static RegistryObject<BlockEntityType<TileEntityBridgeBlock>> BRIDGE_BLOCK_TILE_ENTITY = BLOCK_ENTITY_REGISTRY.register("tile_bridge_block", () -> BlockEntityType.Builder.of(TileEntityBridgeBlock::new, BRIDGE_BLOCK.get()).build(null));
 
-    public static RegistryObject<MenuType<BowUpgradeGuiContainer>> UPGRADE_INVENTORY_CONTAINER_TYPE = CONTAINER_TYPE_REGISTRY.register("upgrade_inventory", () -> new MenuType<>(BowUpgradeGuiContainer::new));
+    public static RegistryObject<MenuType<BowUpgradeGuiContainer>> UPGRADE_INVENTORY_CONTAINER_TYPE = CONTAINER_TYPE_REGISTRY.register("upgrade_inventory", () -> new MenuType<>(BowUpgradeGuiContainer::new, FeatureFlagSet.of()));
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> r = BLOCK_REGISTRY.register(name,block);
         ITEM_REGISTRY.register(name,() -> {
-            return new BlockItem(r.get(),new Item.Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+            return new BlockItem(r.get(),new Item.Properties());
         });
 
         return r;

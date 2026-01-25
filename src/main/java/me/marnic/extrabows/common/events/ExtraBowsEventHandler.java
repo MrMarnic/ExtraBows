@@ -7,7 +7,6 @@ import me.marnic.extrabows.api.util.ArrowUtil;
 import me.marnic.extrabows.api.util.TimeCommand;
 import me.marnic.extrabows.api.util.TimerUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
-import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import net.minecraft.core.BlockPos;
@@ -23,11 +22,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -38,12 +38,6 @@ import net.minecraftforge.fml.common.Mod;
  */
 @Mod.EventBusSubscriber
 public class ExtraBowsEventHandler {
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public static void keyInput(InputEvent.KeyInputEvent e) {
-        ExtraBowsInputHandler.handleKeyPressedEvent(e);
-    }
 
     @SubscribeEvent
     public static void worldTickEvent(TickEvent.ServerTickEvent event) {
@@ -64,9 +58,9 @@ public class ExtraBowsEventHandler {
                 TimerUtil.addTimeCommand(new TimeCommand(20 * i, new Runnable() {
                     @Override
                     public void run() {
-                        LightningBolt lightningBoltEntity = new LightningBolt(EntityType.LIGHTNING_BOLT,e.getPlayer().getCommandSenderWorld());
-                        lightningBoltEntity.setPos(e.getPlayer().getX(),e.getPlayer().getY(),e.getPlayer().getZ());
-                        e.getPlayer().getCommandSenderWorld().addFreshEntity(lightningBoltEntity);
+                        LightningBolt lightningBoltEntity = new LightningBolt(EntityType.LIGHTNING_BOLT,e.getEntity().getCommandSenderWorld());
+                        lightningBoltEntity.setPos(e.getEntity().getX(),e.getEntity().getY(),e.getEntity().getZ());
+                        e.getEntity().getCommandSenderWorld().addFreshEntity(lightningBoltEntity);
                     }
                 }));
             }
@@ -120,8 +114,8 @@ public class ExtraBowsEventHandler {
     }
 
     @SubscribeEvent
-    public static void arrowConstructing(EntityJoinWorldEvent e) {
-        if (!e.getWorld().isClientSide) {
+    public static void arrowConstructing(EntityJoinLevelEvent e) {
+        if (!e.getLevel().isClientSide) {
             if (e.getEntity() instanceof AbstractArrow && UpgradeUtil.isExtraBowsArrow(e.getEntity())) {
 
                 AbstractArrow arrow = (AbstractArrow) e.getEntity();
@@ -144,7 +138,7 @@ public class ExtraBowsEventHandler {
                         public void run() {
                             if (arrow.isInWater()) {
                                 if (!prevWater) {
-                                    list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.WATER_HIT, new BlockPos(arrow.position()), null, e.getWorld(), (Player) arrow.getOwner(), arrow);
+                                    list.handleModifierHittingEvent(ArrowModifierUpgrade.EventType.WATER_HIT, new BlockPos(arrow.blockPosition()), null, e.getLevel(), (Player) arrow.getOwner(), arrow);
                                 }
                             }
 

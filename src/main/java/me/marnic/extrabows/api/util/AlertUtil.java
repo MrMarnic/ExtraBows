@@ -1,8 +1,8 @@
 package me.marnic.extrabows.api.util;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
 /**
@@ -12,6 +12,6 @@ import net.minecraft.world.entity.player.Player;
  */
 public class AlertUtil {
     public static void alert(Player player, String msg, ChatFormatting formatting) {
-        player.displayClientMessage(new TranslatableComponent(msg).withStyle(Style.EMPTY.applyFormat(formatting)), true);
+        player.displayClientMessage(Component.translatable(msg).withStyle(Style.EMPTY.applyFormat(formatting)), true);
     }
 }

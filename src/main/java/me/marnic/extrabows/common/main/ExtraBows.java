@@ -11,6 +11,7 @@ import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
 import me.marnic.extrabows.common.recipes.BasicBowRecipe;
 import me.marnic.extrabows.common.recipes.BasicBowShapelessRecipe;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.ItemStack;
@@ -45,9 +46,9 @@ import java.util.Map;
 public class ExtraBows {
 
 
-    public ExtraBows() {
+    public ExtraBows(FMLJavaModLoadingContext context) {
 
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus eventBus = context.getModEventBus();
 
         ExtraBowsObjects.register(eventBus);
 
@@ -56,9 +57,9 @@ public class ExtraBows {
 
         ExtraBowsPacketHandler.init();
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        context.getModEventBus().addListener(this::doClientStuff);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ExtraBowsConfig.SPEC);
+        context.registerConfig(ModConfig.Type.COMMON, ExtraBowsConfig.SPEC);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -95,32 +96,31 @@ public class ExtraBows {
             HashMap<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipeMut = new HashMap<>(recipes);
             HashMap<ResourceLocation, Recipe> craftingRecipesMut = new HashMap<>(recipeMut.get(RecipeType.CRAFTING));
 
-
             bowRecipes.forEach((k, v) -> {
                 if (k.getPath().contains("stone_bow")) {
                     BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getPath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.STONE_BOW.get()), BowSettings.STONE);
                     registerRecipe(basicBowRecipe, craftingRecipesMut);
-                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.STONE_UPGRADE_KIT.get()), craftingRecipesMut);
+                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.STONE_UPGRADE_KIT.get(),new ItemStack(ExtraBowsObjects.STONE_BOW.get())), craftingRecipesMut);
                 }
                 if (k.getPath().contains("golden_bow")) {
                     BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getPath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.GOLD_BOW.get()), BowSettings.GOLD);
                     registerRecipe(basicBowRecipe, craftingRecipesMut);
-                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.GOLD_UPGRADE_KIT.get()), craftingRecipesMut);
+                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.GOLD_UPGRADE_KIT.get(),new ItemStack(ExtraBowsObjects.GOLD_BOW.get())), craftingRecipesMut);
                 }
                 if (k.getPath().contains("iron_bow")) {
                     BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getPath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.IRON_BOW.get()), BowSettings.IRON);
                     registerRecipe(basicBowRecipe, craftingRecipesMut);
-                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.IRON_UPGRADE_KIT.get()), craftingRecipesMut);
+                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.IRON_UPGRADE_KIT.get(),new ItemStack(ExtraBowsObjects.IRON_BOW.get())), craftingRecipesMut);
                 }
                 if (k.getPath().contains("diamond_bow")) {
                     BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getPath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.DIAMOND_BOW.get()), BowSettings.DIAMOND);
                     registerRecipe(basicBowRecipe, craftingRecipesMut);
-                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.DIAMOND_UPGRADE_KIT.get()), craftingRecipesMut);
+                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.DIAMOND_UPGRADE_KIT.get(),new ItemStack(ExtraBowsObjects.DIAMOND_BOW.get())), craftingRecipesMut);
                 }
                 if (k.getPath().contains("emerald_bow")) {
                     BasicBowRecipe basicBowRecipe = (BasicBowRecipe) new BasicBowRecipe(k.getPath(), v.getIngredients(), new ItemStack(ExtraBowsObjects.EMERALD_BOW.get()), BowSettings.EMERALD);
                     registerRecipe(basicBowRecipe, craftingRecipesMut);
-                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.EMERALD_UPGRADE_KIT.get()), craftingRecipesMut);
+                    registerRecipe(new BasicBowShapelessRecipe(basicBowRecipe, ExtraBowsObjects.EMERALD_UPGRADE_KIT.get(),new ItemStack(ExtraBowsObjects.EMERALD_BOW.get())), craftingRecipesMut);
                 }
             });
 

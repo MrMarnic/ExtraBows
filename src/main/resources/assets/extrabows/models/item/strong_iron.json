@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "extrabows:items/strong_iron"
+    "layer0": "extrabows:item/strong_iron"
   }
 }

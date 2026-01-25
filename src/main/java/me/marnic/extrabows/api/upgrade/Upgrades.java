@@ -12,9 +12,12 @@ import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
 import me.marnic.extrabows.common.upgrades.ElectricUpgrade;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -336,14 +339,14 @@ public class Upgrades {
 
             @Override
             public void handleBlockHit(BlockPos pos, Level level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
-                level.explode(player, pos.getX(), pos.getY(), pos.getZ(), 3, Explosion.BlockInteraction.DESTROY);
+                level.explode(player, pos.getX(), pos.getY(), pos.getZ(), 3, Level.ExplosionInteraction.TNT);
                 arrow.remove(Entity.RemovalReason.DISCARDED);
             }
 
 
             @Override
             public void handleEntityHit(Entity entity, Level level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
-                level.explode(player, entity.getX(), entity.getY(), entity.getZ(), 3, Explosion.BlockInteraction.DESTROY);
+                level.explode(player, entity.getX(), entity.getY(), entity.getZ(), 3, Level.ExplosionInteraction.TNT);
                 arrow.remove(Entity.RemovalReason.DISCARDED);
             }
 
@@ -411,7 +414,7 @@ public class Upgrades {
                     }
                 });
 
-                if (RandomUtil.isChance(6, 1) && !level.dimension().getRegistryName().equals(DimensionType.NETHER_LOCATION.getRegistryName())) {
+                if (RandomUtil.isChance(6, 1) && !level.dimension().equals(Level.NETHER)) {
                     level.setBlockAndUpdate(pos.offset(0, 1, 0), Blocks.WATER.defaultBlockState());
                     TimerUtil.addTimeCommand(new TimeCommand(20 * 5, () -> {
                         level.setBlockAndUpdate(pos.offset(0, 1, 0), Blocks.AIR.defaultBlockState());
@@ -452,7 +455,7 @@ public class Upgrades {
 
             @Override
             public void handleEntityHit(Entity entity, Level level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
-                level.getEntitiesOfClass(LivingEntity.class, UpgradeUtil.getRadiusBoundingBox(new BlockPos(entity.position()), 6)).forEach((livingEntity -> {
+                level.getEntitiesOfClass(LivingEntity.class, UpgradeUtil.getRadiusBoundingBox(new BlockPos(entity.blockPosition()), 6)).forEach((livingEntity -> {
                     double deltaX = (livingEntity.getX() - arrow.getX());
                     double deltaZ = (livingEntity.getZ() - arrow.getZ());
 
@@ -489,14 +492,14 @@ public class Upgrades {
             @Override
             public void handleBlockHit(BlockPos pos, Level level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
                 if (arrow.isVehicle()) {
-                    player.hurt(DamageSource.FALL, 2);
+                    player.hurt(level.damageSources().fall(), 2);
                 }
             }
 
             @Override
             public void handleEntityHit(Entity entity, Level level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
                 if (arrow.isVehicle()) {
-                    player.hurt(DamageSource.FALL, 2);
+                    player.hurt(level.damageSources().fall(), 2);
                 }
             }
 
@@ -523,7 +526,7 @@ public class Upgrades {
             }
 
             private void spawnMeteor(Level level, AbstractArrow arrow) {
-                if (level.isEmptyBlock(new BlockPos(arrow.getX(), arrow.getY() + 20, arrow.getZ()))) {
+                if (level.isEmptyBlock(new BlockPos(arrow.getBlockX(), arrow.getBlockY() + 20, arrow.getBlockZ()))) {
                     Fireball fireballEntity = new LargeFireball(EntityType.FIREBALL, level);
                     fireballEntity.setPos(arrow.getX(), arrow.getY() + 20, arrow.getZ());
                     fireballEntity.push(0, -2f, 0);

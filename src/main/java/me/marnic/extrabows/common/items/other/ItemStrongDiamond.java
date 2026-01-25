@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 public class ItemStrongDiamond extends Item implements BasicItem {
 
     public ItemStrongDiamond() {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+        super(new Properties());
         createItem("strong_diamond");
     }
 

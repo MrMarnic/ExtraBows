@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 public class ItemStrongIron extends Item implements BasicItem {
 
     public ItemStrongIron() {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+        super(new Properties());
         createItem("strong_iron");
     }
 

@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 public class ItemUpgradePlate extends Item implements BasicItem {
 
     public ItemUpgradePlate() {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+        super(new Properties());
         createItem("upgrade_plate");
     }
 

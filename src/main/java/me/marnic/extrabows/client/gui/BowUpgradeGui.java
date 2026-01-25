@@ -7,7 +7,6 @@ import me.marnic.extrabows.common.main.Identification;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +25,7 @@ public class BowUpgradeGui extends AbstractContainerScreen<BowUpgradeGuiContaine
     private Player player;
 
     public BowUpgradeGui(BowUpgradeGuiContainer inventorySlotsIn, Inventory inventory, Component component) {
-        super(inventorySlotsIn, inventory, new TextComponent("Bow Upgrade Inventory"));
+        super(inventorySlotsIn, inventory, Component.literal("Bow Upgrade Inventory"));
         TEXTURE = new ResourceLocation(Identification.MODID, "textures/gui/bow_upgrade_gui.png");
         name = "Bow Upgrade Inventory";
         this.player = inventory.player;
@@ -35,7 +34,7 @@ public class BowUpgradeGui extends AbstractContainerScreen<BowUpgradeGuiContaine
     //RENDER
     @Override
     public void render(PoseStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
-        this.renderBackground(p_230430_1_,0); //BACKGROUND
+        this.renderBackground(p_230430_1_); //BACKGROUND
         super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
         this.renderTooltip(p_230430_1_,p_230430_2_,p_230430_3_);
     }

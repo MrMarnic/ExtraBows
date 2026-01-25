@@ -1,6 +1,6 @@
 {
-  "parent": "item/bow",
+  "parent": "minecraft:item/bow",
   "textures": {
-    "layer0": "extrabows:items/electric_bow_pulling_0"
+    "layer0": "extrabows:item/electric_bow_pulling_0"
   }
 }

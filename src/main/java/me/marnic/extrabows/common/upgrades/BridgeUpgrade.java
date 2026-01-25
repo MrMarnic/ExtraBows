@@ -76,13 +76,13 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     public void handleFlyingEvent(AbstractArrow arrow, Level level, UpgradeList upgradeList) {
         BuildingUpgradeData data = (BuildingUpgradeData) upgradeList.getDataMap().get(this);
 
-        BlockPos pos = new BlockPos(arrow.position()).offset(0, -3, 0);
+        BlockPos pos = new BlockPos(arrow.blockPosition()).offset(0, -3, 0);
 
         data.builder.needsFix(pos, data.blockPos.size() >= 1 ? data.blockPos.get(data.blockPos.size() - 1) : null, data.blockPos, data.blockPos.size(), level, data.facing);
         data.blockPos.add(new BlockSave(pos, data.blockPos.size()).setRemovable(level.isEmptyBlock(pos)));
 
         TimerUtil.addTimeCommand(new TimeCommand(data.blockPos.size() * 2, new Runnable() {
-            BlockPos pos1 = new BlockPos(arrow.position()).offset(0, -3, 0);
+            BlockPos pos1 = new BlockPos(arrow.blockPosition()).offset(0, -3, 0);
             int size = data.blockPos.size();
 
             @Override

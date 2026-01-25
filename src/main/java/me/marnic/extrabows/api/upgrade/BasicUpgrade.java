@@ -5,7 +5,6 @@ import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,13 +23,13 @@ public class BasicUpgrade implements ConfigLoad {
     public static final HashMap<String, BasicUpgrade> UPGRADES = new HashMap<>();
     private String name;
     private RegistryObject<BasicUpgradeItem> item;
-    private TranslatableComponent translation;
+    private Component translation;
 
     public BasicUpgrade(String name, RegistryObject<BasicUpgradeItem> item) {
         this.name = name;
         this.item = item;
         UPGRADES.put(name, this);
-        this.translation = new TranslatableComponent("item.extrabows." + name);
+        this.translation = Component.translatable("item.extrabows." + name);
         ExtraBowsRegistry.CONFIG_LOAD.add(this);
     }
 

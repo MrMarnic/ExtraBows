@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 public class ItemStrongEmerald extends Item implements BasicItem {
 
     public ItemStrongEmerald() {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+        super(new Properties());
         createItem("strong_emerald");
     }
 

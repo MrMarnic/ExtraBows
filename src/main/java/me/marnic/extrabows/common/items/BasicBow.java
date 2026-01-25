@@ -17,8 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -59,7 +57,7 @@ public class BasicBow extends BowItem implements BasicItem {
     private CustomBowSettings settings;
 
     public BasicBow(String name) {
-        super(new Properties().tab(ExtraBowsObjects.CREATIVE_TAB).stacksTo(1));
+        super(new Properties().stacksTo(1));
         createItem(name);
     }
 
@@ -255,27 +253,27 @@ public class BasicBow extends BowItem implements BasicItem {
     public void appendHoverText(ItemStack stack, @Nullable Level LevelIn, List<Component> tooltip, TooltipFlag flagIn) {
         UpgradeList list = UpgradeUtil.getUpgradesFromStack(stack);
 
-        tooltip.add(new TextComponent("Press B to open the Upgrade inventory").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.literal("Press B to open the Upgrade inventory").withStyle(ChatFormatting.GRAY));
         if (!list.hasMul() && !list.hasMods()) {
-            tooltip.add(new TranslatableComponent("message.no_upgrades.text").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("message.no_upgrades.text").withStyle(ChatFormatting.GRAY));
         } else {
-            tooltip.add(new TextComponent("Upgrades:").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("Upgrades:").withStyle(ChatFormatting.GRAY));
         }
         if (list.hasMul()) {
-            tooltip.add(new TextComponent("Arrow Multiplier:").withStyle(ChatFormatting.GRAY));
-            tooltip.add(new TextComponent("- " + list.getArrowMultiplier().getName()).withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("Arrow Multiplier:").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("- " + list.getArrowMultiplier().getName()).withStyle(ChatFormatting.GRAY));
         }
         if (list.hasMods()) {
-            tooltip.add(new TextComponent("Arrow Modifiers:").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("Arrow Modifiers:").withStyle(ChatFormatting.GRAY));
             for (BasicUpgrade upgrade : list.getArrowModifiers()) {
-                tooltip.add(new TextComponent("- " + upgrade.getName()).withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("- " + upgrade.getName()).withStyle(ChatFormatting.GRAY));
             }
         }
 
         if (isElectric(list, stack) && LevelIn != null) {
             ExtraBowsEnergy storage = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
             if (storage != null) {
-                tooltip.add(new TextComponent("Energy: " + storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + "RF").withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("Energy: " + storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + "RF").withStyle(ChatFormatting.GRAY));
             }
         }
 
