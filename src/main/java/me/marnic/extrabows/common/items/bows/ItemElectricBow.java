@@ -4,9 +4,10 @@ import me.marnic.extrabows.api.energy.ExtraBowsEnergy;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.BowSettings;
 import me.marnic.extrabows.common.items.CustomBowSettings;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
@@ -30,21 +31,21 @@ public class ItemElectricBow extends BasicBow {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new BowCapability(new ExtraBowsEnergy(CustomBowSettings.ENERGY_BOW, CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3), stack);
     }
 
     @Override
-    public void onArrowCreate(AbstractArrowEntity arrow) {
+    public void onArrowCreate(AbstractArrow arrow) {
         if (arrow.getTags().contains("electric")) {
-            arrow.pickup = AbstractArrowEntity.PickupStatus.DISALLOWED;
+            arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
         }
     }
 
     @Override
-    public void onArrowHit(AbstractArrowEntity arrow) {
+    public void onArrowHit(AbstractArrow arrow) {
         if (arrow.getTags().contains("electric")) {
-            arrow.remove();
+            arrow.remove(Entity.RemovalReason.DISCARDED);
         }
     }
 }

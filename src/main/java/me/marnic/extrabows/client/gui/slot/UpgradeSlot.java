@@ -4,8 +4,8 @@ import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -20,9 +20,9 @@ public class UpgradeSlot extends SlotItemHandler {
 
     private boolean modifierSlot;
     private ItemStack bow;
-    private PlayerEntity player;
+    private Player player;
 
-    public UpgradeSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean modifierSlot, ItemStack stack, PlayerEntity player) {
+    public UpgradeSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean modifierSlot, ItemStack stack, Player player) {
         super(itemHandler, index, xPosition, yPosition);
         this.modifierSlot = modifierSlot;
         this.bow = stack;

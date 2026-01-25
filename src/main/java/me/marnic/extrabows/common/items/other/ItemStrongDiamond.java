@@ -2,7 +2,7 @@ package me.marnic.extrabows.common.items.other;
 
 import me.marnic.extrabows.api.item.BasicItem;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 /**
  * Copyright (c) 09.06.2019

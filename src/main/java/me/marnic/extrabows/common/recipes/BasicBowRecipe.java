@@ -4,13 +4,13 @@ import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.main.Identification;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.Level;
 
 /**
  * Copyright (c) 23.09.2019
@@ -36,7 +36,7 @@ public class BasicBowRecipe extends ShapedRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World worldIn) {
+    public boolean matches(CraftingContainer inv, Level worldIn) {
         boolean b = super.matches(inv, worldIn);
         if (b && bowIndex > -1) {
             base = inv.getItem(bowIndex);
@@ -48,7 +48,7 @@ public class BasicBowRecipe extends ShapedRecipe {
 
 
     @Override
-    public ItemStack assemble(CraftingInventory inv) {
+    public ItemStack assemble(CraftingContainer inv) {
         ItemStack out = super.assemble(inv);
 
         if (base != null) {

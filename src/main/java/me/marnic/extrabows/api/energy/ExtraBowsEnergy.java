@@ -1,6 +1,7 @@
 package me.marnic.extrabows.api.energy;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
@@ -9,7 +10,7 @@ import net.minecraftforge.energy.EnergyStorage;
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class ExtraBowsEnergy extends EnergyStorage implements INBTSerializable<CompoundNBT> {
+public class ExtraBowsEnergy extends EnergyStorage implements INBTSerializable<Tag> {
 
     public ExtraBowsEnergy(int capacity) {
         super(capacity);
@@ -41,8 +42,8 @@ public class ExtraBowsEnergy extends EnergyStorage implements INBTSerializable<C
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
+    public Tag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
         tag.putInt("energy", this.energy);
         tag.putInt("capacity", this.capacity);
         tag.putInt("maxReceive", this.maxReceive);
@@ -51,10 +52,11 @@ public class ExtraBowsEnergy extends EnergyStorage implements INBTSerializable<C
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        this.energy = nbt.getInt("energy");
-        this.capacity = nbt.getInt("capacity");
-        this.maxReceive = nbt.getInt("maxReceive");
-        this.maxExtract = nbt.getInt("maxExtract");
+    public void deserializeNBT(Tag nbt) {
+        CompoundTag t = (CompoundTag)nbt;
+        this.energy = t.getInt("energy");
+        this.capacity = t.getInt("capacity");
+        this.maxReceive = t.getInt("maxReceive");
+        this.maxExtract = t.getInt("maxExtract");
     }
 }

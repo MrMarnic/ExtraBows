@@ -1,8 +1,8 @@
 package me.marnic.extrabows.common.items;
 
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 /**
  * Copyright (c) 05.10.2019

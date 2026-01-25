@@ -1,12 +1,13 @@
 package me.marnic.extrabows.api.upgrade;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.RegistryObject;
 
 /**
  * Copyright (c) 29.05.2019
@@ -14,34 +15,34 @@ import net.minecraft.world.World;
  * GitHub: https://github.com/MrMarnic
  */
 public class ArrowModifierUpgrade extends BasicUpgrade {
-    public ArrowModifierUpgrade(String name) {
-        super(name);
+    public ArrowModifierUpgrade(String name, RegistryObject<BasicUpgradeItem> item) {
+        super(name,item);
     }
 
-    public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
-
-    }
-
-    public void handleWaterHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleBlockHit(BlockPos pos, Level Level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
 
     }
 
-    public void handleEntityHit(Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleWaterHit(BlockPos pos, Level Level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
 
     }
 
-    public void handleArrowCreate(AbstractArrowEntity arrow, PlayerEntity player, UpgradeList upgradeList) {
+    public void handleEntityHit(Entity entity, Level Level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
 
     }
 
-    public void handleSetEffect(AbstractArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleArrowCreate(AbstractArrow arrow, Player player, UpgradeList upgradeList) {
 
     }
 
-    public void handleFlyingEvent(AbstractArrowEntity arrow, World world, UpgradeList upgradeList) {
+    public void handleSetEffect(AbstractArrow arrow, UpgradeList upgradeList) {
+
     }
 
-    public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+    public void handleFlyingEvent(AbstractArrow arrow, Level Level, UpgradeList upgradeList) {
+    }
+
+    public void handleEntityInit(AbstractArrow arrow, UpgradeList upgradeList, Player player) {
     }
 
     public void handleUpgradeInsert(ItemStack bow) {

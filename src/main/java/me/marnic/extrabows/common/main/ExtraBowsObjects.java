@@ -9,12 +9,20 @@ import me.marnic.extrabows.common.items.other.*;
 import me.marnic.extrabows.common.items.other.bowUpgradeKits.BasicBowUpgradeKitItem;
 import me.marnic.extrabows.common.items.upgrades.ItemUpgradePlate;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
-import me.marnic.extrabows.common.upgrades.BridgeUpgrade;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 /**
  * Copyright (c) 24.05.2019
@@ -23,75 +31,60 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
  */
 public class ExtraBowsObjects {
 
-    public static ItemStoneBow STONE_BOW;
-    public static ItemIronBow IRON_BOW;
-    public static ItemGoldBow GOLD_BOW;
-    public static ItemDiamondBow DIAMOND_BOW;
-    public static ItemEmeraldBow EMERALD_BOW;
-    public static ItemElectricBow ENERGY_BOW;
+    public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS,Identification.MODID);
+    public static final DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS,Identification.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES,Identification.MODID);
+    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPE_REGISTRY = DeferredRegister.create(ForgeRegistries.CONTAINERS,Identification.MODID);
 
-    public static ItemUpgradePlate UPGRADE_PLATE;
+    public static RegistryObject<ItemStoneBow> STONE_BOW = ITEM_REGISTRY.register("stone_bow",ItemStoneBow::new);
+    public static RegistryObject<ItemIronBow> IRON_BOW = ITEM_REGISTRY.register("iron_bow",ItemIronBow::new);
+    public static RegistryObject<ItemGoldBow> GOLD_BOW = ITEM_REGISTRY.register("golden_bow",ItemGoldBow::new);
+    public static RegistryObject<ItemDiamondBow> DIAMOND_BOW = ITEM_REGISTRY.register("diamond_bow",ItemDiamondBow::new);
+    public static RegistryObject<ItemEmeraldBow> EMERALD_BOW = ITEM_REGISTRY.register("emerald_bow",ItemEmeraldBow::new);
+    public static RegistryObject<ItemElectricBow> ENERGY_BOW = ITEM_REGISTRY.register("electric_bow",ItemElectricBow::new);
 
-    public static ItemGroup CREATIVE_TAB;
+    public static RegistryObject<ItemUpgradePlate> UPGRADE_PLATE = ITEM_REGISTRY.register("upgrade_plate", ItemUpgradePlate::new);
 
-    public static BlockBridgeBlock BRIDGE_BLOCK;
+    public static CreativeModeTab CREATIVE_TAB = new CreativeModeTab("extrabows_items") {
 
-    public static ItemStrongDiamond STRONG_DIAMOND;
-    public static ItemStrongEmerald STRONG_EMERALD;
-    public static BlockStrongStone STRONG_STONE;
-    public static ItemStrongGold STRONG_GOLD;
-    public static ItemStrongIron STRONG_IRON;
+        @Override
+        public @NotNull ItemStack makeIcon() {
+            return new ItemStack(DIAMOND_BOW.get());
+        }
+    };
 
-    public static BasicBowUpgradeKitItem STONE_UPGRADE_KIT;
-    public static BasicBowUpgradeKitItem IRON_UPGRADE_KIT;
-    public static BasicBowUpgradeKitItem GOLD_UPGRADE_KIT;
-    public static BasicBowUpgradeKitItem DIAMOND_UPGRADE_KIT;
-    public static BasicBowUpgradeKitItem EMERALD_UPGRADE_KIT;
+    public static RegistryObject<BlockBridgeBlock> BRIDGE_BLOCK = registerBlock("bridge_block",BlockBridgeBlock::new);
 
-    public static TileEntityType BRIDGE_BLOCK_TILE_ENTITY;
+    public static RegistryObject<ItemStrongDiamond> STRONG_DIAMOND = ITEM_REGISTRY.register("strong_diamond",ItemStrongDiamond::new);
+    public static RegistryObject<ItemStrongEmerald> STRONG_EMERALD = ITEM_REGISTRY.register("strong_emerald",ItemStrongEmerald::new);
+    public static RegistryObject<BlockStrongStone> STRONG_STONE = registerBlock("strong_stone",BlockStrongStone::new);
+    public static RegistryObject<ItemStrongGold> STRONG_GOLD = ITEM_REGISTRY.register("strong_gold",ItemStrongGold::new);
+    public static RegistryObject<ItemStrongIron> STRONG_IRON = ITEM_REGISTRY.register("strong_iron",ItemStrongIron::new);
 
-    public static ContainerType UPGRADE_INVENTORY_CONTAINER_TYPE;
+    public static RegistryObject<BasicBowUpgradeKitItem> STONE_UPGRADE_KIT = ITEM_REGISTRY.register("stone_upgrade_kit",() -> new BasicBowUpgradeKitItem("stone_upgrade_kit", BowSettings.STONE));
+    public static RegistryObject<BasicBowUpgradeKitItem> IRON_UPGRADE_KIT = ITEM_REGISTRY.register("iron_upgrade_kit",() -> new BasicBowUpgradeKitItem("iron_upgrade_kit", BowSettings.IRON));
+    public static RegistryObject<BasicBowUpgradeKitItem> GOLD_UPGRADE_KIT = ITEM_REGISTRY.register("golden_upgrade_kit",() -> new BasicBowUpgradeKitItem("golden_upgrade_kit", BowSettings.GOLD));
+    public static RegistryObject<BasicBowUpgradeKitItem> DIAMOND_UPGRADE_KIT = ITEM_REGISTRY.register("diamond_upgrade_kit",() -> new BasicBowUpgradeKitItem("diamond_upgrade_kit", BowSettings.DIAMOND));
+    public static RegistryObject<BasicBowUpgradeKitItem> EMERALD_UPGRADE_KIT = ITEM_REGISTRY.register("emerald_upgrade_kit",() -> new BasicBowUpgradeKitItem("emerald_upgrade_kit", BowSettings.EMERALD));
 
-    public static void initTab() {
-        CREATIVE_TAB = new ItemGroup("extrabows_items") {
 
-            @Override
-            public ItemStack makeIcon() {
-                return new ItemStack(DIAMOND_BOW);
-            }
-        };
+    public static RegistryObject<BlockEntityType<TileEntityBridgeBlock>> BRIDGE_BLOCK_TILE_ENTITY = BLOCK_ENTITY_REGISTRY.register("tile_bridge_block", () -> BlockEntityType.Builder.of(TileEntityBridgeBlock::new, BRIDGE_BLOCK.get()).build(null));
+
+    public static RegistryObject<MenuType<BowUpgradeGuiContainer>> UPGRADE_INVENTORY_CONTAINER_TYPE = CONTAINER_TYPE_REGISTRY.register("upgrade_inventory", () -> new MenuType<>(BowUpgradeGuiContainer::new));
+
+    public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+        RegistryObject<T> r = BLOCK_REGISTRY.register(name,block);
+        ITEM_REGISTRY.register(name,() -> {
+            return new BlockItem(r.get(),new Item.Properties().tab(ExtraBowsObjects.CREATIVE_TAB));
+        });
+
+        return r;
     }
 
-    public static void init() {
-        STONE_BOW = new ItemStoneBow();
-        IRON_BOW = new ItemIronBow();
-        GOLD_BOW = new ItemGoldBow();
-        DIAMOND_BOW = new ItemDiamondBow();
-        EMERALD_BOW = new ItemEmeraldBow();
-        ENERGY_BOW = new ItemElectricBow();
-
-        UPGRADE_PLATE = new ItemUpgradePlate();
-
-        BRIDGE_BLOCK = new BlockBridgeBlock();
-
-        BRIDGE_BLOCK_TILE_ENTITY = TileEntityType.Builder.of(TileEntityBridgeBlock::new, BRIDGE_BLOCK).build(null).setRegistryName("tile_bridge_block");
-        UPGRADE_INVENTORY_CONTAINER_TYPE = IForgeContainerType.create(BowUpgradeGuiContainer::new).setRegistryName("upgrade_inventory");
-
-        BridgeUpgrade.BUILDING_BLOCK = BRIDGE_BLOCK;
-
-        STRONG_DIAMOND = new ItemStrongDiamond();
-        STRONG_EMERALD = new ItemStrongEmerald();
-        STRONG_GOLD = new ItemStrongGold();
-        STRONG_IRON = new ItemStrongIron();
-        STRONG_STONE = new BlockStrongStone();
-
-        STONE_UPGRADE_KIT = new BasicBowUpgradeKitItem("stone_upgrade_kit", BowSettings.STONE);
-        IRON_UPGRADE_KIT = new BasicBowUpgradeKitItem("iron_upgrade_kit", BowSettings.IRON);
-        GOLD_UPGRADE_KIT = new BasicBowUpgradeKitItem("golden_upgrade_kit", BowSettings.GOLD);
-        DIAMOND_UPGRADE_KIT = new BasicBowUpgradeKitItem("diamond_upgrade_kit", BowSettings.DIAMOND);
-        EMERALD_UPGRADE_KIT = new BasicBowUpgradeKitItem("emerald_upgrade_kit", BowSettings.EMERALD);
-
-        ExtraBowsRegistry.register(BRIDGE_BLOCK_TILE_ENTITY);
-        ExtraBowsRegistry.register(UPGRADE_INVENTORY_CONTAINER_TYPE);
+    public static void register(IEventBus bus) {
+        ITEM_REGISTRY.register(bus);
+        BLOCK_REGISTRY.register(bus);
+        BLOCK_ENTITY_REGISTRY.register(bus);
+        CONTAINER_TYPE_REGISTRY.register(bus);
     }
 }

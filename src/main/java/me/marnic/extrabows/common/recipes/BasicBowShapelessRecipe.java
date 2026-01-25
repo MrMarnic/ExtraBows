@@ -5,15 +5,15 @@ import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.other.bowUpgradeKits.BasicBowUpgradeKitItem;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import me.marnic.extrabows.common.main.Identification;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.level.Level;
 
 /**
  * Copyright (c) 23.09.2019
@@ -27,12 +27,12 @@ public class BasicBowShapelessRecipe extends ShapelessRecipe {
     public BasicBowShapelessRecipe(BasicBowRecipe recipe, BasicBowUpgradeKitItem upgradeKit) {
         super(new ResourceLocation(Identification.MODID, recipe.getGroup()), recipe.getGroup(), recipe.getResultItem(), NonNullList.create());
 
-        getIngredients().add(Ingredient.of(Items.BOW, ExtraBowsObjects.STONE_BOW, ExtraBowsObjects.IRON_BOW, ExtraBowsObjects.GOLD_BOW, ExtraBowsObjects.DIAMOND_BOW, ExtraBowsObjects.EMERALD_BOW));
+        getIngredients().add(Ingredient.of(Items.BOW, ExtraBowsObjects.STONE_BOW.get(), ExtraBowsObjects.IRON_BOW.get(), ExtraBowsObjects.GOLD_BOW.get(), ExtraBowsObjects.DIAMOND_BOW.get(), ExtraBowsObjects.EMERALD_BOW.get()));
         getIngredients().add(Ingredient.of(upgradeKit));
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World worldIn) {
+    public boolean matches(CraftingContainer inv, Level worldIn) {
         boolean b = super.matches(inv, worldIn);
         if (b) {
             for (int i = 0; i < inv.getWidth() * inv.getHeight(); i++) {
@@ -51,7 +51,7 @@ public class BasicBowShapelessRecipe extends ShapelessRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInventory inv) {
+    public ItemStack assemble(CraftingContainer inv) {
         ItemStack out = super.assemble(inv);
 
         if (base != null) {

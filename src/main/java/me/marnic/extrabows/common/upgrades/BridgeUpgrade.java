@@ -2,20 +2,24 @@ package me.marnic.extrabows.common.upgrades;
 
 import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
+import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.api.util.TimeCommand;
 import me.marnic.extrabows.api.util.TimerUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
+import me.marnic.extrabows.common.blocks.BlockBridgeBlock;
 import me.marnic.extrabows.common.blocks.tileentities.TileEntityBridgeBlock;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import me.marnic.extrabows.common.main.ExtraBowsObjects;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +31,25 @@ import java.util.List;
  */
 public class BridgeUpgrade extends ArrowModifierUpgrade {
 
-    public static Block BUILDING_BLOCK;
+    public static RegistryObject<BlockBridgeBlock> BUILDING_BLOCK = ExtraBowsObjects.BRIDGE_BLOCK;
 
     public static int ACTIVE_TIME = 20;
 
     public BridgeUpgrade() {
-        super("bridge_upgrade");
+        super("bridge_upgrade", Upgrades.BRIDGE_UPGRADE_ITEM);
     }
 
-    public static boolean placeBlock(BlockPos pos, BlockState state, World world) {
-        if (world.isEmptyBlock(pos)) {
-            world.setBlockAndUpdate(pos, state);
+    public static boolean placeBlock(BlockPos pos, BlockState state, Level level) {
+        if (level.isEmptyBlock(pos)) {
+            level.setBlockAndUpdate(pos, state);
             return true;
-        } else if (world.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
-            world.setBlockAndUpdate(pos, state);
-            ((TileEntityBridgeBlock) world.getBlockEntity(pos)).setFluid(Blocks.WATER);
+        } else if (level.getBlockState(pos).getBlock().equals(Blocks.WATER)) {
+            level.setBlockAndUpdate(pos, state);
+            ((TileEntityBridgeBlock) level.getBlockEntity(pos)).setFluid(Blocks.WATER);
             return true;
-        } else if (world.getBlockState(pos).getBlock().equals(Blocks.LAVA)) {
-            world.setBlockAndUpdate(pos, state);
-            ((TileEntityBridgeBlock) world.getBlockEntity(pos)).setFluid(Blocks.LAVA);
+        } else if (level.getBlockState(pos).getBlock().equals(Blocks.LAVA)) {
+            level.setBlockAndUpdate(pos, state);
+            ((TileEntityBridgeBlock) level.getBlockEntity(pos)).setFluid(Blocks.LAVA);
             return true;
         }
         return false;
@@ -57,25 +61,25 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     }
 
     @Override
-    public List<ITextComponent> getDescription() {
+    public List<Component> getDescription() {
         return UpgradeUtil.createDescriptionFromStingList(UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 1), UpgradeUtil.getTranslatedDescriptionForUpgrade(this, 2));
     }
 
     @Override
-    public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+    public void handleEntityInit(AbstractArrow arrow, UpgradeList upgradeList, Player player) {
         BuildingUpgradeData data = new BuildingUpgradeData();
         data.facing = player.getDirection();
         upgradeList.getDataMap().put(this, data);
     }
 
     @Override
-    public void handleFlyingEvent(AbstractArrowEntity arrow, World world, UpgradeList upgradeList) {
+    public void handleFlyingEvent(AbstractArrow arrow, Level level, UpgradeList upgradeList) {
         BuildingUpgradeData data = (BuildingUpgradeData) upgradeList.getDataMap().get(this);
 
         BlockPos pos = new BlockPos(arrow.position()).offset(0, -3, 0);
 
-        data.builder.needsFix(pos, data.blockPos.size() >= 1 ? data.blockPos.get(data.blockPos.size() - 1) : null, data.blockPos, data.blockPos.size(), world, data.facing);
-        data.blockPos.add(new BlockSave(pos, data.blockPos.size()).setRemovable(world.isEmptyBlock(pos)));
+        data.builder.needsFix(pos, data.blockPos.size() >= 1 ? data.blockPos.get(data.blockPos.size() - 1) : null, data.blockPos, data.blockPos.size(), level, data.facing);
+        data.blockPos.add(new BlockSave(pos, data.blockPos.size()).setRemovable(level.isEmptyBlock(pos)));
 
         TimerUtil.addTimeCommand(new TimeCommand(data.blockPos.size() * 2, new Runnable() {
             BlockPos pos1 = new BlockPos(arrow.position()).offset(0, -3, 0);
@@ -83,8 +87,8 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
 
             @Override
             public void run() {
-                if (placeBlock(pos1, BUILDING_BLOCK.defaultBlockState(), world)) {
-                    ((TileEntityBridgeBlock) world.getBlockEntity(pos1)).setTicksToLive(size + ACTIVE_TIME * 20);
+                if (placeBlock(pos1, BUILDING_BLOCK.get().defaultBlockState(), level)) {
+                    ((TileEntityBridgeBlock) level.getBlockEntity(pos1)).setTicksToLive(size + ACTIVE_TIME * 20);
                 }
             }
         }));
@@ -126,7 +130,7 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
     }
 
     class BridgeBuilder {
-        public void needsFix(BlockPos pos, BlockSave last, ArrayList<BlockSave> blocks, int id, World world, Direction facing) {
+        public void needsFix(BlockPos pos, BlockSave last, ArrayList<BlockSave> blocks, int id, Level Level, Direction facing) {
             if (blocks.size() >= 1) {
                 BlockPos next = last.pos.subtract(pos);
                 BlockPos nextAbs = new BlockPos(Math.abs(next.getX()), Math.abs(next.getY()), Math.abs(next.getZ()));
@@ -159,8 +163,8 @@ public class BridgeUpgrade extends ArrowModifierUpgrade {
                         TimerUtil.addTimeCommand(new TimeCommand((id) * 2, new Runnable() {
                             @Override
                             public void run() {
-                                if (placeBlock(finalBegin, BUILDING_BLOCK.defaultBlockState(), world)) {
-                                    ((TileEntityBridgeBlock) world.getBlockEntity(finalBegin)).setTicksToLive((id) + ACTIVE_TIME * 20);
+                                if (placeBlock(finalBegin, BUILDING_BLOCK.get().defaultBlockState(), Level)) {
+                                    ((TileEntityBridgeBlock) Level.getBlockEntity(finalBegin)).setTicksToLive((id) + ACTIVE_TIME * 20);
                                 }
                             }
                         }));

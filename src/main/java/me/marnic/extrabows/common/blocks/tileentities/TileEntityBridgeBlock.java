@@ -1,33 +1,38 @@
 package me.marnic.extrabows.common.blocks.tileentities;
 
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
-import net.minecraft.block.Block;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.TickingBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Copyright (c) 06.06.2019
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class TileEntityBridgeBlock extends TileEntity implements ITickableTileEntity {
+public class TileEntityBridgeBlock extends BlockEntity {
 
     private int ticksToLive;
     private Block toPlace;
 
-    public TileEntityBridgeBlock() {
-        super(ExtraBowsObjects.BRIDGE_BLOCK_TILE_ENTITY);
+    public TileEntityBridgeBlock(BlockPos pos, BlockState state) {
+        super(ExtraBowsObjects.BRIDGE_BLOCK_TILE_ENTITY.get(), pos, state);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
-        compound.putInt("ticksToLive", ticksToLive);
-        return super.save(compound);
+    protected void saveAdditional(CompoundTag p_187471_) {
+        p_187471_.putInt("ticksToLive", ticksToLive);
+        super.saveAdditional(p_187471_);
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         ticksToLive = nbt.getInt("ticksToLive");
         super.deserializeNBT(nbt);
     }
@@ -37,19 +42,15 @@ public class TileEntityBridgeBlock extends TileEntity implements ITickableTileEn
         return this;
     }
 
-    @Override
-    public void tick() {
-        if (ticksToLive <= 0) {
-            getLevel().removeBlock(getBlockPos(), false);
-            if (toPlace != null) {
-                getLevel().setBlockAndUpdate(getBlockPos(), toPlace.defaultBlockState());
-            }
-        } else {
-            ticksToLive--;
-        }
-    }
-
     public void setFluid(Block state) {
         this.toPlace = state;
+    }
+
+    public int getTicksToLive() {
+        return ticksToLive;
+    }
+
+    public Block getToPlace() {
+        return toPlace;
     }
 }

@@ -2,11 +2,10 @@ package me.marnic.extrabows.common.packet;
 
 import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.items.BasicBow;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.concurrent.TickDelayedTask;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -16,14 +15,14 @@ import java.util.function.Supplier;
  * GitHub: https://github.com/MrMarnic
  */
 public class PacketOpenUpgradeGUI extends BasicPacket {
-    public PacketOpenUpgradeGUI(PacketBuffer buffer) {
+    public PacketOpenUpgradeGUI(FriendlyByteBuf buffer) {
         super(buffer);
     }
 
     @Override
     void handle(Supplier<NetworkEvent.Context> context) {
         if (context.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
-            ServerPlayerEntity serverPlayer = context.get().getSender();
+            ServerPlayer serverPlayer = context.get().getSender();
 
             if (serverPlayer.getMainHandItem().getItem() instanceof BasicBow) {
                 //serverPlayer.getServer().addTickable(new TickDelayedTask(0, () -> ExtraBowsInputHandler.handleUpgradeInvKeyPressedServer(serverPlayer)));

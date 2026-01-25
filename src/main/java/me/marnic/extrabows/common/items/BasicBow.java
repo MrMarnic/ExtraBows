@@ -10,22 +10,29 @@ import me.marnic.extrabows.api.util.RandomUtil;
 import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.common.items.bows.ItemElectricBow;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -65,7 +72,7 @@ public class BasicBow extends BowItem implements BasicItem {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void initConfigOptions() {
-        ItemModelsProperties.register(this,new ResourceLocation("pull"),(p_210310_0_, p_210310_1_, p_210310_2_) -> {
+        ItemProperties.register(this,new ResourceLocation("pull"),(p_210310_0_, p_210310_1_, p_210310_2_,f) -> {
             if (p_210310_2_ == null) {
                 return 0.0F;
             } else {
@@ -73,22 +80,22 @@ public class BasicBow extends BowItem implements BasicItem {
             }
         });
 
-        ItemModelsProperties.register(this, new ResourceLocation("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_) -> {
+        ItemProperties.register(this, new ResourceLocation("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_,f) -> {
             return p_239428_2_ != null && p_239428_2_.isUsingItem() && p_239428_2_.getMainHandItem() == p_239428_0_ ? 1.0F : 0.0F;
         });
     }
 
-    private ItemStack findAmmoNEW(PlayerEntity player, boolean electric) {
+    private ItemStack findAmmoNEW(Player player, boolean electric) {
         if (electric) {
             return new ItemStack(Items.ARROW);
         }
-        if (this.isArrow(player.getItemInHand(Hand.OFF_HAND))) {
-            return player.getItemInHand(Hand.OFF_HAND);
-        } else if (this.isArrow(player.getItemInHand(Hand.MAIN_HAND))) {
-            return player.getItemInHand(Hand.MAIN_HAND);
+        if (this.isArrow(player.getItemInHand(InteractionHand.OFF_HAND))) {
+            return player.getItemInHand(InteractionHand.OFF_HAND);
+        } else if (this.isArrow(player.getItemInHand(InteractionHand.MAIN_HAND))) {
+            return player.getItemInHand(InteractionHand.MAIN_HAND);
         } else {
-            for (int i = 0; i < player.inventory.getContainerSize(); ++i) {
-                ItemStack itemstack = player.inventory.getItem(i);
+            for (int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+                ItemStack itemstack = player.getInventory().getItem(i);
 
                 if (this.isArrow(itemstack)) {
                     return itemstack;
@@ -100,13 +107,13 @@ public class BasicBow extends BowItem implements BasicItem {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level LevelIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
         if (isLoaded(UpgradeUtil.getUpgradesFromStack(stack), stack)) {
             playerIn.setItemInHand(handIn, stack);
-            return new ActionResult<>(ActionResultType.SUCCESS, stack);
+            return InteractionResultHolder.consume(stack);
         }
-        return super.use(worldIn, playerIn, handIn);
+        return super.use(LevelIn, playerIn, handIn);
     }
 
     @Override
@@ -114,13 +121,14 @@ public class BasicBow extends BowItem implements BasicItem {
         return (int)(settings.getTime() * 20);
     }
 
+    /*
     @Nullable
     @Override
-    public CompoundNBT getShareTag(ItemStack stack) {
-        CompoundNBT baseTag = stack.getTag();
-        ItemStackHandler itemStackHandlerFlowerBag = (ItemStackHandler)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null).orElse(null);
-        CompoundNBT itemStackHandlerCapabilityTag = itemStackHandlerFlowerBag.serializeNBT();
-        CompoundNBT combinedTag = new CompoundNBT();
+    public CompoundTag getShareTag(ItemStack stack) {
+        CompoundTag baseTag = super.getShareTag(stack);
+        ItemStackHandler itemStackHandler = (ItemStackHandler)stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null).orElse(null);
+        CompoundTag itemStackHandlerCapabilityTag = itemStackHandler.serializeNBT();
+        CompoundTag combinedTag = new CompoundTag();
         if (baseTag != null) {
             combinedTag.put("base", baseTag);
         }
@@ -128,26 +136,23 @@ public class BasicBow extends BowItem implements BasicItem {
             combinedTag.put("capItem", itemStackHandlerCapabilityTag);
         }
         stack.getCapability(CapabilityEnergy.ENERGY, null).ifPresent((energy) -> {
-            CompoundNBT energyCapabilityTag = ((ExtraBowsEnergy)energy).serializeNBT();
+            CompoundTag energyCapabilityTag = (CompoundTag)((ExtraBowsEnergy)energy).serializeNBT();
             combinedTag.put("capEnergy", energyCapabilityTag);
         });
         return combinedTag;
     }
 
-    /** Retrieve our capability information from the transmitted NBT information
-     *
-     * @param stack The stack that received NBT
-     * @param nbt   Received NBT, can be null
-     */
     @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
+        super.readShareTag(stack,nbt);
+
         if (nbt == null) {
             stack.setTag(null);
             return;
         }
-        CompoundNBT baseTag = nbt.getCompound("base");              // empty if not found
-        CompoundNBT capabilityTag = nbt.getCompound("capItem"); // empty if not found
-        CompoundNBT capabilityEnergy = nbt.getCompound("capEnergy");
+        CompoundTag baseTag = nbt.getCompound("base");              // empty if not found
+        CompoundTag capabilityTag = nbt.getCompound("capItem"); // empty if not found
+        CompoundTag capabilityEnergy = nbt.getCompound("capEnergy");
         stack.setTag(baseTag);
         stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null).ifPresent((handler) -> {
             ((ItemStackHandler)handler).deserializeNBT(capabilityTag);
@@ -156,12 +161,13 @@ public class BasicBow extends BowItem implements BasicItem {
             ((ExtraBowsEnergy)extraBowsEnergy).deserializeNBT(capabilityEnergy);
         });
     }
+     */
 
     @Override
-    public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-        if (entityLiving instanceof PlayerEntity) {
-            PlayerEntity entityplayer = (PlayerEntity) entityLiving;
-            boolean flag = entityplayer.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+    public void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) {
+        if (entityLiving instanceof Player) {
+            Player entityplayer = (Player) entityLiving;
+            boolean flag = entityplayer.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
 
             UpgradeList list = UpgradeUtil.getUpgradesFromStack(stack);
 
@@ -170,7 +176,7 @@ public class BasicBow extends BowItem implements BasicItem {
             ItemStack arrowStack = this.findAmmoNEW(entityplayer, isLoaded);
 
             int i = this.getUseDuration(stack) - timeLeft;
-            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !arrowStack.isEmpty() || flag);
+            i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, levelIn, entityplayer, i, !arrowStack.isEmpty() || flag);
             if (i < 0) return;
 
             if (!arrowStack.isEmpty() || flag) {
@@ -181,22 +187,22 @@ public class BasicBow extends BowItem implements BasicItem {
                 float f = ArrowUtil.getArrowVelocity(i, this);
 
                 if ((double) f >= 0.1D) {
-                    boolean flag1 = entityplayer.abilities.instabuild || (arrowStack.getItem() instanceof ArrowItem && ((ArrowItem) arrowStack.getItem()).isInfinite(arrowStack, stack, entityplayer));
+                    boolean flag1 = entityplayer.getAbilities().instabuild || (arrowStack.getItem() instanceof ArrowItem && ((ArrowItem) arrowStack.getItem()).isInfinite(arrowStack, stack, entityplayer));
 
-                    if (!worldIn.isClientSide) {
+                    if (!levelIn.isClientSide) {
                         list.applyDamage(entityplayer);
                         if (list.hasMul()) {
-                            list.getArrowMultiplier().handleAction(this, worldIn, stack, entityplayer, f, arrowStack, flag1, list, isLoaded);
+                            list.getArrowMultiplier().handleAction(this, levelIn, stack, entityplayer, f, arrowStack, flag1, list, isLoaded);
                         } else {
-                            AbstractArrowEntity entityarrow = ArrowUtil.createArrowComplete(worldIn, stack, arrowStack, entityplayer, this, f, flag1, 0, 0, list, isLoaded);
+                            AbstractArrow entityarrow = ArrowUtil.createArrowComplete(levelIn, stack, arrowStack, entityplayer, this, f, flag1, 0, 0, list, isLoaded);
 
-                            worldIn.addFreshEntity(entityarrow);
+                            levelIn.addFreshEntity(entityarrow);
                         }
                     }
 
-                    worldIn.playSound(null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (RandomUtil.RANDOM.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                    levelIn.playSound(null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (RandomUtil.RANDOM.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-                    if (!flag1 && !entityplayer.abilities.instabuild) {
+                    if (!flag1 && !entityplayer.getAbilities().instabuild) {
 
                         boolean useNormal = true;
 
@@ -226,11 +232,11 @@ public class BasicBow extends BowItem implements BasicItem {
                                 arrowStack.shrink(1);
 
                                 if (arrowStack.isEmpty()) {
-                                    entityplayer.inventory.removeItem(arrowStack);
+                                    entityplayer.getInventory().removeItem(arrowStack);
                                 }
                             }
 
-                            if (!worldIn.isClientSide) {
+                            if (!levelIn.isClientSide) {
                                 if (stack.getDamageValue() == stack.getMaxDamage()) {
                                     list.dropItems(entityplayer);
                                     stack.hurtAndBreak(1, entityplayer, (p) -> p.broadcastBreakEvent(p.getUsedItemHand()));
@@ -246,83 +252,34 @@ public class BasicBow extends BowItem implements BasicItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level LevelIn, List<Component> tooltip, TooltipFlag flagIn) {
         UpgradeList list = UpgradeUtil.getUpgradesFromStack(stack);
 
-        tooltip.add(new StringTextComponent("Press B to open the Upgrade inventory").withStyle(TextFormatting.GRAY));
+        tooltip.add(new TextComponent("Press B to open the Upgrade inventory").withStyle(ChatFormatting.GRAY));
         if (!list.hasMul() && !list.hasMods()) {
-            tooltip.add(new TranslationTextComponent("message.no_upgrades.text").withStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslatableComponent("message.no_upgrades.text").withStyle(ChatFormatting.GRAY));
         } else {
-            tooltip.add(new StringTextComponent("Upgrades:").withStyle(TextFormatting.GRAY));
+            tooltip.add(new TextComponent("Upgrades:").withStyle(ChatFormatting.GRAY));
         }
         if (list.hasMul()) {
-            tooltip.add(new StringTextComponent("Arrow Multiplier:").withStyle(TextFormatting.GRAY));
-            tooltip.add(new StringTextComponent("- " + list.getArrowMultiplier().getName()).withStyle(TextFormatting.GRAY));
+            tooltip.add(new TextComponent("Arrow Multiplier:").withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TextComponent("- " + list.getArrowMultiplier().getName()).withStyle(ChatFormatting.GRAY));
         }
         if (list.hasMods()) {
-            tooltip.add(new StringTextComponent("Arrow Modifiers:").withStyle(TextFormatting.GRAY));
+            tooltip.add(new TextComponent("Arrow Modifiers:").withStyle(ChatFormatting.GRAY));
             for (BasicUpgrade upgrade : list.getArrowModifiers()) {
-                tooltip.add(new StringTextComponent("- " + upgrade.getName()).withStyle(TextFormatting.GRAY));
+                tooltip.add(new TextComponent("- " + upgrade.getName()).withStyle(ChatFormatting.GRAY));
             }
         }
 
-        if (isElectric(list, stack) && worldIn != null) {
+        if (isElectric(list, stack) && LevelIn != null) {
             ExtraBowsEnergy storage = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
             if (storage != null) {
-                tooltip.add(new StringTextComponent("Energy: " + storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + "RF").withStyle(TextFormatting.GRAY));
+                tooltip.add(new TextComponent("Energy: " + storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + "RF").withStyle(ChatFormatting.GRAY));
             }
         }
 
     }
-
-   /*
-    @Nullable
-    @Override
-    public CompoundNBT getShareTag(ItemStack stack) {
-
-        CompoundNBT compound = super.getShareTag(stack);
-
-        if (compound == null) {
-            compound = new CompoundNBT();
-        }
-
-        ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
-        if (extraBowsEnergy != null) {
-            compound.putInt("energy", extraBowsEnergy.getEnergyStored());
-            compound.putInt("maxEnergy", extraBowsEnergy.getMaxEnergyStored());
-        }
-
-        ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
-
-        if (handler != null) {
-            compound.put("itemHandlerData", handler.serializeNBT());
-        }
-
-        return compound;
-    }
-
-    @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
-        super.readShareTag(stack, nbt);
-
-        if (nbt != null) {
-            ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
-            ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
-
-            if (extraBowsEnergy != null) {
-                int energy = nbt.getInt("energy");
-                int maxEnergy = nbt.getInt("maxEnergy");
-                extraBowsEnergy.setEnergy(energy);
-                extraBowsEnergy.setCapacity(maxEnergy);
-            }
-
-            if (handler != null) {
-                CompoundNBT tag = nbt.getCompound("itemHandlerData");
-                handler.deserializeNBT(tag);
-            }
-        }
-    }
-    */
 
     @Override
     public Item getItem() {
@@ -339,7 +296,7 @@ public class BasicBow extends BowItem implements BasicItem {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new BowCapability(stack);
     }
 
@@ -360,11 +317,11 @@ public class BasicBow extends BowItem implements BasicItem {
         return false;
     }
 
-    public void onArrowCreate(AbstractArrowEntity arrow) {
+    public void onArrowCreate(AbstractArrow arrow) {
 
     }
 
-    public void onArrowHit(AbstractArrowEntity arrow) {
+    public void onArrowHit(AbstractArrow arrow) {
 
     }
 
@@ -382,15 +339,55 @@ public class BasicBow extends BowItem implements BasicItem {
         return settings != null && settings.getMaxUses() > 0;
     }
 
-    public class BowCapability implements ICapabilitySerializable<INBT>, ICapabilityProvider {
+    public class BowCapability implements ICapabilitySerializable<Tag>, ICapabilityProvider {
 
-        private ItemStackHandler handler = new ItemStackHandler(4);
+        private ItemStackHandler handler;
         private ExtraBowsEnergy energy = new ExtraBowsEnergy(CustomBowSettings.ENERGY_BOW_UPGRADE, CustomBowSettings.ENERGY_RECEIVE, CustomBowSettings.ENERGY_COST_PER_ARROW * 3);
 
-        private LazyOptional<IItemHandler> handlerLazyOptional = LazyOptional.of(() -> handler);
+        private LazyOptional<IItemHandler> handlerLazyOptional = LazyOptional.of(this::getCached);
         private LazyOptional<IEnergyStorage> energyStorage = LazyOptional.of(() -> energy);
 
         private ItemStack stack;
+
+        private ItemStackHandler getCached() {
+            if (handler == null) {
+                handler =  new ItemStackHandler(4) {
+                    /** returns true if the contents have changed since the last call.
+                     * Resets to false after each call.
+                     * @return true if changed since the last call
+                     */
+                    public boolean isDirty() {
+                        boolean currentState = isDirty;
+                        isDirty = false;
+                        return currentState;
+                    }
+
+                    /** Called whenever the contents of the bag have changed.
+                     *   We need to do this manually in order to make sure that the server sends a synchronisation packet to the client for the parent ItemStack
+                     *   The reason is because capability information is not stored in the ItemStack nbt tag, so vanilla does not notice when
+                     *   the flowerbag's capability has changed.
+                     * @param slot
+                     */
+                    @Override
+                    protected void onContentsChanged(int slot) {
+                        // A problem - the ItemStack and the ItemStackHandler don't know which player is holding the flower bag.  Or in fact whether
+                        //   the bag is being held by any player at all.
+                        // We have a few choices -
+                        // * we can search all the players on the server to see which one is holding the bag; or
+                        // * we can try to store the owner of the ItemStack in the ItemStackHandler, ItemStack, or ContainerFlowerBag,
+                        //   (which becomes problematic if the owner drops the ItemStack, or if there is no container); or
+                        // * we can mark the bag as dirty and let the containerFlowerBag detect that.
+                        // I've used the third method because it is easier to code, produces less coupling between classes, and probably more efficient
+                        // Fortunately, we only need to manually force an update when the player has the container open.  If changes could occur while the
+                        //   item was discarded (inside an ItemEntity) it would be much trickier.
+                        isDirty = true;
+                    }
+
+                    private boolean isDirty = true;
+                };
+            }
+            return handler;
+        }
 
         public BowCapability(ItemStack stack) {
             this.stack = stack;
@@ -414,35 +411,34 @@ public class BasicBow extends BowItem implements BasicItem {
         }
 
         @Override
-        public INBT serializeNBT() {
-            INBT tag1 = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(handler, null);
-            INBT tag2 = CapabilityEnergy.ENERGY.writeNBT(energyStorage.orElse(null),null);
+        public Tag serializeNBT() {
+            Tag tag1 = getCached().serializeNBT();
+            Tag tag2 = null;
+            if(energy != null) {
+                tag2 = energy.serializeNBT();
+            }
 
-            CompoundNBT nbt = new CompoundNBT();
-            nbt.put("cap1",tag1);
-            nbt.put("cap2",tag2);
+            CompoundTag nbt = new CompoundTag();
+            nbt.put("capItem",tag1);
+
+            if(tag2 != null) {
+                nbt.put("capEnergy",tag2);
+            }
 
             return nbt;
-            /*
-                        CompoundNBT nbt = new CompoundNBT();
-            nbt.put("handler", handler.serializeNBT());
-            nbt.putInt("capacity", energy.getMaxEnergyStored());
-            nbt.putInt("energy", energy.getEnergyStored());
-            return nbt;
-             */
         }
 
         @Override
-        public void deserializeNBT(INBT nbt) {
+        public void deserializeNBT(Tag nbt) {
 
-            CompoundNBT c = (CompoundNBT)nbt;
+            CompoundTag c = (CompoundTag)nbt;
 
-            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(handler, null, c.get("cap1"));
-            CapabilityEnergy.ENERGY.readNBT(energyStorage.orElse(null),null, c.get("cap2"));
-
-            //handler.deserializeNBT(nbt.getCompound("handler"));
-            //energy.setCapacity(nbt.getInt("capacity"));
-            //energy.setEnergy(nbt.getInt("energy"));
+            if(c.contains("capItem")) {
+                getCached().deserializeNBT(c.getCompound("capItem"));
+            }
+            if(c.contains("capEnergy")) {
+                energy.deserializeNBT(c.getCompound("capEnergy"));
+            }
         }
     }
 }

@@ -1,12 +1,14 @@
 package me.marnic.extrabows.common.items.other;
 
 import me.marnic.extrabows.api.block.BasicBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraftforge.common.Tags;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -20,17 +22,11 @@ import java.util.List;
 public class BlockStrongStone extends BasicBlock {
 
     public BlockStrongStone() {
-        super("strong_stone", Properties.of(Material.STONE).harvestLevel(0).strength(2).sound(SoundType.STONE));
-    }
-
-    @Nullable
-    @Override
-    public ToolType getHarvestTool(BlockState state) {
-        return ToolType.PICKAXE;
+        super("strong_stone", Properties.of(Material.STONE).strength(2f,6f).sound(SoundType.STONE));
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public @NotNull List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         return Arrays.asList(new ItemStack(this.asItem()));
     }
 }

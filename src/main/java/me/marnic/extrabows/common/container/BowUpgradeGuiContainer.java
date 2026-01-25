@@ -4,29 +4,33 @@ import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.client.gui.slot.UpgradeSlot;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Copyright (c) 30.05.2019
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class BowUpgradeGuiContainer extends Container {
+public class BowUpgradeGuiContainer extends AbstractContainerMenu {
 
     private static int SIZE = 4;
     private IItemHandler handler;
 
-    public BowUpgradeGuiContainer(int windowId, PlayerInventory inventory, PacketBuffer extraData) {
-        super(ExtraBowsObjects.UPGRADE_INVENTORY_CONTAINER_TYPE, windowId);
+    public BowUpgradeGuiContainer(int id, Inventory inv) {
+        this(id,inv,null);
+    }
 
-        PlayerEntity player = inventory.player;
+    public BowUpgradeGuiContainer(int windowId, Inventory inventory, ContainerData extraData) {
+        super(ExtraBowsObjects.UPGRADE_INVENTORY_CONTAINER_TYPE.get(), windowId);
+
+        Player player = inventory.player;
 
         ItemStack bowStack = player.getMainHandItem();
 
@@ -39,15 +43,15 @@ public class BowUpgradeGuiContainer extends Container {
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(player.getInventory(), j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
 
         for (int k = 0; k < 9; ++k) {
-            this.addSlot(new Slot(player.inventory, k, 8 + k * 18, 142) {
+            this.addSlot(new Slot(player.getInventory(), k, 8 + k * 18, 142) {
 
                 @Override
-                public boolean mayPickup(PlayerEntity playerIn) {
+                public boolean mayPickup(Player playerIn) {
                     return !(getItem().getItem() instanceof BasicBow);
                 }
             });
@@ -55,18 +59,18 @@ public class BowUpgradeGuiContainer extends Container {
     }
 
     @Override
-    public void removed(PlayerEntity playerIn) {
+    public void removed(Player playerIn) {
         super.removed(playerIn);
         UpgradeUtil.saveUpgradesToStack(playerIn.getMainHandItem(), (ItemStackHandler) handler);
     }
 
     @Override
-    public boolean stillValid(PlayerEntity p_75145_1_) {
+    public boolean stillValid(Player p_75145_1_) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
@@ -90,6 +94,4 @@ public class BowUpgradeGuiContainer extends Container {
         }
         return itemstack;
     }
-
-
 }

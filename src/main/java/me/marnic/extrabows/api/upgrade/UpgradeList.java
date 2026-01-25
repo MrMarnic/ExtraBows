@@ -1,13 +1,12 @@
 package me.marnic.extrabows.api.upgrade;
 
 import me.marnic.extrabows.common.items.BasicBow;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class UpgradeList {
         return ((arrowMultiplier != null && arrowMultiplier.equals(upgrade)) | arrowModifiers.contains(upgrade));
     }
 
-    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow) {
+    public void handleModifierHittingEvent(ArrowModifierUpgrade.EventType eventType, BlockPos pos, Entity entity, Level world, Player player, AbstractArrow arrow) {
         if (hasMods()) {
             switch (eventType) {
                 case ENTITY_HIT:
@@ -82,7 +81,7 @@ public class UpgradeList {
         }
     }
 
-    public void handleOnUpdatedEvent(AbstractArrowEntity arrow, World world) {
+    public void handleOnUpdatedEvent(AbstractArrow arrow, Level world) {
         if (hasMods()) {
             for (ArrowModifierUpgrade upgrade : getArrowModifiers()) {
                 upgrade.handleFlyingEvent(arrow, world, this);
@@ -96,7 +95,7 @@ public class UpgradeList {
         }
     }
 
-    public void handleModifierEvent(ArrowModifierUpgrade.EventType eventType, AbstractArrowEntity arrow, PlayerEntity player, ItemStack bowStack) {
+    public void handleModifierEvent(ArrowModifierUpgrade.EventType eventType, AbstractArrow arrow, Player player, ItemStack bowStack) {
         if (hasMods()) {
             switch (eventType) {
                 case ARROW_CREATE:
@@ -116,7 +115,7 @@ public class UpgradeList {
         }
     }
 
-    public void applyDamage(PlayerEntity player) {
+    public void applyDamage(Player player) {
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack stack = handler.getStackInSlot(i);
             if (!stack.isEmpty()) {
@@ -130,7 +129,7 @@ public class UpgradeList {
         return dataMap;
     }
 
-    public void dropItems(PlayerEntity player) {
+    public void dropItems(Player player) {
         for (int i = 0; i < handler.getSlots(); i++) {
             player.drop(handler.getStackInSlot(i), false);
         }

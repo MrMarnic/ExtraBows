@@ -1,10 +1,9 @@
 package me.marnic.extrabows.api.util;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * Copyright (c) 07.06.2019
@@ -12,7 +11,7 @@ import net.minecraft.util.text.TranslationTextComponent;
  * GitHub: https://github.com/MrMarnic
  */
 public class AlertUtil {
-    public static void alert(PlayerEntity player, String msg, TextFormatting formatting) {
-        player.displayClientMessage(new TranslationTextComponent(msg).withStyle(Style.EMPTY.applyFormat(formatting)), true);
+    public static void alert(Player player, String msg, ChatFormatting formatting) {
+        player.displayClientMessage(new TranslatableComponent(msg).withStyle(Style.EMPTY.applyFormat(formatting)), true);
     }
 }

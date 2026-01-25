@@ -2,14 +2,15 @@ package me.marnic.extrabows.common.upgrades;
 
 import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
+import me.marnic.extrabows.api.upgrade.Upgrades;
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
 import me.marnic.extrabows.common.items.bows.ItemElectricBow;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
 
 /**
@@ -20,7 +21,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class ElectricUpgrade extends ArrowModifierUpgrade {
     public ElectricUpgrade() {
-        super("electric_upgrade");
+        super("electric_upgrade", Upgrades.ELECTRIC_UPGRADE_ITEM);
     }
 
     @Override
@@ -29,23 +30,23 @@ public class ElectricUpgrade extends ArrowModifierUpgrade {
     }
 
     @Override
-    public void handleEntityHit(Entity entity, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleEntityHit(Entity entity, Level Level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
         if (arrow.getTags().contains("electric")) {
-            arrow.remove();
+            arrow.remove(Entity.RemovalReason.DISCARDED);
         }
     }
 
     @Override
-    public void handleBlockHit(BlockPos pos, World world, PlayerEntity player, AbstractArrowEntity arrow, UpgradeList upgradeList) {
+    public void handleBlockHit(BlockPos pos, Level Level, Player player, AbstractArrow arrow, UpgradeList upgradeList) {
         if (arrow.getTags().contains("electric")) {
-            arrow.remove();
+            arrow.remove(Entity.RemovalReason.DISCARDED);
         }
     }
 
     @Override
-    public void handleEntityInit(AbstractArrowEntity arrow, UpgradeList upgradeList, PlayerEntity player) {
+    public void handleEntityInit(AbstractArrow arrow, UpgradeList upgradeList, Player player) {
         if (arrow.getTags().contains("electric")) {
-            arrow.pickup = AbstractArrowEntity.PickupStatus.DISALLOWED;
+            arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
         }
     }
 

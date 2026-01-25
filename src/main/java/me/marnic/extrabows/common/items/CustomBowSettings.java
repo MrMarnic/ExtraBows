@@ -1,7 +1,7 @@
 package me.marnic.extrabows.common.items;
 
 import me.marnic.extrabows.common.config.ExtraBowsConfig;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 /**
  * Copyright (c) 24.05.2019
@@ -45,7 +45,7 @@ public class CustomBowSettings {
     }
 
     public CustomBowSettings(String name, ExtraBowsConfig.BowConfig config) {
-        this(name, config.durability.get(), new Float(config.velocityMultiplier.get()), new Float(config.damage.get()), new Float(config.inaccuracy.get()), new Float(config.time.get()));
+        this(name, config.durability.get(), config.velocityMultiplier.get().floatValue(), config.damage.get().floatValue(), config.inaccuracy.get().floatValue(), config.time.get().floatValue());
     }
 
     public CustomBowSettings copy(CustomBowSettings settings) {

@@ -4,12 +4,13 @@ import me.marnic.extrabows.api.item.ConfigLoad;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +23,14 @@ import java.util.List;
 public class BasicUpgrade implements ConfigLoad {
     public static final HashMap<String, BasicUpgrade> UPGRADES = new HashMap<>();
     private String name;
-    private BasicUpgradeItem item;
-    private TranslationTextComponent translation;
+    private RegistryObject<BasicUpgradeItem> item;
+    private TranslatableComponent translation;
 
-    public BasicUpgrade(String name) {
+    public BasicUpgrade(String name, RegistryObject<BasicUpgradeItem> item) {
         this.name = name;
+        this.item = item;
         UPGRADES.put(name, this);
-        this.item = new BasicUpgradeItem(name, this);
-        this.item.setMaxDamage(400);
-        this.translation = new TranslationTextComponent("item.extrabows." + name);
+        this.translation = new TranslatableComponent("item.extrabows." + name);
         ExtraBowsRegistry.CONFIG_LOAD.add(this);
     }
 
@@ -46,14 +46,14 @@ public class BasicUpgrade implements ConfigLoad {
         return name;
     }
 
-    public void handleAction(BasicBow basicBow, World worldIn, ItemStack itemstack, PlayerEntity entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list, boolean isLoaded) {
+    public void handleAction(BasicBow basicBow, Level worldIn, ItemStack itemstack, Player entityplayer, float f, ItemStack stack, boolean flag1, UpgradeList list, boolean isLoaded) {
     }
 
     public BasicUpgradeItem getItem() {
-        return item;
+        return item.get();
     }
 
-    public List<ITextComponent> getDescription() {
+    public List<Component> getDescription() {
         return null;
     }
 

@@ -1,7 +1,8 @@
 package me.marnic.extrabows.api.block;
 
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WaterlilyBlock;
 
 /**
  * Copyright (c) 05.06.2019
@@ -11,7 +12,7 @@ import net.minecraft.block.Block;
 public class BasicBlock extends Block {
     public BasicBlock(String name, Properties properties) {
         super(properties);
-        setRegistryName(name);
-        ExtraBowsRegistry.register(this);
+        //setRegistryName(name);
+        //ExtraBowsRegistry.register(this);
     }
 }

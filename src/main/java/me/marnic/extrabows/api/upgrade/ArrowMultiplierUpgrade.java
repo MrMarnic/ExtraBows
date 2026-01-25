@@ -1,8 +1,10 @@
 package me.marnic.extrabows.api.upgrade;
 
 import me.marnic.extrabows.api.energy.ExtraBowsEnergy;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.RegistryObject;
 
 /**
  * Copyright (c) 28.05.2019
@@ -10,11 +12,11 @@ import net.minecraft.item.ItemStack;
  * GitHub: https://github.com/MrMarnic
  */
 public class ArrowMultiplierUpgrade extends BasicUpgrade {
-    public ArrowMultiplierUpgrade(String name) {
-        super(name);
+    public ArrowMultiplierUpgrade(String name, RegistryObject<BasicUpgradeItem> item) {
+        super(name, item);
     }
 
-    public boolean canShoot(ItemStack arrow, PlayerEntity player) {
+    public boolean canShoot(ItemStack arrow, Player player) {
         return true;
     }
 

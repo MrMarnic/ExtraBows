@@ -3,12 +3,18 @@ package me.marnic.extrabows.common.registry;
 import me.marnic.extrabows.api.block.BasicBlock;
 import me.marnic.extrabows.api.item.BasicItem;
 import me.marnic.extrabows.api.item.ConfigLoad;
+import me.marnic.extrabows.common.items.bows.ItemStoneBow;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
-import net.minecraft.block.Block;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
+import me.marnic.extrabows.common.main.Identification;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 
@@ -18,27 +24,10 @@ import java.util.ArrayList;
  * GitHub: https://github.com/MrMarnic
  */
 public class ExtraBowsRegistry {
-    public static final ArrayList<Item> ITEMS_TO_REGISTER = new ArrayList<>();
-    public static final ArrayList<Block> BLOCKS_TO_REGISTER = new ArrayList<>();
-    public static final ArrayList<TileEntityType> TILE_ENTITY_TYPES_TO_REGISTER = new ArrayList<>();
-    public static final ArrayList<ContainerType> CONTAINER_TYPES_TO_REGISTER = new ArrayList<>();
+
     public static final ArrayList<ConfigLoad> CONFIG_LOAD = new ArrayList<>();
 
-    public static void register(BasicItem item) {
-        ITEMS_TO_REGISTER.add(item.getItem());
+    public static void registerConfigItem(BasicItem item) {
         CONFIG_LOAD.add(item);
-    }
-
-    public static void register(BasicBlock block) {
-        BLOCKS_TO_REGISTER.add(block);
-        ITEMS_TO_REGISTER.add(new BlockItem(block, new Item.Properties().tab(ExtraBowsObjects.CREATIVE_TAB)).setRegistryName(block.getRegistryName()));
-    }
-
-    public static void register(TileEntityType type) {
-        TILE_ENTITY_TYPES_TO_REGISTER.add(type);
-    }
-
-    public static void register(ContainerType type) {
-        CONTAINER_TYPES_TO_REGISTER.add(type);
     }
 }

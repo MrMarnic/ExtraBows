@@ -1,9 +1,9 @@
 package me.marnic.extrabows.common.packet;
 
 import me.marnic.extrabows.common.main.Identification;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 /**
  * Copyright (c) 31.05.2019

@@ -1,7 +1,7 @@
 package me.marnic.extrabows.api.item;
 
 import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 /**
  * Copyright (c) 24.05.2019
@@ -10,8 +10,7 @@ import net.minecraft.item.Item;
  */
 public interface BasicItem extends ConfigLoad {
     default void createItem(String name) {
-        getItem().setRegistryName(name);
-        ExtraBowsRegistry.register(this);
+        ExtraBowsRegistry.registerConfigItem(this);
     }
 
     Item getItem();

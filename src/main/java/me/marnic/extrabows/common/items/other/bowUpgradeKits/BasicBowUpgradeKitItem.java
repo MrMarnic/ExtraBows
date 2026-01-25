@@ -3,7 +3,7 @@ package me.marnic.extrabows.common.items.other.bowUpgradeKits;
 import me.marnic.extrabows.api.item.BasicItem;
 import me.marnic.extrabows.common.items.CustomBowSettings;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 /**
  * Copyright (c) 06.10.2019

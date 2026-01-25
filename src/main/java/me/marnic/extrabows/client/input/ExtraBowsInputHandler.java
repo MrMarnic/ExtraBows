@@ -4,21 +4,22 @@ import me.marnic.extrabows.common.container.BowUpgradeGuiContainer;
 import me.marnic.extrabows.common.main.Identification;
 import me.marnic.extrabows.common.packet.ExtraBowsPacketHandler;
 import me.marnic.extrabows.common.packet.PacketOpenUpgradeGUI;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuConstructor;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-
-import javax.annotation.Nullable;
 
 /**
  * Copyright (c) 30.05.2019
@@ -27,10 +28,10 @@ import javax.annotation.Nullable;
  */
 public class ExtraBowsInputHandler {
 
-    public static KeyBinding OPEN_UPGRADE_INV;
+    public static KeyMapping OPEN_UPGRADE_INV;
 
     public static void registerKeys() {
-        OPEN_UPGRADE_INV = new KeyBinding("Key to open upgrade inventory", GLFW.GLFW_KEY_B, "key." + Identification.MODID + ".category");
+        OPEN_UPGRADE_INV = new KeyMapping("Key to open upgrade inventory", GLFW.GLFW_KEY_B, "key." + Identification.MODID + ".category");
         ClientRegistry.registerKeyBinding(OPEN_UPGRADE_INV);
     }
 
@@ -44,18 +45,12 @@ public class ExtraBowsInputHandler {
         ExtraBowsPacketHandler.INSTANCE.sendToServer(new PacketOpenUpgradeGUI(null));
     }
 
-    public static void handleUpgradeInvKeyPressedServer(ServerPlayerEntity playerMP) {
-        NetworkHooks.openGui(playerMP, new INamedContainerProvider() {
+    public static void handleUpgradeInvKeyPressedServer(ServerPlayer playerMP) {
+        NetworkHooks.openGui(playerMP, new SimpleMenuProvider(new MenuConstructor() {
             @Override
-            public ITextComponent getDisplayName() {
-                return new StringTextComponent("Upgrade Inventory");
+            public @Nullable AbstractContainerMenu createMenu(int p_39954_, Inventory p_39955_, Player p_39956_) {
+                return new BowUpgradeGuiContainer(p_39954_, p_39955_, null);
             }
-
-            @Nullable
-            @Override
-            public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
-                return new BowUpgradeGuiContainer(windowId, inventory, null);
-            }
-        });
+        },new TextComponent("Upgrade Inventory")));
     }
 }

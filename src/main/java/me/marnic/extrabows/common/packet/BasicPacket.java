@@ -1,7 +1,7 @@
 package me.marnic.extrabows.common.packet;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -12,10 +12,10 @@ import java.util.function.Supplier;
  */
 public class BasicPacket {
 
-    public BasicPacket(PacketBuffer buffer) {
+    public BasicPacket(FriendlyByteBuf buffer) {
     }
 
-    void encode(PacketBuffer buffer) {
+    void encode(FriendlyByteBuf buffer) {
 
 
     }

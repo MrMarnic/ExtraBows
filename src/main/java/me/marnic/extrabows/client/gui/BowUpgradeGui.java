@@ -1,17 +1,17 @@
 package me.marnic.extrabows.client.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import me.marnic.extrabows.common.container.BowUpgradeGuiContainer;
 import me.marnic.extrabows.common.main.Identification;
-import net.minecraft.client.gui.IHasContainer;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.CraftingContainer;
 
 /**
  * Copyright (c) 30.05.2019
@@ -19,14 +19,14 @@ import net.minecraft.util.text.Style;
  * GitHub: https://github.com/MrMarnic
  */
 
-public class BowUpgradeGui extends ContainerScreen<BowUpgradeGuiContainer> implements IHasContainer<BowUpgradeGuiContainer> {
+public class BowUpgradeGui extends AbstractContainerScreen<BowUpgradeGuiContainer> {
 
     private static ResourceLocation TEXTURE;
     private String name;
-    private PlayerEntity player;
+    private Player player;
 
-    public BowUpgradeGui(BowUpgradeGuiContainer inventorySlotsIn, PlayerInventory inventory, ITextComponent component) {
-        super(inventorySlotsIn, inventory, new StringTextComponent("Bow Upgrade Inventory"));
+    public BowUpgradeGui(BowUpgradeGuiContainer inventorySlotsIn, Inventory inventory, Component component) {
+        super(inventorySlotsIn, inventory, new TextComponent("Bow Upgrade Inventory"));
         TEXTURE = new ResourceLocation(Identification.MODID, "textures/gui/bow_upgrade_gui.png");
         name = "Bow Upgrade Inventory";
         this.player = inventory.player;
@@ -34,7 +34,7 @@ public class BowUpgradeGui extends ContainerScreen<BowUpgradeGuiContainer> imple
 
     //RENDER
     @Override
-    public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+    public void render(PoseStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         this.renderBackground(p_230430_1_,0); //BACKGROUND
         super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
         this.renderTooltip(p_230430_1_,p_230430_2_,p_230430_3_);
@@ -42,8 +42,10 @@ public class BowUpgradeGui extends ContainerScreen<BowUpgradeGuiContainer> imple
 
     //drawGuiContainerBackgroundLayer
     @Override
-    protected void renderBg(MatrixStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
-        this.getMinecraft().getTextureManager().bind(TEXTURE);
+    protected void renderBg(PoseStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
+        RenderSystem.setShaderTexture(0,TEXTURE);
         this.blit(p_230450_1_,getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
     }
 }

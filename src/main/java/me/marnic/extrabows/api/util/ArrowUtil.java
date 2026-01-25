@@ -4,17 +4,17 @@ import me.marnic.extrabows.api.upgrade.ArrowModifierUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.CustomBowSettings;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -28,28 +28,28 @@ public class ArrowUtil {
 
     public static HashMap<UUID, UpgradeList> ARROWS_TO_UPGRADES = new HashMap<>();
 
-    public static AbstractArrowEntity createArrow(World worldIn, ItemStack stack, ItemStack arrowStack, LivingEntity shooter, BasicBow basicBow, PlayerEntity player) {
+    public static AbstractArrow createArrow(Level worldIn, ItemStack stack, ItemStack arrowStack, LivingEntity shooter, BasicBow basicBow, Player player) {
 
-        AbstractArrowEntity arrow = ((ArrowItem) arrowStack.getItem()).createArrow(worldIn, arrowStack, shooter);
+        AbstractArrow arrow = ((ArrowItem) arrowStack.getItem()).createArrow(worldIn, arrowStack, shooter);
         return arrow;
     }
 
-    private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy, AbstractArrowEntity arrow, float yawplus) {
+    private static void shootArrow(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy, AbstractArrow arrow, float yawplus) {
         yaw = yaw + yawplus;
-        float f = -MathHelper.sin(yaw * ((float) Math.PI / 180F)) * MathHelper.cos(pitch * ((float) Math.PI / 180F));
-        float f1 = -MathHelper.sin(pitch * ((float) Math.PI / 180F));
-        float f2 = MathHelper.cos(yaw * ((float) Math.PI / 180F)) * MathHelper.cos(pitch * ((float) Math.PI / 180F));
+        float f = -Mth.sin(yaw * ((float) Math.PI / 180F)) * Mth.cos(pitch * ((float) Math.PI / 180F));
+        float f1 = -Mth.sin(pitch * ((float) Math.PI / 180F));
+        float f2 = Mth.cos(yaw * ((float) Math.PI / 180F)) * Mth.cos(pitch * ((float) Math.PI / 180F));
         arrow.shoot((double) f, (double) f1, (double) f2, velocity, inaccuracy);
 
         arrow.setDeltaMovement(arrow.getDeltaMovement().add(shooter.getDeltaMovement().x, shooter.isOnGround() ? 0.0D : shooter.getDeltaMovement().y, shooter.getDeltaMovement().z));
     }
 
-    public static AbstractArrowEntity createArrowComplete(World worldIn, ItemStack bow, ItemStack arrow, PlayerEntity entityplayer, BasicBow basicBow, float f, boolean flag1, float inacplus, float yawplus, UpgradeList list, boolean isLoaded) {
+    public static AbstractArrow createArrowComplete(Level worldIn, ItemStack bow, ItemStack arrow, Player entityplayer, BasicBow basicBow, float f, boolean flag1, float inacplus, float yawplus, UpgradeList list, boolean isLoaded) {
         CustomBowSettings settings = basicBow.getSettings();
-        AbstractArrowEntity entityarrow = ArrowUtil.createArrow(worldIn, bow, arrow, entityplayer, basicBow, entityplayer);
+        AbstractArrow entityarrow = ArrowUtil.createArrow(worldIn, bow, arrow, entityplayer, basicBow, entityplayer);
         UpgradeUtil.getUpgradesFromStack(bow).handleModifierEvent(ArrowModifierUpgrade.EventType.ARROW_CREATE, entityarrow, entityplayer, bow);
 
-        shootArrow(entityplayer, entityplayer.xRot, entityplayer.yRot, 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus, entityarrow, yawplus);
+        shootArrow(entityplayer, entityplayer.getXRot(), entityplayer.getYRot(), 0.0F, f * settings.getVelocityMul(), settings.getInaccuracy() + inacplus, entityarrow, yawplus);
         if (f == 1.0F) {
             entityarrow.setCritArrow(true);
         }
@@ -76,8 +76,8 @@ public class ArrowUtil {
             bow.hurtAndBreak(1, entityplayer, (p) -> p.broadcastBreakEvent(p.getUsedItemHand()));
         }
 
-        if (flag1 || entityplayer.abilities.instabuild && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
-            entityarrow.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+        if (flag1 || entityplayer.getAbilities().instabuild && (arrow.getItem() == Items.SPECTRAL_ARROW || arrow.getItem() == Items.TIPPED_ARROW)) {
+            entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         }
 
         entityarrow.addTag("extrabows");

@@ -6,14 +6,14 @@ import me.marnic.extrabows.api.upgrade.BasicUpgrade;
 import me.marnic.extrabows.api.upgrade.UpgradeList;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.items.upgrades.BasicUpgradeItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -59,16 +59,18 @@ public class UpgradeUtil {
     }
 
     public static ItemStackHandler getHandlerForItemStack(ItemStack stack) {
-        return (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
+        //return (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
+        return InventoryUtil.getFromStack(stack);
     }
 
     public static void saveUpgradesToStack(ItemStack stack, ItemStackHandler handler2) {
-        ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
-
+        //ItemStackHandler handler = (ItemStackHandler) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).orElse(null);
+        ItemStackHandler handler = InventoryUtil.getFromStack(stack);
 
         for (int i = 0; i < handler2.getSlots(); i++) {
             handler.setStackInSlot(i, handler2.getStackInSlot(i));
         }
+        InventoryUtil.saveInvToItemStack(handler,stack);
     }
 
     public static void copyUpgradesToStack(ItemStack old, ItemStack newOne) {
@@ -84,11 +86,11 @@ public class UpgradeUtil {
         return BlockPos.betweenClosedStream(min, max);
     }
 
-    public static AxisAlignedBB getRadiusBoundingBox(BlockPos center, int radius) {
+    public static AABB getRadiusBoundingBox(BlockPos center, int radius) {
         BlockPos min = new BlockPos(center.getX() - radius, center.getY() - radius, center.getZ() - radius);
         BlockPos max = new BlockPos(center.getX() + radius, center.getY() + radius, center.getZ() + radius);
 
-        return new AxisAlignedBB(min, max);
+        return new AABB(min, max);
     }
 
     public static boolean isMultiplierUpgrade(ItemStack stack) {
@@ -105,22 +107,22 @@ public class UpgradeUtil {
         return false;
     }
 
-    public static List<ITextComponent> createDescriptionFromStingList(String... list) {
-        ArrayList<ITextComponent> list1 = new ArrayList();
+    public static List<Component> createDescriptionFromStingList(String... list) {
+        ArrayList<Component> list1 = new ArrayList();
 
         for (String s : list) {
-            list1.add(new StringTextComponent(s).withStyle(TextFormatting.GRAY));
+            list1.add(new TextComponent(s).withStyle(ChatFormatting.GRAY));
         }
 
         return list1;
     }
 
     public static String getTranslatedDescriptionForUpgrade(BasicUpgrade upgrade) {
-        return new TranslationTextComponent(upgrade.getNonFormattedName() + ".description.text").getString();
+        return new TranslatableComponent(upgrade.getNonFormattedName() + ".description.text").getString();
     }
 
     public static String getTranslatedDescriptionForUpgrade(BasicUpgrade upgrade, int numb) {
-        return new TranslationTextComponent(upgrade.getNonFormattedName() + ".description.text" + numb).getString();
+        return new TranslatableComponent(upgrade.getNonFormattedName() + ".description.text" + numb).getString();
     }
 
     public static boolean isExtraBowsArrow(Entity e) {

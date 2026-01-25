@@ -3,55 +3,70 @@ package me.marnic.extrabows.common.blocks;
 import me.marnic.extrabows.api.block.BasicBlock;
 import me.marnic.extrabows.api.util.AlertUtil;
 import me.marnic.extrabows.common.blocks.tileentities.TileEntityBridgeBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
+import me.marnic.extrabows.common.main.ExtraBowsObjects;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Copyright (c) 05.06.2019
  * Developed by MrMarnic
  * GitHub: https://github.com/MrMarnic
  */
-public class BlockBridgeBlock extends BasicBlock {
+public class BlockBridgeBlock extends BaseEntityBlock {
     public BlockBridgeBlock() {
-        super("bridge_block", Properties.of(Material.METAL).strength(-1, 10000000).sound(SoundType.METAL));
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileEntityBridgeBlock().setTicksToLive(1000000);
+        super(Properties.of(Material.METAL).strength(-1, 10000000).sound(SoundType.METAL));
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
+    public RenderShape getRenderShape(BlockState p_49232_) {
+        return RenderShape.MODEL;
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
         worldIn.removeBlock(pos, false);
-        if (placer instanceof PlayerEntity) {
-            AlertUtil.alert((PlayerEntity) placer, "This block can not be placed manually!", TextFormatting.RED);
+        if (placer instanceof Player) {
+            AlertUtil.alert((Player) placer, "This block can not be placed manually!", ChatFormatting.RED);
         }
     }
 
-
+    @Override
+    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+        return new TileEntityBridgeBlock(p_153215_,p_153216_).setTicksToLive(1000000);
+    }
 
     @Override
-    public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+    public boolean isPathfindable(BlockState p_60475_, BlockGetter p_60476_, BlockPos p_60477_, PathComputationType p_60478_) {
         return false;
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
+        return createTickerHelper(p_153214_, ExtraBowsObjects.BRIDGE_BLOCK_TILE_ENTITY.get(), BlockBridgeBlock::tick);
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, TileEntityBridgeBlock tileEntityBridgeBlock) {
+        if (tileEntityBridgeBlock.getTicksToLive() <= 0) {
+            level.removeBlock(pos,false);
+            if (tileEntityBridgeBlock.getToPlace() != null) {
+                level.setBlockAndUpdate(pos, tileEntityBridgeBlock.getToPlace().defaultBlockState());
+            }
+        } else {
+            tileEntityBridgeBlock.setTicksToLive(tileEntityBridgeBlock.getTicksToLive()-1);
+        }
     }
 }
