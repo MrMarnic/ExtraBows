@@ -26,7 +26,7 @@ public class BasicBowRecipe extends ShapedRecipe {
     private CustomBowSettings settings;
 
     public BasicBowRecipe(String type, NonNullList<Ingredient> ingredients, ItemStack output, CustomBowSettings settings) {
-        super(new ResourceLocation(Identification.MODID, "recipe_" + type), type, CraftingBookCategory.EQUIPMENT, 3, 3, ingredients, output);
+        super(ResourceLocation.fromNamespaceAndPath(Identification.MODID, "recipe_" + type), type, CraftingBookCategory.EQUIPMENT, 3, 3, ingredients, output);
 
         this.settings = settings;
 

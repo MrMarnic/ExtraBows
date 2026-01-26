@@ -28,7 +28,7 @@ public class BasicBowShapelessRecipe extends ShapelessRecipe {
     ItemStack base;
 
     public BasicBowShapelessRecipe(BasicBowRecipe recipe, BasicBowUpgradeKitItem upgradeKit, ItemStack output) {
-        super(new ResourceLocation(Identification.MODID, recipe.getGroup()), recipe.getGroup(), CraftingBookCategory.EQUIPMENT, output, NonNullList.create());
+        super(ResourceLocation.fromNamespaceAndPath(Identification.MODID, recipe.getGroup()), recipe.getGroup(), CraftingBookCategory.EQUIPMENT, output, NonNullList.create());
         getIngredients().add(Ingredient.of(Items.BOW, ExtraBowsObjects.STONE_BOW.get(), ExtraBowsObjects.IRON_BOW.get(), ExtraBowsObjects.GOLD_BOW.get(), ExtraBowsObjects.DIAMOND_BOW.get(), ExtraBowsObjects.EMERALD_BOW.get()));
         getIngredients().add(Ingredient.of(upgradeKit));
     }

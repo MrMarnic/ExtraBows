@@ -16,8 +16,8 @@ Step 1: Open your command-line and browse to the folder where you extracted the 
 
 Step 2: You're left with a choice.
 If you prefer to use Eclipse:
-2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
 1. Run the following command: `./gradlew genEclipseRuns`
+2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
    or run `gradlew eclipse` to generate the project.
 
 If you prefer to use IntelliJ:
@@ -28,7 +28,7 @@ If you prefer to use IntelliJ:
 
 If at any point you are missing libraries in your IDE, or you've run into problems you can 
 run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+(this does not affect your code) and then start the process again.
 
 Mapping Names:
 =============================
@@ -40,7 +40,7 @@ https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
 
 Additional Resources: 
 =========================
-Community Documentation: https://docs.minecraftforge.net/en/1.19.x/gettingstarted/
+Community Documentation: https://docs.minecraftforge.net/en/1.20.1/gettingstarted/
 LexManos' Install Video: https://youtu.be/8VEdtQLuLO0
 Forge Forums: https://forums.minecraftforge.net/
 Forge Discord: https://discord.minecraftforge.net/

@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BlockBridgeBlock extends BaseEntityBlock {
     public BlockBridgeBlock() {
-        super(Properties.of(Material.METAL).strength(-1, 10000000).sound(SoundType.METAL));
+        super(Properties.of().mapColor(MapColor.WOOD).strength(-1, 10000000).sound(SoundType.METAL));
     }
 
     @Override

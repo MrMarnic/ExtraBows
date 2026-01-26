@@ -41,7 +41,7 @@ public class ArrowUtil {
         float f2 = Mth.cos(yaw * ((float) Math.PI / 180F)) * Mth.cos(pitch * ((float) Math.PI / 180F));
         arrow.shoot((double) f, (double) f1, (double) f2, velocity, inaccuracy);
 
-        arrow.setDeltaMovement(arrow.getDeltaMovement().add(shooter.getDeltaMovement().x, shooter.isOnGround() ? 0.0D : shooter.getDeltaMovement().y, shooter.getDeltaMovement().z));
+        arrow.setDeltaMovement(arrow.getDeltaMovement().add(shooter.getDeltaMovement().x, shooter.onGround() ? 0.0D : shooter.getDeltaMovement().y, shooter.getDeltaMovement().z));
     }
 
     public static AbstractArrow createArrowComplete(Level worldIn, ItemStack bow, ItemStack arrow, Player entityplayer, BasicBow basicBow, float f, boolean flag1, float inacplus, float yawplus, UpgradeList list, boolean isLoaded) {

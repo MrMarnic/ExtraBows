@@ -28,6 +28,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -82,7 +83,8 @@ public class ExtraBowsEventHandler {
                         EntityHitResult trace = (EntityHitResult) e.getRayTraceResult();
                         if (arrow.getOwner().equals(trace.getEntity())) {
                             if (arrow.getTags().contains("flyingUpgrade")) {
-                                e.setCanceled(true);
+                                e.setResult(Event.Result.DENY);
+                                return;
                             }
                         }
                     }

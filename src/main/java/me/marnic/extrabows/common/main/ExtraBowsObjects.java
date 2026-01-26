@@ -38,7 +38,14 @@ public class ExtraBowsObjects {
     public static final DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS,Identification.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,Identification.MODID);
     public static final DeferredRegister<MenuType<?>> CONTAINER_TYPE_REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES,Identification.MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB_REGISTRY = DeferredRegister.create(Registries.CREATIVE_MODE_TAB,Identification.MODID);
 
+    public static final RegistryObject<CreativeModeTab> CREATIVE_MODE_TAB = CREATIVE_MODE_TAB_REGISTRY.register("extrabows_items",() -> CreativeModeTab.builder().icon(() -> new ItemStack(ExtraBowsObjects.DIAMOND_BOW.get()))
+             .displayItems((g,output) -> {
+                 ExtraBowsObjects.ITEM_REGISTRY.getEntries().forEach((item) -> {
+                     output.accept(item.get());
+                 });
+             }).title(Component.translatable("itemGroup.extrabows_items")).build());
 
     public static RegistryObject<ItemStoneBow> STONE_BOW = ITEM_REGISTRY.register("stone_bow",ItemStoneBow::new);
     public static RegistryObject<ItemIronBow> IRON_BOW = ITEM_REGISTRY.register("iron_bow",ItemIronBow::new);
@@ -82,5 +89,6 @@ public class ExtraBowsObjects {
         BLOCK_REGISTRY.register(bus);
         BLOCK_ENTITY_REGISTRY.register(bus);
         CONTAINER_TYPE_REGISTRY.register(bus);
+        CREATIVE_MODE_TAB_REGISTRY.register(bus);
     }
 }

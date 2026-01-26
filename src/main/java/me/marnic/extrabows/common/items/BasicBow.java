@@ -34,12 +34,11 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -70,7 +69,7 @@ public class BasicBow extends BowItem implements BasicItem {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void initConfigOptions() {
-        ItemProperties.register(this,new ResourceLocation("pull"),(p_210310_0_, p_210310_1_, p_210310_2_,f) -> {
+        ItemProperties.register(this,ResourceLocation.withDefaultNamespace("pull"),(p_210310_0_, p_210310_1_, p_210310_2_,f) -> {
             if (p_210310_2_ == null) {
                 return 0.0F;
             } else {
@@ -78,7 +77,7 @@ public class BasicBow extends BowItem implements BasicItem {
             }
         });
 
-        ItemProperties.register(this, new ResourceLocation("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_,f) -> {
+        ItemProperties.register(this, ResourceLocation.withDefaultNamespace("pulling"), (p_239428_0_, p_239428_1_, p_239428_2_,f) -> {
             return p_239428_2_ != null && p_239428_2_.isUsingItem() && p_239428_2_.getMainHandItem() == p_239428_0_ ? 1.0F : 0.0F;
         });
     }
@@ -207,7 +206,7 @@ public class BasicBow extends BowItem implements BasicItem {
                         energyTest:
                         {
                             if (isLoaded) {
-                                ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
+                                ExtraBowsEnergy extraBowsEnergy = (ExtraBowsEnergy) stack.getCapability(ForgeCapabilities.ENERGY, null).orElse(null);
 
                                 if (extraBowsEnergy.getEnergyStored() < CustomBowSettings.ENERGY_COST_PER_ARROW) {
                                     break energyTest;
@@ -271,7 +270,7 @@ public class BasicBow extends BowItem implements BasicItem {
         }
 
         if (isElectric(list, stack) && LevelIn != null) {
-            ExtraBowsEnergy storage = (ExtraBowsEnergy) stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null);
+            ExtraBowsEnergy storage = (ExtraBowsEnergy) stack.getCapability(ForgeCapabilities.ENERGY, null).orElse(null);
             if (storage != null) {
                 tooltip.add(Component.translatable("Energy: " + storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + "RF").withStyle(ChatFormatting.GRAY));
             }
@@ -310,7 +309,7 @@ public class BasicBow extends BowItem implements BasicItem {
     private boolean isLoaded(UpgradeList list, ItemStack stack) {
         boolean b = list.contains(Upgrades.ELECTRIC_UPGRADE) || stack.getItem() instanceof ItemElectricBow;
         if (b) {
-            return stack.getCapability(CapabilityEnergy.ENERGY, null).orElse(null).getEnergyStored() >= CustomBowSettings.ENERGY_COST_PER_ARROW;
+            return stack.getCapability(ForgeCapabilities.ENERGY, null).orElse(null).getEnergyStored() >= CustomBowSettings.ENERGY_COST_PER_ARROW;
         }
         return false;
     }
@@ -399,10 +398,10 @@ public class BasicBow extends BowItem implements BasicItem {
         @Nullable
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (capability == ForgeCapabilities.ITEM_HANDLER) {
                 return handlerLazyOptional.cast();
             }
-            if (capability == CapabilityEnergy.ENERGY && isElectric(UpgradeUtil.getUpgradesFromStack(stack), stack)) {
+            if (capability == ForgeCapabilities.ENERGY && isElectric(UpgradeUtil.getUpgradesFromStack(stack), stack)) {
                 return energyStorage.cast();
             }
             return LazyOptional.empty();

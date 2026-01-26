@@ -53,7 +53,7 @@ public class ExtraBows {
         ExtraBowsObjects.register(eventBus);
 
         Upgrades.init();
-        MinecraftForge.EVENT_BUS.register(new ExtraBowsEventHandler());
+        //MinecraftForge.EVENT_BUS.register(new ExtraBowsEventHandler());
 
         ExtraBowsPacketHandler.init();
 

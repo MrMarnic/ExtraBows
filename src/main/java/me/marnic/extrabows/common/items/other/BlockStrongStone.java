@@ -5,8 +5,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,11 +23,11 @@ import java.util.List;
 public class BlockStrongStone extends BasicBlock {
 
     public BlockStrongStone() {
-        super("strong_stone", Properties.of(Material.STONE).strength(2f,6f).sound(SoundType.STONE));
+        super("strong_stone", Properties.of().mapColor(MapColor.STONE).strength(2f,6f).sound(SoundType.STONE));
     }
 
     @Override
-    public @NotNull List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState p_287732_, LootParams.Builder p_287596_) {
         return Arrays.asList(new ItemStack(this.asItem()));
     }
 }

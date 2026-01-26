@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.marnic.extrabows.common.container.BowUpgradeGuiContainer;
 import me.marnic.extrabows.common.main.Identification;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -26,14 +27,14 @@ public class BowUpgradeGui extends AbstractContainerScreen<BowUpgradeGuiContaine
 
     public BowUpgradeGui(BowUpgradeGuiContainer inventorySlotsIn, Inventory inventory, Component component) {
         super(inventorySlotsIn, inventory, Component.literal("Bow Upgrade Inventory"));
-        TEXTURE = new ResourceLocation(Identification.MODID, "textures/gui/bow_upgrade_gui.png");
+        TEXTURE = ResourceLocation.fromNamespaceAndPath(Identification.MODID, "textures/gui/bow_upgrade_gui.png");
         name = "Bow Upgrade Inventory";
         this.player = inventory.player;
     }
 
     //RENDER
     @Override
-    public void render(PoseStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
+    public void render(GuiGraphics p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
         this.renderBackground(p_230430_1_); //BACKGROUND
         super.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
         this.renderTooltip(p_230430_1_,p_230430_2_,p_230430_3_);
@@ -41,10 +42,10 @@ public class BowUpgradeGui extends AbstractContainerScreen<BowUpgradeGuiContaine
 
     //drawGuiContainerBackgroundLayer
     @Override
-    protected void renderBg(PoseStack p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
+    protected void renderBg(GuiGraphics p_230450_1_, float p_230450_2_, int p_230450_3_, int p_230450_4_) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
         RenderSystem.setShaderTexture(0,TEXTURE);
-        this.blit(p_230450_1_,getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
+        p_230450_1_.blit(TEXTURE,getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
     }
 }
