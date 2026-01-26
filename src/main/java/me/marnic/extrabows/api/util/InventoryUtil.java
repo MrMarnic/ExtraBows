@@ -1,11 +1,7 @@
 package me.marnic.extrabows.api.util;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.TagType;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class InventoryUtil {

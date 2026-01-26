@@ -2,7 +2,6 @@ package me.marnic.extrabows.common.items.upgrades;
 
 import me.marnic.extrabows.api.item.BasicItem;
 import me.marnic.extrabows.api.upgrade.BasicUpgrade;
-import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

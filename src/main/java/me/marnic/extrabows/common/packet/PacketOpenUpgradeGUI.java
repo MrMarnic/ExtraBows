@@ -1,6 +1,5 @@
 package me.marnic.extrabows.common.packet;
 
-import me.marnic.extrabows.client.input.ExtraBowsInputHandler;
 import me.marnic.extrabows.common.container.BowUpgradeGuiContainer;
 import me.marnic.extrabows.common.items.BasicBow;
 import net.minecraft.network.FriendlyByteBuf;

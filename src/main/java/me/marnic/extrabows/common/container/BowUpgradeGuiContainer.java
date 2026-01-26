@@ -4,14 +4,14 @@ import me.marnic.extrabows.api.util.UpgradeUtil;
 import me.marnic.extrabows.client.gui.slot.UpgradeSlot;
 import me.marnic.extrabows.common.items.BasicBow;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Copyright (c) 30.05.2019

@@ -7,7 +7,6 @@ import me.marnic.extrabows.common.main.ExtraBowsObjects;
 import me.marnic.extrabows.common.main.Identification;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;

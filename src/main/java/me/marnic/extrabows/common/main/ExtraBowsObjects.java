@@ -8,7 +8,6 @@ import me.marnic.extrabows.common.items.bows.*;
 import me.marnic.extrabows.common.items.other.*;
 import me.marnic.extrabows.common.items.other.bowUpgradeKits.BasicBowUpgradeKitItem;
 import me.marnic.extrabows.common.items.upgrades.ItemUpgradePlate;
-import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -23,7 +22,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 

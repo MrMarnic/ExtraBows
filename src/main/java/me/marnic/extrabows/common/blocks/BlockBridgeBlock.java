@@ -1,6 +1,5 @@
 package me.marnic.extrabows.common.blocks;
 
-import me.marnic.extrabows.api.block.BasicBlock;
 import me.marnic.extrabows.api.util.AlertUtil;
 import me.marnic.extrabows.common.blocks.tileentities.TileEntityBridgeBlock;
 import me.marnic.extrabows.common.main.ExtraBowsObjects;
@@ -11,7 +10,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;

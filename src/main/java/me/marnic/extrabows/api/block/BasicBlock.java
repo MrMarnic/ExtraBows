@@ -1,8 +1,6 @@
 package me.marnic.extrabows.api.block;
 
-import me.marnic.extrabows.common.registry.ExtraBowsRegistry;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.WaterlilyBlock;
 
 /**
  * Copyright (c) 05.06.2019

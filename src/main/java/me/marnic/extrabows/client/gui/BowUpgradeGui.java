@@ -1,7 +1,6 @@
 package me.marnic.extrabows.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import me.marnic.extrabows.common.container.BowUpgradeGuiContainer;
 import me.marnic.extrabows.common.main.Identification;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.CraftingContainer;
 
 /**
  * Copyright (c) 30.05.2019
